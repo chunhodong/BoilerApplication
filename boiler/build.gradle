@@ -19,12 +19,28 @@ repositories {
 }
 
 dependencies {
+	/**
+	 * implementation      : 모듈을 수정하면 모듈을 직접적으로 의존하는 모듈까지만 rebuild
+	 * compileOnly         : 컴파일타임에만 사용하고, 런타임때는 사용하지 않아도됨
+	 * runtimeOnly         : 런타임시에만 필요하고, 컴파일타임때는 필요없음
+	 * testImplementation  : 테스트시에만 사용
+	 * annotationProcessor : 컴파일타임에 어노테이션을 분석
+	 */
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	//JUnit4,JUnit5 모두포함, JUnit4,5 테스트 모두가능
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//JUnit5기능사용
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+	//H2DB연결
+	runtimeOnly 'com.h2database:h2'
+
 }
 
 tasks.named('test') {

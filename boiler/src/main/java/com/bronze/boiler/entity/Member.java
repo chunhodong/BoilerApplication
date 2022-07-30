@@ -1,5 +1,6 @@
 package com.bronze.boiler.entity;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

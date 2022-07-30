@@ -73,7 +73,8 @@ repositories {
 }
 
 dependencies {
-	/**
+
+	/*
 	 * implementation      : 모듈을 수정하면 모듈을 직접적으로 의존하는 모듈까지만 rebuild
 	 * compileOnly         : 컴파일타임에만 사용하고, 런타임때는 사용하지 않아도됨
 	 * runtimeOnly         : 런타임시에만 필요하고, 컴파일타임때는 필요없음
@@ -86,6 +87,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	//유효성검증 어노테이션추가
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -97,6 +100,8 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 	//H2DB연결
 	testRuntimeOnly 'com.h2database:h2'
+
+
 
 }
 

@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -53,6 +52,24 @@ public class MemberRepositoryTest {
         assertThat(member.getEmail()).isEqualTo("test@test.com");
         assertThat(member.getRole()).isEqualTo(Role.NORMAL);
         assertThat(member.getPassword()).isEqualTo("1234");
+
+
+    }
+
+    @Test
+    void 회원추가_회원이름NULL_예외발생(){
+
+        String filedName = assertThrows(ConstraintViolationException.class,() -> memberRepository.save(Member
+                .builder()
+                .email("test@test.com")
+                .password("password123")
+                .role(Role.NORMAL)
+                .build()))
+                .getConstraintViolations().stream().findFirst()
+                .map(constraintViolation -> constraintViolation.getPropertyPath().toString())
+                .orElse(null);
+        assertThat(filedName).isEqualTo("name");
+
 
 
     }

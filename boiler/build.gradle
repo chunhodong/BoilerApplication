@@ -2,7 +2,61 @@ plugins {
 	id 'org.springframework.boot' version '2.6.10'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
+
+jacoco {
+	toolVersion = '0.8.7'
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		html.enabled true
+		csv.enabled true
+		xml.enabled true
+	}
+
+
+	afterEvaluate {
+		classDirectories.setFrom(
+				files(classDirectories.files.collect {
+					fileTree(dir: it, excludes: [
+
+					])
+				})
+		)
+	}
+
+
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			element = 'CLASS'
+
+			limit {
+				counter = 'BRANCH'
+				value = 'COVEREDRATIO'
+				minimum = 0.9
+
+			}
+		}
+	}
+}
+
+
+task testCoverage(type: Test) {
+	group 'verification'
+	description 'Runs the unit tests with coverage'
+
+	dependsOn(':test',
+			':jacocoTestReport')
+
+	tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
+}
+
 
 group = 'com.bronze'
 version = '0.0.1-SNAPSHOT'

@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -31,8 +28,8 @@ public class MemberRepositoryTest {
 
     @Test
     public void 회원추가(){
-        Member member = memberRepository.save(Member.builder().build());
-        assertThat(member.getId()).isEqualTo(2L);
+        Member member = memberRepository.save(Member.builder().name("회원1").build());
+        assertThat(member.getName()).isEqualTo("회원1");
 
     }
 

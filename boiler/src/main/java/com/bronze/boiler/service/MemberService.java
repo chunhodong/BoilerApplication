@@ -5,7 +5,7 @@ import com.bronze.boiler.domain.member.dto.ReqMemberDto;
 import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.exception.DuplicateMemberException;
+import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,11 +29,11 @@ public class MemberService {
 
         memberRepository.findByName(reqMemberDto.getName())
                 .ifPresent(member -> {
-                    throw new DuplicateMemberException(MemberExceptionType.DUPLICATE_NAME);
+                    throw new MemberException(MemberExceptionType.DUPLICATE_NAME);
                 });
         memberRepository.findByEmail(reqMemberDto.getEmail())
                 .ifPresent(member -> {
-                    throw new DuplicateMemberException(MemberExceptionType.DUPLICATE_EMAIL);
+                    throw new MemberException(MemberExceptionType.DUPLICATE_EMAIL);
                 });
 
 

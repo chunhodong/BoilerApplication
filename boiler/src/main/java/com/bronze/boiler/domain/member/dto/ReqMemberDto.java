@@ -11,15 +11,17 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @Getter
-public class MemberDto {
+public class ReqMemberDto {
 
     private Long id;
 
     @NotBlank
     private String name;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String password;
 
     private Role role;

@@ -1,6 +1,7 @@
 package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.member.dto.MemberDto;
+import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.member.exception.DuplicateMemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,15 @@ public class MemberService {
 
         memberRepository.findByName(memberDto.getName())
                 .ifPresent(member -> {
-                    throw new DuplicateMemberException();
+                    throw new DuplicateMemberException(MemberExceptionType.DUPLICATE_NAME);
                 });
+        memberRepository.findByEmail(memberDto.getEmail())
+                .ifPresent(member -> {
+                    throw new DuplicateMemberException(MemberExceptionType.DUPLICATE_EMAIL);
+                });
+
+
+
         return MemberDto.builder().build();
     }
 }

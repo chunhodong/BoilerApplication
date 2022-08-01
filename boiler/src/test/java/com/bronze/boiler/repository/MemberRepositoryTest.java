@@ -3,20 +3,13 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.Role;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 public class MemberRepositoryTest {
@@ -27,7 +20,11 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원조회_회원정보확인() {
-        Member member = memberRepository.save(Member.builder().name("박지수").build());
+        Member member = memberRepository.save(Member.builder()
+                .name("박지수")
+                .email("test@test.com")
+                .password("aoioajf")
+                .build());
         Optional<Member> optionalMember = memberRepository.findById(member.getId());
         assertThat(optionalMember.get().getName()).isEqualTo("박지수");
     }
@@ -35,7 +32,11 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원목록조회_회원목록수확인() {
-        memberRepository.save(Member.builder().name("회원0123").build());
+        memberRepository.save(Member.builder()
+                .name("회원0123")
+                .email("test@test.com")
+                .password("aoioajf")
+                .build());
         List<Member> memberList = memberRepository.findAll();
         assertThat(memberList.size()).isEqualTo(1);
     }

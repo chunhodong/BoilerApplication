@@ -16,8 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,8 +30,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+//테스트실행 확장을 위해 추가하는 Annotation
 @ExtendWith(SpringExtension.class)
 public class MemberServiceTest {
+
 
     @InjectMocks
     private MemberService memberService;
@@ -89,9 +96,52 @@ public class MemberServiceTest {
 
     }
 
+    @Test
+    void 회원추가_이름빈값입력_예외발생(){
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
+                .email("email@email")
+                .password("1234")
+                .role(Role.NORMAL)
+                .build());
+        assertThat(constraintViolations.size()).isEqualTo(1);
+
+    }
+
+    @Test
+    void 회원추가_이메일빈값입력_예외발생(){
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
+                .name("name")
+                .password("1234")
+                .role(Role.NORMAL)
+                .build());
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
+    void 회원추가_패스워드빈값입력_예외발생(){
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
+                .name("aewawf")
+                .email("email@email")
+                .role(Role.NORMAL)
+                .build());
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+
+
 
     @Test
     void 회원추가_회원정보확인() throws NoSuchAlgorithmException {
+
 
         ReqMemberDto reqMemberDto = ReqMemberDto.builder()
                 .name("테스트유저")
@@ -109,14 +159,12 @@ public class MemberServiceTest {
                 .when(memberRepository).save(any());
 
         ResMemberDto resMemberDto = memberService.createMember(reqMemberDto);
-
         assertThat(resMemberDto.getEmail()).isEqualTo(reqMemberDto.getEmail());
         assertThat(resMemberDto.getName()).isEqualTo(reqMemberDto.getName());
         assertThat(resMemberDto.getRole()).isEqualTo(reqMemberDto.getRole());
-
-
-
     }
+
+
 
 
 }

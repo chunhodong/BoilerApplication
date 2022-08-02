@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
 /**
  * 회원엔티티
@@ -45,6 +46,8 @@ public class Member {
     private Status status;
 
 
+    @Column(name = "period_of_block")
+    private LocalDate periodOfBlock;
 
     public void modifyEmail(String email){
         this.email = email;
@@ -56,5 +59,11 @@ public class Member {
 
     public void unregister() {
         this.status = Status.UNREGISTER;
+    }
+
+    public void block() {
+        this.status = Status.BLOCK;
+        this.periodOfBlock = LocalDate.now().plusDays(7L);
+
     }
 }

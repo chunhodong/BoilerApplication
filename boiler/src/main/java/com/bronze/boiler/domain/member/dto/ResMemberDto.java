@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -25,5 +26,7 @@ public class ResMemberDto {
     private Role role;
 
     private Status status;
+
+    private LocalDate periodOfBlock;
 
 }

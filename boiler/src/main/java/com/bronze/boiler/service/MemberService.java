@@ -81,4 +81,18 @@ public class MemberService {
         return MemberConverter.toMemberDto(member);
 
     }
+
+
+    /**
+     * 회원정지처리
+     * @param memberId 회원아이디
+     * @return 정지처리된회원정보
+     */
+    public ResMemberDto blockMember(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+        member.block();
+        return MemberConverter.toMemberDto(member);
+
+    }
 }

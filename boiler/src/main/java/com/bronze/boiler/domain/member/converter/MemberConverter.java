@@ -25,6 +25,7 @@ public class MemberConverter {
                 .email(member.getEmail())
                 .role(member.getRole())
                 .status(member.getStatus())
+                .periodOfBlock(member.getPeriodOfBlock())
                 .build();
     }
 }

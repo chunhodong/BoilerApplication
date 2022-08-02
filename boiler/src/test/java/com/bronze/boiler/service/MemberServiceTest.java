@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -126,7 +127,7 @@ public class MemberServiceTest {
         doReturn(Optional.empty())
                 .when(memberRepository).findById(any());
 
-        MemberException memberException = assertThrows(MemberException.class,() -> memberService.removeMember(12));
+        MemberException memberException = assertThrows(MemberException.class,() -> memberService.removeMember(12L));
         assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
     }
 
@@ -152,7 +153,7 @@ public class MemberServiceTest {
         doReturn(Optional.empty())
                 .when(memberRepository).findById(any());
 
-        MemberException memberException = assertThrows(MemberException.class,() -> memberService.unregisterMember(12));
+        MemberException memberException = assertThrows(MemberException.class,() -> memberService.unregisterMember(12L));
         assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
     }
 
@@ -170,6 +171,40 @@ public class MemberServiceTest {
         ResMemberDto resMemberDto = memberService.unregisterMember(12L);
         assertThat(resMemberDto.getStatus()).isEqualTo(Status.UNREGISTER);
     }
+
+
+
+
+    @Test
+    void 회원정지_없는회원조회_예외발생()  {
+
+        doReturn(Optional.empty())
+                .when(memberRepository).findById(any());
+
+        MemberException memberException = assertThrows(MemberException.class,() -> memberService.blockMember(12L));
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+    }
+
+
+    @Test
+    void 회원정지_정지날짜확인()  {
+
+        doReturn(Optional.ofNullable(Member.builder()
+                .name("테스트유저")
+                .email("email@email")
+                .role(Role.USER)
+                .status(Status.NORMAL)
+                .build()))
+                .when(memberRepository).findById(any());
+
+        ResMemberDto resMemberDto = memberService.blockMember(12L);
+        assertThat(resMemberDto.getPeriodOfBlock()).isEqualTo(LocalDate.now().plusDays(7));
+
+    }
+
+
+
+
 
 
 

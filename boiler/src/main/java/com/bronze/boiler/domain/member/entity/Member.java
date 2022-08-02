@@ -1,6 +1,7 @@
 package com.bronze.boiler.domain.member.entity;
 
 import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.domain.member.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,9 +40,21 @@ public class Member {
     @Column
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Status status;
+
+
 
     public void modifyEmail(String email){
         this.email = email;
     }
 
+    public void remove() {
+        this.status = Status.REMOVE;
+    }
+
+    public void unregister() {
+        this.status = Status.UNREGISTER;
+    }
 }

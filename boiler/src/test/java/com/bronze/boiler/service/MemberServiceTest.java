@@ -5,6 +5,8 @@ import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.domain.member.enums.Status;
+import com.bronze.boiler.domain.member.exception.ExceptionType;
 import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -14,15 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,7 +45,7 @@ public class MemberServiceTest {
                 .name("김딱딱")
                 .email("email@email.com")
                 .password("123")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build();
         doReturn(Optional.ofNullable(Member.builder().build()))
                 .when(memberRepository).findByName(any());
@@ -67,7 +62,7 @@ public class MemberServiceTest {
                 .name("김딱딱")
                 .email("email@email.com")
                 .password("123")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build();
         doReturn(Optional.ofNullable(Member.builder().build()))
                 .when(memberRepository).findByEmail(any());
@@ -108,14 +103,14 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .password("1234")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build();
 
 
         doReturn(Member.builder()
                 .name("테스트유저")
                 .email("email@email")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build())
                 .when(memberRepository).save(any());
 
@@ -124,6 +119,58 @@ public class MemberServiceTest {
         assertThat(resMemberDto.getName()).isEqualTo(reqMemberDto.getName());
         assertThat(resMemberDto.getRole()).isEqualTo(reqMemberDto.getRole());
     }
+
+    @Test
+    void 회원삭제_없는회원조회_예외발생()  {
+
+        doReturn(Optional.empty())
+                .when(memberRepository).findById(any());
+
+        MemberException memberException = assertThrows(MemberException.class,() -> memberService.removeMember(12));
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+    }
+
+
+    @Test
+    void 회원삭제_회원정보확인()  {
+
+        doReturn(Optional.ofNullable(Member.builder()
+                .name("테스트유저")
+                .email("email@email")
+                .role(Role.USER)
+                .status(Status.NORMAL)
+                .build()))
+                .when(memberRepository).findById(any());
+
+        ResMemberDto resMemberDto = memberService.removeMember(12L);
+        assertThat(resMemberDto.getStatus()).isEqualTo(Status.REMOVE);
+    }
+
+    @Test
+    void 회원탈퇴_없는회원조회_예외발생()  {
+
+        doReturn(Optional.empty())
+                .when(memberRepository).findById(any());
+
+        MemberException memberException = assertThrows(MemberException.class,() -> memberService.unregisterMember(12));
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+    }
+
+    @Test
+    void 회원탈퇴_회원정보확인()  {
+
+        doReturn(Optional.ofNullable(Member.builder()
+                .name("테스트유저")
+                .email("email@email")
+                .role(Role.USER)
+                .status(Status.NORMAL)
+                .build()))
+                .when(memberRepository).findById(any());
+
+        ResMemberDto resMemberDto = memberService.unregisterMember(12L);
+        assertThat(resMemberDto.getStatus()).isEqualTo(Status.UNREGISTER);
+    }
+
 
 
 

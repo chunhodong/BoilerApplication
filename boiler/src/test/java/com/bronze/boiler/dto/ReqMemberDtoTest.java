@@ -22,7 +22,7 @@ public class ReqMemberDtoTest {
         Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
                 .email("email@email")
                 .password("1234")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build());
         assertThat(constraintViolations.size()).isEqualTo(1);
 
@@ -36,7 +36,7 @@ public class ReqMemberDtoTest {
         Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
                 .name("name")
                 .password("1234")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build());
         assertThat(constraintViolations.size()).isEqualTo(1);
     }
@@ -49,7 +49,7 @@ public class ReqMemberDtoTest {
         Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
                 .name("aewawf")
                 .email("email@email")
-                .role(Role.NORMAL)
+                .role(Role.USER)
                 .build());
         assertThat(constraintViolations.size()).isEqualTo(1);
     }

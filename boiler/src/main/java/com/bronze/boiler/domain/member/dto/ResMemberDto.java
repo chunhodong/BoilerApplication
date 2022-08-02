@@ -1,6 +1,7 @@
 package com.bronze.boiler.domain.member.dto;
 
 import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.domain.member.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,5 +23,7 @@ public class ResMemberDto {
     private String password;
 
     private Role role;
+
+    private Status status;
 
 }

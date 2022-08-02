@@ -5,5 +5,5 @@ package com.bronze.boiler.domain.member.enums;
  */
 public enum Role {
 
-    NORMAL
+    USER,STEP,ADMIN
 }

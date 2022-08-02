@@ -5,6 +5,7 @@ import com.bronze.boiler.domain.member.dto.ReqMemberDto;
 import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
+import com.bronze.boiler.domain.member.enums.Status;
 import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,35 @@ public class MemberService {
         Member member = memberRepository.save(MemberConverter.toMemberEntity(reqMemberDto));
 
         return MemberConverter.toMemberDto(member);
+    }
+
+    /**
+     * 회원삭제처리
+     * @param memberId 회원아이디
+     * @return 삭제처리된회원정보
+     */
+    public ResMemberDto removeMember(long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                        .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+
+        member.remove();
+
+        return MemberConverter.toMemberDto(member);
+    }
+
+    /**
+     * 회원탈퇴처리
+     * @param memberId 회원아이디
+     * @return 탈퇴처리된회원정보
+     */
+    public ResMemberDto unregisterMember(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+
+        member.unregister();
+
+        return MemberConverter.toMemberDto(member);
+
     }
 }

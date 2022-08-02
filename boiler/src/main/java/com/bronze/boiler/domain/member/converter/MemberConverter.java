@@ -24,6 +24,7 @@ public class MemberConverter {
                 .name(member.getName())
                 .email(member.getEmail())
                 .role(member.getRole())
+                .status(member.getStatus())
                 .build();
     }
 }

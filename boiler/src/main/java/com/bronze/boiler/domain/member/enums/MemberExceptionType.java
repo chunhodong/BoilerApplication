@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
  */
 public enum MemberExceptionType implements ExceptionType {
     DUPLICATE_NAME("이미 존재하는 이름입니다", HttpStatus.BAD_REQUEST),
-    DUPLICATE_EMAIL("이미 존재하는 이메일입니다", HttpStatus.BAD_REQUEST);
+    DUPLICATE_EMAIL("이미 존재하는 이메일입니다", HttpStatus.BAD_REQUEST),
+    NONE_EXIST("존재하지않는 회원입니다",HttpStatus.BAD_REQUEST);
 
     private String message;
     private HttpStatus status;
@@ -17,6 +18,8 @@ public enum MemberExceptionType implements ExceptionType {
         this.message = message;
         this.status = status;
     }
+
+
 
 
     @Override

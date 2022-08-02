@@ -43,11 +43,11 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원추가_회원정보확인() {
-        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.NORMAL).build());
+        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.USER).build());
 
         assertThat(member.getName()).isEqualTo("김딴딴");
         assertThat(member.getEmail()).isEqualTo("test@test.com");
-        assertThat(member.getRole()).isEqualTo(Role.NORMAL);
+        assertThat(member.getRole()).isEqualTo(Role.USER);
         assertThat(member.getPassword()).isEqualTo("1234");
 
 
@@ -55,7 +55,7 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원삭제_회원목록없음() {
-        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.NORMAL).build());
+        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.USER).build());
 
         Member savedMember = memberRepository.save(member);
 
@@ -68,12 +68,15 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원수정_이전회원정보변경() {
-        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.NORMAL).build());
+
+
+        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.USER).build());
 
         Member savedMember = memberRepository.save(member);
         savedMember.modifyEmail("test1@test.com");
 
         assertThat(member.getEmail()).isEqualTo("test1@test.com");
+
 
     }
 

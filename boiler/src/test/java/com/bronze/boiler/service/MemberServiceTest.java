@@ -84,56 +84,17 @@ public class MemberServiceTest {
     @Test
     void 회원추가_비밀번호암호화없으면_예외발생() throws NoSuchAlgorithmException {
 
-        ReqMemberDto reqMemberDto = ReqMemberDto.builder().password("1234").build();
+        ReqMemberDto reqMemberDto = ReqMemberDto.builder().password("awfawewaf").build();
 
         doReturn(Member.builder().build())
                 .when(memberRepository).save(any());
 
         memberService.createMember(reqMemberDto);
         verify(memberRepository).save(captor.capture());
+        System.out.println("cc : "+captor.getValue().getPassword());
         assertThat(captor.getValue().getPassword()).isNotEqualTo(reqMemberDto.getPassword());
 
 
-    }
-
-    @Test
-    void 회원추가_이름빈값입력_예외발생(){
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
-                .email("email@email")
-                .password("1234")
-                .role(Role.NORMAL)
-                .build());
-        assertThat(constraintViolations.size()).isEqualTo(1);
-
-    }
-
-    @Test
-    void 회원추가_이메일빈값입력_예외발생(){
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
-                .name("name")
-                .password("1234")
-                .role(Role.NORMAL)
-                .build());
-        assertThat(constraintViolations.size()).isEqualTo(1);
-    }
-
-    @Test
-    void 회원추가_패스워드빈값입력_예외발생(){
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ReqMemberDto>> constraintViolations = validator.validate(ReqMemberDto.builder()
-                .name("aewawf")
-                .email("email@email")
-                .role(Role.NORMAL)
-                .build());
-        assertThat(constraintViolations.size()).isEqualTo(1);
     }
 
 

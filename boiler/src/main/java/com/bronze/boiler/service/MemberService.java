@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.security.NoSuchAlgorithmException;
 
 
@@ -29,6 +32,9 @@ public class MemberService {
      * @throws NoSuchAlgorithmException 비밀번호암호화 알고리즘 검색실패
      */
     public ResMemberDto createMember(@Valid ReqMemberDto reqMemberDto) throws NoSuchAlgorithmException {
+
+
+
 
         memberRepository.findByName(reqMemberDto.getName())
                 .ifPresent(member -> {

@@ -106,4 +106,17 @@ public class MemberService {
         return MemberConverter.toMemberDto(member);
 
     }
+
+    /**
+     * 마지막로그인시간갱신
+     * @param memberId 회원아이디
+     * @return 갱신처리된회원정보
+     */
+    public ResMemberDto modifyLastlogin(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+        member.renewLastLogin();
+        return MemberConverter.toMemberDto(member);
+
+    }
 }

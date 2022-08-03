@@ -59,10 +59,6 @@ public class Member {
         this.email = email;
     }
 
-    public void modifyLastLogin(LocalDateTime lastLogin){
-        this.lastLogin = lastLogin;
-    }
-
     public void remove() {
         this.status = Status.REMOVE;
     }
@@ -79,5 +75,9 @@ public class Member {
 
     public void sleep() {
         this.status = Status.SLEEP;
+    }
+
+    public void renewLastLogin() {
+        this.lastLogin = LocalDateTime.now();
     }
 }

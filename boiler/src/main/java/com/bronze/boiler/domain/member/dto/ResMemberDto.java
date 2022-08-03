@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -28,5 +29,7 @@ public class ResMemberDto {
     private Status status;
 
     private LocalDate periodOfBlock;
+
+    private LocalDateTime lastLogin;
 
 }

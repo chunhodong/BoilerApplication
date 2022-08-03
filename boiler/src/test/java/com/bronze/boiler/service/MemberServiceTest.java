@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -217,7 +219,7 @@ public class MemberServiceTest {
         assertThat(resMemberDto.getStatus()).isEqualTo(Status.SLEEP);
 
     }
-/*
+
 
     @Test
     void 회원마지막로그인갱신_마지막로그인시간확인()  {
@@ -231,10 +233,11 @@ public class MemberServiceTest {
                 .when(memberRepository).findById(any());
 
         ResMemberDto resMemberDto = memberService.modifyLastlogin(12L);
-        assertThat(resMemberDto.getLastLogin()).isEqualTo();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        assertThat(resMemberDto.getLastLogin().format(dtf)).isEqualTo(LocalDateTime.now().format(dtf));
 
     }
-*/
+
 
 
 

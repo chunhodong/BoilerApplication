@@ -202,6 +202,44 @@ public class MemberServiceTest {
 
     }
 
+    @Test
+    void 회원휴면_휴면상태확인()  {
+
+        doReturn(Optional.ofNullable(Member.builder()
+                .name("테스트유저")
+                .email("email@email")
+                .role(Role.USER)
+                .status(Status.NORMAL)
+                .build()))
+                .when(memberRepository).findById(any());
+
+        ResMemberDto resMemberDto = memberService.sleepMember(12L);
+        assertThat(resMemberDto.getStatus()).isEqualTo(Status.SLEEP);
+
+    }
+/*
+
+    @Test
+    void 회원마지막로그인갱신_마지막로그인시간확인()  {
+
+        doReturn(Optional.ofNullable(Member.builder()
+                .name("테스트유저")
+                .email("email@email")
+                .role(Role.USER)
+                .status(Status.NORMAL)
+                .build()))
+                .when(memberRepository).findById(any());
+
+        ResMemberDto resMemberDto = memberService.modifyLastlogin(12L);
+        assertThat(resMemberDto.getLastLogin()).isEqualTo();
+
+    }
+*/
+
+
+
+
+
 
 
 

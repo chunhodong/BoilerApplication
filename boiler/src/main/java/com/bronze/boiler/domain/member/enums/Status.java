@@ -5,5 +5,5 @@ package com.bronze.boiler.domain.member.enums;
  */
 public enum Status {
 
-    NORMAL,REMOVE,BLOCK,UNREGISTER
+    NORMAL,REMOVE,BLOCK,UNREGISTER,SLEEP
 }

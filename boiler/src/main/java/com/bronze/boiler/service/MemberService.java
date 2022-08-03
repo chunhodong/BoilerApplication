@@ -5,7 +5,6 @@ import com.bronze.boiler.domain.member.dto.ReqMemberDto;
 import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.enums.Status;
 import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.security.NoSuchAlgorithmException;
 
 
@@ -77,6 +73,21 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
 
         member.unregister();
+
+        return MemberConverter.toMemberDto(member);
+
+    }
+
+    /**
+     * 회원휴면처리
+     * @param memberId 회원아이디
+     * @return 탈퇴처리된회원정보
+     */
+    public ResMemberDto sleepMember(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+
+        member.sleep();
 
         return MemberConverter.toMemberDto(member);
 

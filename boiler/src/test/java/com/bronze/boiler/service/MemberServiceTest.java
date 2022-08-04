@@ -6,7 +6,6 @@ import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.member.enums.Role;
 import com.bronze.boiler.domain.member.enums.Status;
-import com.bronze.boiler.domain.member.exception.ExceptionType;
 import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -89,7 +88,6 @@ public class MemberServiceTest {
 
         memberService.createMember(reqMemberDto);
         verify(memberRepository).save(captor.capture());
-        System.out.println("cc : "+captor.getValue().getPassword());
         assertThat(captor.getValue().getPassword()).isNotEqualTo(reqMemberDto.getPassword());
 
 

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 회원엔티티
+ * 회원
  */
 @Builder
 @Getter

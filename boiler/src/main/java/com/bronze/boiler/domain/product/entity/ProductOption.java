@@ -25,6 +25,8 @@ public class ProductOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     @Column
     @NotNull(message = "옵션타입을 입력하세요")
     @Enumerated(EnumType.STRING)
@@ -33,5 +35,11 @@ public class ProductOption {
     @Column
     @NotNull(message = "옵션값을 입력하세요")
     private Long value;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    @NotNull(message = "상품을 추가해야합니다")
+    private Product product;
+
 
 }

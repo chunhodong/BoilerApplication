@@ -1,6 +1,7 @@
 package com.bronze.boiler.domain.product.entity;
 
 
+import com.bronze.boiler.domain.category.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 상품엔티티
+ * 상품
  */
 @Builder
 @Getter
@@ -50,6 +51,10 @@ public class Product {
     @Column
     @NotBlank(message = "상품설명을 입력해야합니다")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column
     @NotBlank(message = "상품사이즈정보를 입력해야합니다")

@@ -5,12 +5,15 @@ import com.bronze.boiler.domain.member.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
+@Profile("test")
 @Transactional
 public class MemberRepositoryTest {
 

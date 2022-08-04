@@ -5,7 +5,7 @@ import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.domain.member.enums.Status;
+import com.bronze.boiler.domain.member.enums.MemberStatus;
 import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -139,12 +139,12 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .role(Role.USER)
-                .status(Status.NORMAL)
+                .status(MemberStatus.NORMAL)
                 .build()))
                 .when(memberRepository).findById(any());
 
         ResMemberDto resMemberDto = memberService.removeMember(12L);
-        assertThat(resMemberDto.getStatus()).isEqualTo(Status.REMOVE);
+        assertThat(resMemberDto.getMemberStatus()).isEqualTo(MemberStatus.REMOVE);
     }
 
     @Test
@@ -164,12 +164,12 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .role(Role.USER)
-                .status(Status.NORMAL)
+                .status(MemberStatus.NORMAL)
                 .build()))
                 .when(memberRepository).findById(any());
 
         ResMemberDto resMemberDto = memberService.unregisterMember(12L);
-        assertThat(resMemberDto.getStatus()).isEqualTo(Status.UNREGISTER);
+        assertThat(resMemberDto.getMemberStatus()).isEqualTo(MemberStatus.UNREGISTER);
     }
 
 
@@ -193,7 +193,7 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .role(Role.USER)
-                .status(Status.NORMAL)
+                .status(MemberStatus.NORMAL)
                 .build()))
                 .when(memberRepository).findById(any());
 
@@ -209,12 +209,12 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .role(Role.USER)
-                .status(Status.NORMAL)
+                .status(MemberStatus.NORMAL)
                 .build()))
                 .when(memberRepository).findById(any());
 
         ResMemberDto resMemberDto = memberService.sleepMember(12L);
-        assertThat(resMemberDto.getStatus()).isEqualTo(Status.SLEEP);
+        assertThat(resMemberDto.getMemberStatus()).isEqualTo(MemberStatus.SLEEP);
 
     }
 
@@ -226,7 +226,7 @@ public class MemberServiceTest {
                 .name("테스트유저")
                 .email("email@email")
                 .role(Role.USER)
-                .status(Status.NORMAL)
+                .status(MemberStatus.NORMAL)
                 .build()))
                 .when(memberRepository).findById(any());
 

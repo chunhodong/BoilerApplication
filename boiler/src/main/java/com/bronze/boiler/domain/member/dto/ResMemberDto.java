@@ -1,12 +1,11 @@
 package com.bronze.boiler.domain.member.dto;
 
 import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.domain.member.enums.Status;
+import com.bronze.boiler.domain.member.enums.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -26,7 +25,7 @@ public class ResMemberDto {
 
     private Role role;
 
-    private Status status;
+    private MemberStatus memberStatus;
 
     private LocalDate periodOfBlock;
 

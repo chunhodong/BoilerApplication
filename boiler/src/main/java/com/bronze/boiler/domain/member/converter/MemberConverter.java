@@ -24,7 +24,7 @@ public class MemberConverter {
                 .name(member.getName())
                 .email(member.getEmail())
                 .role(member.getRole())
-                .status(member.getStatus())
+                .memberStatus(member.getStatus())
                 .periodOfBlock(member.getPeriodOfBlock())
                 .lastLogin(member.getLastLogin())
                 .build();

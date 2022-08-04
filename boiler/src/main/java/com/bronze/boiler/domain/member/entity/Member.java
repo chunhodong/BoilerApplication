@@ -1,7 +1,7 @@
 package com.bronze.boiler.domain.member.entity;
 
 import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.domain.member.enums.Status;
+import com.bronze.boiler.domain.member.enums.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,7 +44,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private Status status;
+    private MemberStatus status;
 
 
     @Column(name = "period_of_block")
@@ -60,21 +60,21 @@ public class Member {
     }
 
     public void remove() {
-        this.status = Status.REMOVE;
+        this.status = MemberStatus.REMOVE;
     }
 
     public void unregister() {
-        this.status = Status.UNREGISTER;
+        this.status = MemberStatus.UNREGISTER;
     }
 
     public void block() {
-        this.status = Status.BLOCK;
+        this.status = MemberStatus.BLOCK;
         this.periodOfBlock = LocalDate.now().plusDays(7L);
 
     }
 
     public void sleep() {
-        this.status = Status.SLEEP;
+        this.status = MemberStatus.SLEEP;
     }
 
     public void renewLastLogin() {

@@ -24,7 +24,7 @@ public class CategoryTest {
     void 카테고리조회_카테고리정보확인() {
         Category parentCategory = categoryRepository.save(Category.builder().name("카테고리1").build());
         Category category = categoryRepository.save(Category.builder().name("카테고리2").parent(parentCategory).build());
-        assertThat(category.getParent().getName()).isEqualTo(parentCategory.getName());
+        assertThat(category.getParent()).isEqualTo(parentCategory);
     }
 
 

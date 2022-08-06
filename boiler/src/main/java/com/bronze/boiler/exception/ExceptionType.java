@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.member.exception;
+package com.bronze.boiler.exception;
 
 import org.springframework.http.HttpStatus;
 

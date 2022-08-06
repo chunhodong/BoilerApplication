@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.member.exception;
+package com.bronze.boiler.exception;
 
 /**
  * 예외인터페이스

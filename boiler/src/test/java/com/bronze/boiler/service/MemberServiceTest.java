@@ -6,7 +6,7 @@ import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.member.enums.Role;
 import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.exception.MemberException;
+import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -128,7 +128,7 @@ public class MemberServiceTest {
                 .when(memberRepository).findById(any());
 
         MemberException memberException = assertThrows(MemberException.class,() -> memberService.removeMember(12L));
-        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST_MEMBER);
     }
 
 
@@ -154,7 +154,7 @@ public class MemberServiceTest {
                 .when(memberRepository).findById(any());
 
         MemberException memberException = assertThrows(MemberException.class,() -> memberService.unregisterMember(12L));
-        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST_MEMBER);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class MemberServiceTest {
                 .when(memberRepository).findById(any());
 
         MemberException memberException = assertThrows(MemberException.class,() -> memberService.blockMember(12L));
-        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST);
+        assertThat(memberException.getType()).isEqualTo(MemberExceptionType.NONE_EXIST_MEMBER);
     }
 
 

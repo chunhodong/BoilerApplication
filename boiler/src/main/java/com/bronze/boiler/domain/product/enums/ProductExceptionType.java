@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.member.enums;
+package com.bronze.boiler.domain.product.enums;
 
 import com.bronze.boiler.exception.ExceptionType;
 import org.springframework.http.HttpStatus;
@@ -6,15 +6,13 @@ import org.springframework.http.HttpStatus;
 /**
  * 회원예외타입상수
  */
-public enum MemberExceptionType implements ExceptionType {
-    DUPLICATE_NAME("이미 존재하는 이름입니다", HttpStatus.BAD_REQUEST),
-    DUPLICATE_EMAIL("이미 존재하는 이메일입니다", HttpStatus.BAD_REQUEST),
-    NONE_EXIST_MEMBER("존재하지않는 회원입니다",HttpStatus.BAD_REQUEST);
+public enum ProductExceptionType implements ExceptionType {
+    NONE_EXIST_PRODUCT("존재하지않는 상품입니다",HttpStatus.BAD_REQUEST);
 
     private String message;
     private HttpStatus status;
 
-    MemberExceptionType(String message, HttpStatus status) {
+    ProductExceptionType(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
     }

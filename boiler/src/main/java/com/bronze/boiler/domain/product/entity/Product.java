@@ -75,5 +75,7 @@ public class Product {
     private String refundInfo;
 
 
-
+    public void close() {
+        this.status = ProductStatus.CLOSE;
+    }
 }

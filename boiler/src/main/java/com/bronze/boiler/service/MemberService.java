@@ -5,7 +5,7 @@ import com.bronze.boiler.domain.member.dto.ReqMemberDto;
 import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.exception.MemberException;
+import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class MemberService {
     public ResMemberDto removeMember(long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                        .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+                        .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
 
         member.remove();
 
@@ -70,7 +70,7 @@ public class MemberService {
      */
     public ResMemberDto unregisterMember(long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
 
         member.unregister();
 
@@ -85,7 +85,7 @@ public class MemberService {
      */
     public ResMemberDto sleepMember(long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
 
         member.sleep();
 
@@ -101,7 +101,7 @@ public class MemberService {
      */
     public ResMemberDto blockMember(long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         member.block();
         return MemberConverter.toMemberDto(member);
 
@@ -114,7 +114,7 @@ public class MemberService {
      */
     public ResMemberDto modifyLastlogin(long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST));
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         member.renewLastLogin();
         return MemberConverter.toMemberDto(member);
 

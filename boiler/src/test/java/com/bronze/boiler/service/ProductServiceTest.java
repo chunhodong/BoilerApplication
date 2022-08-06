@@ -1,30 +1,19 @@
 package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.domain.member.exception.MemberException;
 import com.bronze.boiler.domain.product.dto.ProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
+import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import com.bronze.boiler.repository.MemberRepository;
+import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -118,6 +107,22 @@ public class ProductServiceTest {
     }
 
 
+    @Test
+    void 상품종료_없는상품인경우_예외발생(){
+        doReturn(Optional.empty()).when(productRepository).findById(any());
+        ProductException productException = assertThrows(ProductException.class,() -> productService.closeProduct(12L));
+        assertThat(productException.getType()).isEqualTo(ProductExceptionType.NONE_EXIST_PRODUCT);
+
+    }
+
+    @Test
+    void 상품종료_종료상품확인(){
+        doReturn(Optional.ofNullable(Product.builder()
+                        .status(ProductStatus.SELL)
+                .build())).when(productRepository).findById(any());
+        ProductDto productDto = productService.closeProduct(1L);
+        assertThat(productDto.getStatus()).isEqualTo(ProductStatus.CLOSE);
+    }
 
 
 

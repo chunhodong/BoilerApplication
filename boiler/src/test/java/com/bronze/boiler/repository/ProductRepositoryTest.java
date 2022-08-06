@@ -29,7 +29,7 @@ public class ProductRepositoryTest {
                         .sellerInfo("판매자정보")
                         .sizeInfo("사이즈정보")
                         .sellPrice(100000L)
-                        .point(1000L)
+                        .savePoint(1000L)
                         .sizeInfo("사이즈정보").build());
         Product product = productRepository.findById(1L).get();
         assertThat(product.getCategory().getName()).isEqualTo("카테고리1");

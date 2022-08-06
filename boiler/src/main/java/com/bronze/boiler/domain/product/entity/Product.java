@@ -43,7 +43,7 @@ public class Product {
     private Long sellPrice;
 
     @Column
-    private Long point;
+    private Long savePoint;
 
     @Column
     @NotBlank(message = "코드를 입력해야합니다")

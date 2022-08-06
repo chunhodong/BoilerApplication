@@ -45,10 +45,13 @@ public class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
 
+    private final ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+
     @Test
     void 상품등록_상품확인(){
         Category category = Category.builder().name("카테고리1").build();
         doReturn(Product.builder()
+                .id(1L)
                 .name("상품1")
                 .code("001XD3")
                 .sellerInfo("판매자정보")
@@ -63,15 +66,57 @@ public class ProductServiceTest {
                 .build()).when(productRepository).save(any());
         ProductDto productDto = productService.createProduct(ProductDto.builder()
                 .build());
+
+        assertThat(productDto.getId()).isEqualTo(1L);
         assertThat(productDto.getName()).isEqualTo("상품1");
         assertThat(productDto.getCode()).isEqualTo("001XD3");
         assertThat(productDto.getDescription()).isEqualTo("상품설명");
         assertThat(productDto.getCategory()).isEqualTo(category);
 
+    }
 
+
+    @Test
+    void 상품등록_DTO를엔티티로변환후_입력값확인(){
+        Category category = Category.builder().name("카테고리1").build();
+        doReturn(Product.builder()
+                .id(1L)
+                .name("상품1")
+                .code("001XD3")
+                .sellerInfo("판매자정보")
+                .refundInfo("환불정보")
+                .description("상품설명")
+                .savePoint(1200L)
+                .sellPrice(13000L)
+                .originPrice(15000L)
+                .category(category)
+                .status(ProductStatus.NEW)
+                .sizeInfo("사이즈정보")
+                .build()).when(productRepository).save(any());
+
+         productService.createProduct(ProductDto.builder()
+                 .name("상품1")
+                 .code("001XD3")
+                 .sellerInfo("판매자정보")
+                 .refundInfo("환불정보")
+                 .description("상품설명")
+                 .savePoint(1200L)
+                 .sellPrice(13000L)
+                 .originPrice(15000L)
+                 .category(category)
+                 .status(ProductStatus.NEW)
+                 .sizeInfo("사이즈정보")
+                 .build());
+
+        verify(productRepository).save(captor.capture());
+        assertThat(captor.getValue().getCategory()).isEqualTo(category);
+        assertThat(captor.getValue().getName()).isEqualTo("상품1");
+        assertThat(captor.getValue().getCode()).isEqualTo("001XD3");
+        assertThat(captor.getValue().getStatus()).isEqualTo(ProductStatus.NEW);
 
 
     }
+
 
 
 

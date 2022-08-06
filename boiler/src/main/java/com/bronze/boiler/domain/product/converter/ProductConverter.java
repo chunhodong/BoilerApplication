@@ -9,6 +9,7 @@ public class ProductConverter {
 
     public static ProductDto toProductDto(Product product) {
         return ProductDto.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
                 .category(product.getCategory())
@@ -24,9 +25,18 @@ public class ProductConverter {
     }
 
     public static Product toProduct(ProductDto productDto) {
-
-
         return Product.builder()
+                .name(productDto.getName())
+                .code(productDto.getCode())
+                .category(productDto.getCategory())
+                .description(productDto.getDescription())
+                .originPrice(productDto.getOriginPrice())
+                .sellPrice(productDto.getSellPrice())
+                .sellerInfo(productDto.getSellerInfo())
+                .refundInfo(productDto.getRefundInfo())
+                .savePoint(productDto.getSavePoint())
+                .sizeInfo(productDto.getSizeInfo())
+                .status(productDto.getStatus())
                 .build();
 
     }

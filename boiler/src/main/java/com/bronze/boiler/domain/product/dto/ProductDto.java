@@ -50,6 +50,8 @@ public class ProductDto {
 
     private List<String> imaegUrls;
 
+    private List<ProductOptionDto> options;
+
 
 
 

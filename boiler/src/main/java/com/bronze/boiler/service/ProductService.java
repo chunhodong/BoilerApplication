@@ -3,11 +3,14 @@ package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.product.converter.ProductConverter;
 import com.bronze.boiler.domain.product.dto.ProductDto;
+import com.bronze.boiler.domain.product.dto.ProductOptionDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
+import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.repository.ProductImageRepository;
+import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,8 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-
     private final ProductImageRepository productImageRepository;
-
+    private final ProductOptionRepository productOptionRepository;
     /**
      * 상품dto DB에 저장
      * @param productDto 상품dto
@@ -49,6 +51,7 @@ public class ProductService {
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
 
         List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
-        return ProductConverter.toProductDto(product,productImages);
+        List<ProductOption> productOptions = productOptionRepository.findAllByProduct(product);
+        return ProductConverter.toProductDto(product,productImages,productOptions);
     }
 }

@@ -1,6 +1,7 @@
-package com.bronze.boiler.domain.product.entity;
+package com.bronze.boiler.domain.product.dto;
 
 
+import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.OptionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductOption {
+public class ProductOptionDto {
 
     @Id
     @Column
@@ -34,10 +35,6 @@ public class ProductOption {
     @NotNull(message = "옵션값을 입력하세요")
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    @NotNull(message = "상품을 추가해야합니다")
-    private Product product;
 
 
 }

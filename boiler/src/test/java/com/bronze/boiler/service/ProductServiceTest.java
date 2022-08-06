@@ -3,9 +3,14 @@ package com.bronze.boiler.service;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.dto.ProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
+import com.bronze.boiler.domain.product.entity.ProductImage;
+import com.bronze.boiler.domain.product.entity.ProductOption;
+import com.bronze.boiler.domain.product.enums.OptionType;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.exception.ProductException;
+import com.bronze.boiler.repository.ProductImageRepository;
+import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +22,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -28,17 +34,22 @@ import static org.mockito.Mockito.verify;
 public class ProductServiceTest {
 
 
-
     @InjectMocks
     private ProductService productService;
 
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private ProductImageRepository productImageRepository;
+
+    @Mock
+    private ProductOptionRepository productOptionRepository;
+
     private final ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
 
     @Test
-    void 상품등록_상품확인(){
+    void 상품등록_상품확인() {
         Category category = Category.builder().name("카테고리1").build();
         doReturn(Product.builder()
                 .id(1L)
@@ -67,7 +78,7 @@ public class ProductServiceTest {
 
 
     @Test
-    void 상품등록_DTO를엔티티로변환후_입력값확인(){
+    void 상품등록_DTO를엔티티로변환후_입력값확인() {
         Category category = Category.builder().name("카테고리1").build();
         doReturn(Product.builder()
                 .id(1L)
@@ -84,19 +95,19 @@ public class ProductServiceTest {
                 .sizeInfo("사이즈정보")
                 .build()).when(productRepository).save(any());
 
-         productService.createProduct(ProductDto.builder()
-                 .name("상품1")
-                 .code("001XD3")
-                 .sellerInfo("판매자정보")
-                 .refundInfo("환불정보")
-                 .description("상품설명")
-                 .savePoint(1200L)
-                 .sellPrice(13000L)
-                 .originPrice(15000L)
-                 .category(category)
-                 .status(ProductStatus.NEW)
-                 .sizeInfo("사이즈정보")
-                 .build());
+        productService.createProduct(ProductDto.builder()
+                .name("상품1")
+                .code("001XD3")
+                .sellerInfo("판매자정보")
+                .refundInfo("환불정보")
+                .description("상품설명")
+                .savePoint(1200L)
+                .sellPrice(13000L)
+                .originPrice(15000L)
+                .category(category)
+                .status(ProductStatus.NEW)
+                .sizeInfo("사이즈정보")
+                .build());
 
         verify(productRepository).save(captor.capture());
         assertThat(captor.getValue().getCategory()).isEqualTo(category);
@@ -109,27 +120,26 @@ public class ProductServiceTest {
 
 
     @Test
-    void 상품종료_없는상품인경우_예외발생(){
+    void 상품종료_없는상품인경우_예외발생() {
         doReturn(Optional.empty()).when(productRepository).findById(any());
-        ProductException productException = assertThrows(ProductException.class,() -> productService.closeProduct(12L));
+        ProductException productException = assertThrows(ProductException.class, () -> productService.closeProduct(12L));
         assertThat(productException.getType()).isEqualTo(ProductExceptionType.NONE_EXIST_PRODUCT);
 
     }
 
     @Test
-    void 상품종료_종료상품확인(){
+    void 상품종료_종료상품확인() {
         doReturn(Optional.ofNullable(Product.builder()
-                        .status(ProductStatus.SELL)
+                .status(ProductStatus.SELL)
                 .build())).when(productRepository).findById(any());
         ProductDto productDto = productService.closeProduct(1L);
         assertThat(productDto.getStatus()).isEqualTo(ProductStatus.CLOSE);
     }
 
     @Test
-    void 상품조회_상품확인(){
+    void 상품조회_상품확인() {
         Category category = Category.builder().name("카테고리1").build();
 
-        List<String> imageList = List.of("이미지URL1","이미지URL2");
         doReturn(Optional.ofNullable(Product.builder()
                 .id(1L)
                 .name("상품1")
@@ -145,8 +155,33 @@ public class ProductServiceTest {
                 .sizeInfo("사이즈정보")
                 .build())).when(productRepository).findById(any());
 
+        doReturn(List.of(
+                ProductImage.builder()
+                        .domain("도메인1")
+                        .path("/도메인경로1")
+                        .build(),
+                ProductImage.builder()
+                        .domain("도메인2")
+                        .path("/도메인경로2")
+                        .build()))
+                .when(productImageRepository).findAllByProduct(any());
+
+
+        doReturn(List.of(
+                ProductOption.builder()
+                        .id(1L)
+                        .type(OptionType.SIZE)
+                        .value("260")
+                        .build(),
+                ProductOption.builder()
+                        .type(OptionType.COLOR)
+                        .value("blue")
+                        .build()))
+                .when(productOptionRepository).findAllByProduct(any());
+
 
         ProductDto productDto = productService.getMember(1L);
+
         assertThat(productDto.getId()).isEqualTo(1L);
         assertThat(productDto.getName()).isEqualTo("상품1");
         assertThat(productDto.getCode()).isEqualTo("001XD3");
@@ -154,14 +189,10 @@ public class ProductServiceTest {
         assertThat(productDto.getCategory()).isEqualTo(category);
         assertThat(productDto.getSellerInfo()).isEqualTo("판매자정보");
         assertThat(productDto.getImaegUrls())
-                .isEqualTo(imageList);
-
-
+                .isEqualTo(List.of("도메인1/도메인경로1", "도메인2/도메인경로2"));
+        assertThat(productDto.getOptions()).extracting("type","value")
+                .contains(tuple(OptionType.COLOR,"blue"),tuple(OptionType.SIZE,"260"));
     }
-
-
-
-
 
 
 }

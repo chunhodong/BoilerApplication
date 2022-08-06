@@ -17,19 +17,32 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     /**
-     * 상품DTO DB에 저장
-     * @param productDto 상품DTO
-     * @return 저장된상품DTO
+     * 상품dto DB에 저장
+     * @param productDto 상품dto
+     * @return 저장된상품dto
      */
     public ProductDto createProduct(ProductDto productDto) {
         Product product = productRepository.save(ProductConverter.toProduct(productDto));
         return ProductConverter.toProductDto(product);
     }
 
+    /**
+     * 상품삭제
+     * @param productId 상품아이디
+     * @return 삭제상태상품dto
+     */
     public ProductDto closeProduct(long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
         product.close();
+        return ProductConverter.toProductDto(product);
+    }
+
+    public ProductDto getMember(long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
+
+
         return ProductConverter.toProductDto(product);
     }
 }

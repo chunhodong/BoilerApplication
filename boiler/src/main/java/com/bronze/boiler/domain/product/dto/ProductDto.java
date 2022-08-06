@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 상품
@@ -46,6 +47,10 @@ public class ProductDto {
     private String sellerInfo;
 
     private String refundInfo;
+
+    private List<String> imaegUrls;
+
+
 
 
 

@@ -12,6 +12,7 @@ import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +50,14 @@ public class ProductService {
     public ProductDto getMember(long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
-
         List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
         List<ProductOption> productOptions = productOptionRepository.findAllByProduct(product);
         return ProductConverter.toProductDto(product,productImages,productOptions);
+    }
+
+    public Response<ProductDto> getMembers() {
+
+
+        return null;
     }
 }

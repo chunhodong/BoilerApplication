@@ -12,6 +12,7 @@ import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.util.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -194,5 +195,14 @@ public class ProductServiceTest {
                 .contains(tuple(OptionType.COLOR,"blue"),tuple(OptionType.SIZE,"260"));
     }
 
+
+
+    @Test
+    void 상품목록조회_상품확인() {
+
+        Response<ProductDto> response = productService.getMembers();
+        assertThat(response.getTotal()).isEqualTo(10);
+        assertThat(response.getCurrentPage()).isEqualTo(1);
+    }
 
 }

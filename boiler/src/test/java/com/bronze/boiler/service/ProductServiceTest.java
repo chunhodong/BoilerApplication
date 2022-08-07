@@ -9,6 +9,7 @@ import com.bronze.boiler.domain.product.enums.OptionType;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.exception.ProductException;
+import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -200,7 +201,7 @@ public class ProductServiceTest {
     @Test
     void 상품목록조회_상품확인() {
 
-        Response<ProductDto> response = productService.getMembers();
+        Response<ProductDto> response = productService.getMembers(Page.builder().pageNum(1L).build());
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }

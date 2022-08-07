@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 public class Response<T> {
 
-    private int total;
-    private int currentPage;
+    private Long total;
+    private Long currentPage;
 
     private List<T> list;
 

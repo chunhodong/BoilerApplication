@@ -9,6 +9,7 @@ import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.exception.ProductException;
+import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +57,18 @@ public class ProductService {
         return ProductConverter.toProductDto(product,productImages,productOptions);
     }
 
-    public Response<ProductDto> getMembers() {
+    public Response<ProductDto> getMembers(Page page) {
 
+        Long count = productRepository.count();
+        List<Product> products = productRepository.findAllByPage(page);
 
-        return null;
+        return Response.<ProductDto>builder()
+                .total(count)
+                .currentPage(page.getPageNum())
+                .list(products
+                        .stream()
+                        .map(product -> ProductConverter.toProductDto(product))
+                        .collect(Collectors.toList())).build();
+
     }
 }

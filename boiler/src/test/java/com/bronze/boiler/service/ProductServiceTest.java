@@ -1,5 +1,6 @@
 package com.bronze.boiler.service;
 
+import com.bronze.boiler.domain.category.dto.CategoryDto;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.dto.ReqProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
@@ -106,7 +107,7 @@ public class ProductServiceTest {
                 .savePoint(1200L)
                 .sellPrice(13000L)
                 .originPrice(15000L)
-                .category(category)
+                .category(CategoryDto.builder().build())
                 .status(ProductStatus.NEW)
                 .sizeInfo("사이즈정보")
                 .build());

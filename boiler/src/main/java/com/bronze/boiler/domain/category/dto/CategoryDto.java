@@ -1,5 +1,6 @@
 package com.bronze.boiler.domain.category.dto;
 
+import com.bronze.boiler.domain.category.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,4 +23,6 @@ public class CategoryDto {
     private String name;
 
     private CategoryDto parent;
+
+
 }

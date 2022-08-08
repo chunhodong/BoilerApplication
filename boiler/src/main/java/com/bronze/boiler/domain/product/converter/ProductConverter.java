@@ -1,5 +1,6 @@
 package com.bronze.boiler.domain.product.converter;
 
+import com.bronze.boiler.domain.category.converter.CategoryConverter;
 import com.bronze.boiler.domain.product.dto.ReqProductDto;
 import com.bronze.boiler.domain.product.dto.ProductOptionDto;
 import com.bronze.boiler.domain.product.entity.Product;
@@ -19,7 +20,7 @@ public class ProductConverter {
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
-                .category(product.getCategory())
+                .category(CategoryConverter.toCategoryDto(product.getCategory()))
                 .description(product.getDescription())
                 .originPrice(product.getOriginPrice())
                 .sellPrice(product.getSellPrice())
@@ -52,7 +53,7 @@ public class ProductConverter {
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
-                .category(product.getCategory())
+                .category(CategoryConverter.toCategoryDto(product.getCategory()))
                 .description(product.getDescription())
                 .originPrice(product.getOriginPrice())
                 .sellPrice(product.getSellPrice())
@@ -68,7 +69,7 @@ public class ProductConverter {
         return Product.builder()
                 .name(reqProductDto.getName())
                 .code(reqProductDto.getCode())
-                .category(reqProductDto.getCategory())
+                .category(CategoryConverter.toCategory(reqProductDto.getCategory()))
                 .description(reqProductDto.getDescription())
                 .originPrice(reqProductDto.getOriginPrice())
                 .sellPrice(reqProductDto.getSellPrice())

@@ -73,10 +73,6 @@ public class Product {
     private String refundInfo;
 
 
-    public void close() {
-        this.status = ProductStatus.CLOSE;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,5 +84,19 @@ public class Product {
     @Override
     public int hashCode() {
         return id.intValue();
+    }
+
+
+
+    public void close() {
+        this.status = ProductStatus.CLOSE;
+    }
+
+    public void modifyOriginprice(Long price) {
+        this.originPrice = price;
+    }
+
+    public void modifySellprice(Long price) {
+        this.sellPrice = price;
     }
 }

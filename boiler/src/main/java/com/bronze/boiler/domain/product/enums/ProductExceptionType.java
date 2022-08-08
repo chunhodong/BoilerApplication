@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
  * 회원예외타입상수
  */
 public enum ProductExceptionType implements ExceptionType {
-    NONE_EXIST_PRODUCT("존재하지않는 상품입니다",HttpStatus.BAD_REQUEST);
+    NONE_EXIST_PRODUCT("존재하지않는 상품입니다",HttpStatus.BAD_REQUEST),
+    ILLEGAL_NEGATIVE_PRICE("가격은 0이상입니다",HttpStatus.BAD_REQUEST);
+
 
     private String message;
     private HttpStatus status;

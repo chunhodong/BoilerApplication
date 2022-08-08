@@ -1,22 +1,21 @@
 package com.bronze.boiler.domain.product.converter;
 
-import com.bronze.boiler.domain.product.dto.ProductDto;
+import com.bronze.boiler.domain.product.dto.ReqProductDto;
 import com.bronze.boiler.domain.product.dto.ProductOptionDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
 import org.thymeleaf.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductConverter {
 
-    public static ProductDto toProductDto(Product product, List<ProductImage> productImages, List<ProductOption> productOptions) {
+    public static ReqProductDto toProductDto(Product product, List<ProductImage> productImages, List<ProductOption> productOptions) {
 
-        return ProductDto.builder()
+        return ReqProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
@@ -48,8 +47,8 @@ public class ProductConverter {
     }
 
 
-    public static ProductDto toProductDto(Product product) {
-        return ProductDto.builder()
+    public static ReqProductDto toProductDto(Product product) {
+        return ReqProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
@@ -65,19 +64,19 @@ public class ProductConverter {
                 .build();
     }
 
-    public static Product toProduct(ProductDto productDto) {
+    public static Product toProduct(ReqProductDto reqProductDto) {
         return Product.builder()
-                .name(productDto.getName())
-                .code(productDto.getCode())
-                .category(productDto.getCategory())
-                .description(productDto.getDescription())
-                .originPrice(productDto.getOriginPrice())
-                .sellPrice(productDto.getSellPrice())
-                .sellerInfo(productDto.getSellerInfo())
-                .refundInfo(productDto.getRefundInfo())
-                .savePoint(productDto.getSavePoint())
-                .sizeInfo(productDto.getSizeInfo())
-                .status(productDto.getStatus())
+                .name(reqProductDto.getName())
+                .code(reqProductDto.getCode())
+                .category(reqProductDto.getCategory())
+                .description(reqProductDto.getDescription())
+                .originPrice(reqProductDto.getOriginPrice())
+                .sellPrice(reqProductDto.getSellPrice())
+                .sellerInfo(reqProductDto.getSellerInfo())
+                .refundInfo(reqProductDto.getRefundInfo())
+                .savePoint(reqProductDto.getSavePoint())
+                .sizeInfo(reqProductDto.getSizeInfo())
+                .status(reqProductDto.getStatus())
                 .build();
 
     }

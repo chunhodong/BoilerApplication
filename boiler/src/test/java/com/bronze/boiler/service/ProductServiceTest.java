@@ -1,7 +1,7 @@
 package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.product.dto.ProductDto;
+import com.bronze.boiler.domain.product.dto.ReqProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
@@ -67,14 +67,14 @@ public class ProductServiceTest {
                 .status(ProductStatus.NEW)
                 .sizeInfo("사이즈정보")
                 .build()).when(productRepository).save(any());
-        ProductDto productDto = productService.createProduct(ProductDto.builder()
+        ReqProductDto reqProductDto = productService.createProduct(ReqProductDto.builder()
                 .build());
 
-        assertThat(productDto.getId()).isEqualTo(1L);
-        assertThat(productDto.getName()).isEqualTo("상품1");
-        assertThat(productDto.getCode()).isEqualTo("001XD3");
-        assertThat(productDto.getDescription()).isEqualTo("상품설명");
-        assertThat(productDto.getCategory()).isEqualTo(category);
+        assertThat(reqProductDto.getId()).isEqualTo(1L);
+        assertThat(reqProductDto.getName()).isEqualTo("상품1");
+        assertThat(reqProductDto.getCode()).isEqualTo("001XD3");
+        assertThat(reqProductDto.getDescription()).isEqualTo("상품설명");
+        assertThat(reqProductDto.getCategory()).isEqualTo(category);
 
     }
 
@@ -97,7 +97,7 @@ public class ProductServiceTest {
                 .sizeInfo("사이즈정보")
                 .build()).when(productRepository).save(any());
 
-        productService.createProduct(ProductDto.builder()
+        productService.createProduct(ReqProductDto.builder()
                 .name("상품1")
                 .code("001XD3")
                 .sellerInfo("판매자정보")
@@ -131,11 +131,12 @@ public class ProductServiceTest {
 
     @Test
     void 상품종료_종료상품확인() {
-        doReturn(Optional.ofNullable(Product.builder()
+        Product product = Product.builder()
                 .status(ProductStatus.SELL)
-                .build())).when(productRepository).findById(any());
-        ProductDto productDto = productService.closeProduct(1L);
-        assertThat(productDto.getStatus()).isEqualTo(ProductStatus.CLOSE);
+                .build();
+        doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
+        productService.closeProduct(1L);
+        assertThat(product.getStatus()).isEqualTo(ProductStatus.CLOSE);
     }
 
     @Test
@@ -182,17 +183,17 @@ public class ProductServiceTest {
                 .when(productOptionRepository).findAllByProduct(any());
 
 
-        ProductDto productDto = productService.getProduct(1L);
+        ReqProductDto reqProductDto = productService.getProduct(1L);
 
-        assertThat(productDto.getId()).isEqualTo(1L);
-        assertThat(productDto.getName()).isEqualTo("상품1");
-        assertThat(productDto.getCode()).isEqualTo("001XD3");
-        assertThat(productDto.getDescription()).isEqualTo("상품설명");
-        assertThat(productDto.getCategory()).isEqualTo(category);
-        assertThat(productDto.getSellerInfo()).isEqualTo("판매자정보");
-        assertThat(productDto.getImageUrls())
+        assertThat(reqProductDto.getId()).isEqualTo(1L);
+        assertThat(reqProductDto.getName()).isEqualTo("상품1");
+        assertThat(reqProductDto.getCode()).isEqualTo("001XD3");
+        assertThat(reqProductDto.getDescription()).isEqualTo("상품설명");
+        assertThat(reqProductDto.getCategory()).isEqualTo(category);
+        assertThat(reqProductDto.getSellerInfo()).isEqualTo("판매자정보");
+        assertThat(reqProductDto.getImageUrls())
                 .isEqualTo(List.of("도메인1/도메인경로1", "도메인2/도메인경로2"));
-        assertThat(productDto.getOptions()).extracting("type", "value")
+        assertThat(reqProductDto.getOptions()).extracting("type", "value")
                 .contains(tuple(OptionType.COLOR, "blue"), tuple(OptionType.SIZE, "260"));
     }
 
@@ -218,11 +219,43 @@ public class ProductServiceTest {
                 ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
                 .when(productImageRepository).findAllByProductIn(any());
 
-        Response<ProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
+        Response<ReqProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
         assertThat(response.getList()).extracting("name", "originPrice","imageUrls")
                 .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }
+
+    @Test
+    void 상품원가격수정_가격이음수면_예외발생(){
+        doReturn(Optional.ofNullable(Product.builder().originPrice(10000L).sellPrice(9000L).build())).when(productRepository).findById(any());
+        ProductException productException =  assertThrows(ProductException.class,() -> productService.modifyProductOriginprice(1L,-1L));
+        assertThat(productException.getType()).isEqualTo(ProductExceptionType.ILLEGAL_NEGATIVE_PRICE);
+    }
+
+    @Test
+    void 상품원가격수정_상품가격확인(){
+        Product product = Product.builder().originPrice(10000L).sellPrice(9000L).build();
+        doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
+        productService.modifyProductOriginprice(13L,4000L);
+        assertThat(product.getOriginPrice()).isEqualTo(4000L);
+    }
+
+    @Test
+    void 상품판매가격수정_가격이음수면_예외발생(){
+        doReturn(Optional.ofNullable(Product.builder().originPrice(10000L).sellPrice(9000L).build())).when(productRepository).findById(any());
+        ProductException productException =  assertThrows(ProductException.class,() -> productService.modifyProductSellprice(1L,-1L));
+        assertThat(productException.getType()).isEqualTo(ProductExceptionType.ILLEGAL_NEGATIVE_PRICE);
+
+    }
+
+    @Test
+    void 상품판매가격수정_상품가격확인(){
+        Product product = Product.builder().originPrice(10000L).sellPrice(9000L).build();
+        doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
+        productService.modifyProductOriginprice(13L,7000L);
+        assertThat(product.getOriginPrice()).isEqualTo(7000L);
+    }
+
 
 }

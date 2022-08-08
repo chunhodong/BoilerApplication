@@ -7,6 +7,8 @@ import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,12 @@ public class ProductConverter {
                 .sellerInfo(product.getSellerInfo())
                 .refundInfo(product.getRefundInfo())
                 .savePoint(product.getSavePoint())
-                .imaegUrls(productImages
+                .imageUrls(productImages == null ? Collections.EMPTY_LIST : productImages
                         .stream()
                         .filter(productImage -> !StringUtils.isEmpty(productImage.getDomain()))
                         .map(productImage -> productImage.getDomain().concat(productImage.getPath()))
                         .collect(Collectors.toList()))
-                .options(productOptions
+                .options(productOptions == null ? Collections.EMPTY_LIST : productOptions
                         .stream()
                         .map(productOption -> ProductOptionDto
                                 .builder()

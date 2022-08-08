@@ -49,7 +49,12 @@ public class ProductService {
         return ProductConverter.toProductDto(product);
     }
 
-    public ProductDto getMember(long productId) {
+    /**
+     * 상품데이터조회
+     * @param productId 상품아이디
+     * @return 상품상세데이터
+     */
+    public ProductDto getProduct(long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
         List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
@@ -57,17 +62,26 @@ public class ProductService {
         return ProductConverter.toProductDto(product,productImages,productOptions);
     }
 
-    public Response<ProductDto> getMembers(Page page) {
+    /**
+     * 상품목록조회
+     * @param page 상품페이지
+     * @return 상품목록데이터
+     */
+    public Response<ProductDto> getProducts(Page page) {
 
         Long count = productRepository.count();
         List<Product> products = productRepository.findAllByPage(page);
+        List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ProductDto>builder()
                 .total(count)
                 .currentPage(page.getPageNum())
                 .list(products
                         .stream()
-                        .map(product -> ProductConverter.toProductDto(product))
+                        .map(product -> ProductConverter.toProductDto(product, productImages
+                                        .stream()
+                                        .filter(productImage -> productImage.getProduct().equals(product))
+                                        .collect(Collectors.toList()),null))
                         .collect(Collectors.toList())).build();
 
     }

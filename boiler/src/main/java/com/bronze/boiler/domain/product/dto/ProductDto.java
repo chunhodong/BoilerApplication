@@ -48,7 +48,7 @@ public class ProductDto {
 
     private String refundInfo;
 
-    private List<String> imaegUrls;
+    private List<String> imageUrls;
 
     private List<ProductOptionDto> options;
 

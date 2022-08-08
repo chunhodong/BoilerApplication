@@ -182,7 +182,7 @@ public class ProductServiceTest {
                 .when(productOptionRepository).findAllByProduct(any());
 
 
-        ProductDto productDto = productService.getMember(1L);
+        ProductDto productDto = productService.getProduct(1L);
 
         assertThat(productDto.getId()).isEqualTo(1L);
         assertThat(productDto.getName()).isEqualTo("상품1");
@@ -190,18 +190,37 @@ public class ProductServiceTest {
         assertThat(productDto.getDescription()).isEqualTo("상품설명");
         assertThat(productDto.getCategory()).isEqualTo(category);
         assertThat(productDto.getSellerInfo()).isEqualTo("판매자정보");
-        assertThat(productDto.getImaegUrls())
+        assertThat(productDto.getImageUrls())
                 .isEqualTo(List.of("도메인1/도메인경로1", "도메인2/도메인경로2"));
-        assertThat(productDto.getOptions()).extracting("type","value")
-                .contains(tuple(OptionType.COLOR,"blue"),tuple(OptionType.SIZE,"260"));
+        assertThat(productDto.getOptions()).extracting("type", "value")
+                .contains(tuple(OptionType.COLOR, "blue"), tuple(OptionType.SIZE, "260"));
     }
-
 
 
     @Test
     void 상품목록조회_상품확인() {
+        doReturn(10L).when(productRepository).count();
+        doReturn(List.of(Product
+                        .builder()
+                        .id(1L)
+                        .name("상품1")
+                        .originPrice(1000L)
 
-        Response<ProductDto> response = productService.getMembers(Page.builder().pageNum(1L).build());
+                        .build(),
+                Product.builder()
+                        .id(2L)
+                        .name("상품2")
+                        .originPrice(2000L)
+                        .build()))
+                .when(productRepository).findAllByPage(any());
+
+        doReturn(List.of(ProductImage.builder().domain("domain1").path("/path1").product(Product.builder().id(1L).build()).build(),
+                ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
+                .when(productImageRepository).findAllByProductIn(any());
+
+        Response<ProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
+        assertThat(response.getList()).extracting("name", "originPrice","imageUrls")
+                .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }

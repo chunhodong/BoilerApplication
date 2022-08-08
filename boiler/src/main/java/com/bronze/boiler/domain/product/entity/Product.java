@@ -3,14 +3,12 @@ package com.bronze.boiler.domain.product.entity;
 
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * 상품
@@ -77,5 +75,18 @@ public class Product {
 
     public void close() {
         this.status = ProductStatus.CLOSE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id,product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.intValue();
     }
 }

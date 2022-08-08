@@ -14,4 +14,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImage,Long>
 
     @EntityGraph(attributePaths = {"product"})
     List<ProductImage> findAllByProduct(Product product);
+
+    @EntityGraph(attributePaths = {"product"})
+    List<ProductImage> findAllByProductIn(List<Product> products);
 }

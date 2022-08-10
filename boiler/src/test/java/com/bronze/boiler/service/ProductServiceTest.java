@@ -51,8 +51,10 @@ public class ProductServiceTest {
 
     private final ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
 
+
     @Test
     void 상품등록_상품확인() {
+
         Category category = Category.builder().name("카테고리1").build();
         doReturn(Product.builder()
                 .id(1L)
@@ -69,13 +71,25 @@ public class ProductServiceTest {
                 .sizeInfo("사이즈정보")
                 .build()).when(productRepository).save(any());
         ReqProductDto reqProductDto = productService.createProduct(ReqProductDto.builder()
+                .id(1L)
+                .name("상품1")
+                .code("001XD3")
+                .sellerInfo("판매자정보")
+                .refundInfo("환불정보")
+                .description("상품설명")
+                .savePoint(1200L)
+                .sellPrice(13000L)
+                .originPrice(15000L)
+                .category(CategoryDto.builder().name("카테고리1").build())
+                .status(ProductStatus.NEW)
+                .sizeInfo("사이즈정보")
                 .build());
 
         assertThat(reqProductDto.getId()).isEqualTo(1L);
         assertThat(reqProductDto.getName()).isEqualTo("상품1");
         assertThat(reqProductDto.getCode()).isEqualTo("001XD3");
         assertThat(reqProductDto.getDescription()).isEqualTo("상품설명");
-        assertThat(reqProductDto.getCategory()).isEqualTo(category);
+        assertThat(reqProductDto.getCategory().getName()).isEqualTo("카테고리1");
 
     }
 

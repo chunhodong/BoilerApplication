@@ -21,10 +21,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -96,7 +94,7 @@ public class ProductServiceTest {
 
     @Test
     void 상품등록_DTO를엔티티로변환후_입력값확인() {
-        Category category = Category.builder().name("카테고리1").build();
+        Category category = Category.builder().id(15L).name("카테고리1").build();
         doReturn(Product.builder()
                 .id(1L)
                 .name("상품1")
@@ -121,13 +119,13 @@ public class ProductServiceTest {
                 .savePoint(1200L)
                 .sellPrice(13000L)
                 .originPrice(15000L)
-                .category(CategoryDto.builder().build())
+                .category(CategoryDto.builder().id(15L).name("카테고리1").build())
                 .status(ProductStatus.NEW)
                 .sizeInfo("사이즈정보")
                 .build());
 
         verify(productRepository).save(captor.capture());
-        assertThat(captor.getValue().getCategory()).isEqualTo(category);
+        assertThat(captor.getValue().getCategory().getName()).isEqualTo(category.getName());
         assertThat(captor.getValue().getName()).isEqualTo("상품1");
         assertThat(captor.getValue().getCode()).isEqualTo("001XD3");
         assertThat(captor.getValue().getStatus()).isEqualTo(ProductStatus.NEW);
@@ -204,7 +202,7 @@ public class ProductServiceTest {
         assertThat(reqProductDto.getName()).isEqualTo("상품1");
         assertThat(reqProductDto.getCode()).isEqualTo("001XD3");
         assertThat(reqProductDto.getDescription()).isEqualTo("상품설명");
-        assertThat(reqProductDto.getCategory()).isEqualTo(category);
+        assertThat(reqProductDto.getCategory().getName()).isEqualTo(category.getName());
         assertThat(reqProductDto.getSellerInfo()).isEqualTo("판매자정보");
         assertThat(reqProductDto.getImageUrls())
                 .isEqualTo(List.of("도메인1/도메인경로1", "도메인2/도메인경로2"));
@@ -213,18 +211,21 @@ public class ProductServiceTest {
     }
 
 
+
     @Test
     void 상품목록조회_상품확인() {
         doReturn(10L).when(productRepository).count();
         doReturn(List.of(Product
                         .builder()
                         .id(1L)
+                        .category(Category.builder().id(1L).name("스니커즈").build())
                         .name("상품1")
                         .originPrice(1000L)
 
                         .build(),
                 Product.builder()
                         .id(2L)
+                        .category(Category.builder().id(2L).name("셔츠").build())
                         .name("상품2")
                         .originPrice(2000L)
                         .build()))
@@ -240,6 +241,7 @@ public class ProductServiceTest {
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }
+
 
     @Test
     void 상품원가격수정_가격이음수면_예외발생(){

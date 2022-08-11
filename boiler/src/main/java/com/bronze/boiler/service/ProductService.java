@@ -26,7 +26,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductOptionRepository productOptionRepository;
-    private final List<Integer> myList;
     /**
      * 상품dto DB에 저장
      * @param reqProductDto 상품dto
@@ -35,7 +34,6 @@ public class ProductService {
     public ReqProductDto createProduct(ReqProductDto reqProductDto) {
 
         Product product = productRepository.save(ProductConverter.toProduct(reqProductDto));
-        System.out.println("myListSize : "+myList.get(1));
         return ProductConverter.toProductDto(product);
     }
 

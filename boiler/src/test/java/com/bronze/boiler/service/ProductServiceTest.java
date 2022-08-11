@@ -3,6 +3,8 @@ package com.bronze.boiler.service;
 import com.bronze.boiler.domain.category.dto.CategoryDto;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.dto.ReqProductDto;
+import com.bronze.boiler.domain.product.dto.ResProductDetailDto;
+import com.bronze.boiler.domain.product.dto.ResProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
@@ -68,7 +70,7 @@ public class ProductServiceTest {
                 .status(ProductStatus.NEW)
                 .sizeInfo("사이즈정보")
                 .build()).when(productRepository).save(any());
-        ReqProductDto reqProductDto = productService.createProduct(ReqProductDto.builder()
+        ResProductDetailDto resProductDetailDto = productService.createProduct(ReqProductDto.builder()
                 .id(1L)
                 .name("상품1")
                 .code("001XD3")
@@ -83,11 +85,11 @@ public class ProductServiceTest {
                 .sizeInfo("사이즈정보")
                 .build());
 
-        assertThat(reqProductDto.getId()).isEqualTo(1L);
-        assertThat(reqProductDto.getName()).isEqualTo("상품1");
-        assertThat(reqProductDto.getCode()).isEqualTo("001XD3");
-        assertThat(reqProductDto.getDescription()).isEqualTo("상품설명");
-        assertThat(reqProductDto.getCategory().getName()).isEqualTo("카테고리1");
+        assertThat(resProductDetailDto.getId()).isEqualTo(1L);
+        assertThat(resProductDetailDto.getName()).isEqualTo("상품1");
+        assertThat(resProductDetailDto.getCode()).isEqualTo("001XD3");
+        assertThat(resProductDetailDto.getDescription()).isEqualTo("상품설명");
+        assertThat(resProductDetailDto.getCategory().getName()).isEqualTo("카테고리1");
 
     }
 
@@ -153,7 +155,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    void 상품조회_상품확인() {
+    void 상품상세조회_상품확인() {
         Category category = Category.builder().name("카테고리1").build();
 
         doReturn(Optional.ofNullable(Product.builder()
@@ -196,7 +198,7 @@ public class ProductServiceTest {
                 .when(productOptionRepository).findAllByProduct(any());
 
 
-        ReqProductDto reqProductDto = productService.getProduct(1L);
+        ResProductDetailDto reqProductDto = productService.getProduct(1L);
 
         assertThat(reqProductDto.getId()).isEqualTo(1L);
         assertThat(reqProductDto.getName()).isEqualTo("상품1");
@@ -213,7 +215,7 @@ public class ProductServiceTest {
 
 
     @Test
-    void 상품목록조회_상품확인() {
+    void 상품상세목록조회_상품확인() {
         doReturn(10L).when(productRepository).count();
         doReturn(List.of(Product
                         .builder()
@@ -221,7 +223,6 @@ public class ProductServiceTest {
                         .category(Category.builder().id(1L).name("스니커즈").build())
                         .name("상품1")
                         .originPrice(1000L)
-
                         .build(),
                 Product.builder()
                         .id(2L)
@@ -235,8 +236,39 @@ public class ProductServiceTest {
                 ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
                 .when(productImageRepository).findAllByProductIn(any());
 
-        Response<ReqProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
+        Response<ResProductDetailDto> response = productService.getDetailProducts(Page.builder().pageNum(1L).build());
         assertThat(response.getList()).extracting("name", "originPrice","imageUrls")
+                .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
+        assertThat(response.getTotal()).isEqualTo(10);
+        assertThat(response.getCurrentPage()).isEqualTo(1);
+    }
+
+    @Test
+    void 상품목록조회_상품확인() {
+        doReturn(10L).when(productRepository).count();
+        doReturn(List.of(Product
+                        .builder()
+                        .id(1L)
+                        .category(Category.builder().id(1L).name("스니커즈").build())
+                        .name("상품1")
+                        .originPrice(1000L)
+                        .build(),
+                Product.builder()
+                        .id(2L)
+                        .category(Category.builder().id(2L).name("셔츠").build())
+                        .name("상품2")
+                        .originPrice(2000L)
+                        .build()))
+                .when(productRepository).findAllByPage(any());
+
+
+        doReturn(List.of(ProductImage.builder().domain("domain1").path("/path1").product(Product.builder().id(1L).build()).build(),
+                ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
+                .when(productImageRepository).findAllByProductIn(any());
+
+
+        Response<ResProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
+        assertThat(response.getList()).extracting("name","originPrice","imageUrls")
                 .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);

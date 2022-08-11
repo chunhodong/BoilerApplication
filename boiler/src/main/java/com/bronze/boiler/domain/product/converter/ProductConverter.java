@@ -3,6 +3,8 @@ package com.bronze.boiler.domain.product.converter;
 import com.bronze.boiler.domain.category.converter.CategoryConverter;
 import com.bronze.boiler.domain.product.dto.ReqProductDto;
 import com.bronze.boiler.domain.product.dto.ProductOptionDto;
+import com.bronze.boiler.domain.product.dto.ResProductDetailDto;
+import com.bronze.boiler.domain.product.dto.ResProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
@@ -14,9 +16,26 @@ import java.util.stream.Collectors;
 
 public class ProductConverter {
 
-    public static ReqProductDto toProductDto(Product product, List<ProductImage> productImages, List<ProductOption> productOptions) {
 
-        return ReqProductDto.builder()
+    public static ResProductDto toProductDto(Product product, List<ProductImage> productImages) {
+
+        return ResProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .originPrice(product.getOriginPrice())
+                .sellPrice(product.getSellPrice())
+                .imageUrls(productImages == null ? Collections.EMPTY_LIST : productImages
+                        .stream()
+                        .filter(productImage -> !StringUtils.isEmpty(productImage.getDomain()))
+                        .map(productImage -> productImage.getDomain().concat(productImage.getPath()))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+
+    public static ResProductDetailDto toProductDto(Product product, List<ProductImage> productImages, List<ProductOption> productOptions) {
+
+        return ResProductDetailDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())
@@ -48,8 +67,8 @@ public class ProductConverter {
     }
 
 
-    public static ReqProductDto toProductDto(Product product) {
-        return ReqProductDto.builder()
+    public static ResProductDetailDto toProductDto(Product product) {
+        return ResProductDetailDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .code(product.getCode())

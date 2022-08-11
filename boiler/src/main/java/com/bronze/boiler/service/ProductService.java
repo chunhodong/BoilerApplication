@@ -3,6 +3,8 @@ package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.product.converter.ProductConverter;
 import com.bronze.boiler.domain.product.dto.ReqProductDto;
+import com.bronze.boiler.domain.product.dto.ResProductDetailDto;
+import com.bronze.boiler.domain.product.dto.ResProductDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
@@ -31,7 +33,7 @@ public class ProductService {
      * @param reqProductDto 상품dto
      * @return 저장된상품dto
      */
-    public ReqProductDto createProduct(ReqProductDto reqProductDto) {
+    public ResProductDetailDto createProduct(ReqProductDto reqProductDto) {
 
         Product product = productRepository.save(ProductConverter.toProduct(reqProductDto));
         return ProductConverter.toProductDto(product);
@@ -42,7 +44,7 @@ public class ProductService {
      * @param productId 상품아이디
      * @return 상품상세데이터
      */
-    public ReqProductDto getProduct(Long productId) {
+    public ResProductDetailDto getProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
         List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
@@ -55,13 +57,13 @@ public class ProductService {
      * @param page 상품페이지
      * @return 상품목록데이터
      */
-    public Response<ReqProductDto> getProducts(Page page) {
+    public Response<ResProductDetailDto> getDetailProducts(Page page) {
 
         Long count = productRepository.count();
         List<Product> products = productRepository.findAllByPage(page);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
-        return Response.<ReqProductDto>builder()
+        return Response.<ResProductDetailDto>builder()
                 .total(count)
                 .currentPage(page.getPageNum())
                 .list(products
@@ -109,6 +111,24 @@ public class ProductService {
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
         if(price <= 0)throw new ProductException(ProductExceptionType.ILLEGAL_NEGATIVE_PRICE);
         product.modifySellprice(price);
+
+    }
+
+    public Response<ResProductDto> getProducts(Page page) {
+        long count = productRepository.count();
+        List<Product> products = productRepository.findAllByPage(page);
+        List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
+
+        return Response.<ResProductDto>builder()
+                .total(count)
+                .currentPage(page.getPageNum())
+                .list(products
+                        .stream()
+                        .map(product -> ProductConverter.toProductDto(product, productImages
+                                .stream()
+                                .filter(productImage -> productImage.getProduct().equals(product))
+                                .collect(Collectors.toList())))
+                        .collect(Collectors.toList())).build();
 
     }
 

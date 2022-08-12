@@ -45,7 +45,11 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원추가_회원정보확인() {
-        Member member = memberRepository.save(Member.builder().name("김딴딴").email("test@test.com").password("1234").role(Role.USER).build());
+        Member member = memberRepository.save(Member.builder()
+                .name("김딴딴")
+                .email("test@test.com")
+                .password("1234")
+                .role(Role.USER).build());
 
         assertThat(member.getName()).isEqualTo("김딴딴");
         assertThat(member.getEmail()).isEqualTo("test@test.com");

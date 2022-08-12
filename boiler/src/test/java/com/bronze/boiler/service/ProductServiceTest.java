@@ -2,12 +2,13 @@ package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.category.dto.CategoryDto;
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.product.dto.ReqProductDto;
-import com.bronze.boiler.domain.product.dto.ResProductDetailDto;
-import com.bronze.boiler.domain.product.dto.ResProductDto;
+import com.bronze.boiler.domain.member.dto.ReqMemberDto;
+import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.domain.product.dto.*;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
+import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.OptionType;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
@@ -16,6 +17,7 @@ import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.repository.ProductReviewRepository;
 import com.bronze.boiler.util.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +50,9 @@ public class ProductServiceTest {
 
     @Mock
     private ProductOptionRepository productOptionRepository;
+
+    @Mock
+    private ProductReviewRepository productReviewRepository;
 
 
 
@@ -334,8 +339,26 @@ public class ProductServiceTest {
         assertThat(captor.getValue().getOriginPrice()).isEqualTo(13000L);
         assertThat(captor.getValue().getSellPrice()).isEqualTo(12000L);
 
+    }
 
 
+    @Test
+    void 댓글추가_댓글조회(){
+
+        doReturn(ProductReview
+                .builder()
+                .id(3L)
+                .text("리뷰댓글")
+                .member(Member.builder().id(13L).build())
+                .build()).when(productReviewRepository).save(any());
+
+        ReqProductReviewDto reqProductReviewDto = ReqProductReviewDto.builder()
+                .text("대댓글")
+                .member(ReqMemberDto.builder().id(13L).build())
+                .build();
+
+        ResProductReviewDto resProductReviewDto = productService.createProductReview(reqProductReviewDto);
+        assertThat(resProductReviewDto.getId()).isNotNull();
 
 
     }

@@ -2,18 +2,19 @@ package com.bronze.boiler.service;
 
 
 import com.bronze.boiler.domain.product.converter.ProductConverter;
-import com.bronze.boiler.domain.product.dto.ReqProductDto;
-import com.bronze.boiler.domain.product.dto.ResProductDetailDto;
-import com.bronze.boiler.domain.product.dto.ResProductDto;
+import com.bronze.boiler.domain.product.converter.ProductReviewConverter;
+import com.bronze.boiler.domain.product.dto.*;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
+import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.repository.ProductReviewRepository;
 import com.bronze.boiler.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final ProductReviewRepository productReviewRepository;
     /**
      * 상품dto DB에 저장
      * @param reqProductDto 상품dto
@@ -144,5 +146,16 @@ public class ProductService {
     public void modifyProduct(ReqProductDto reqProductDto) {
 
         productRepository.save(ProductConverter.toProduct(reqProductDto));
+    }
+
+    public ResProductReviewDto createProductReview(ReqProductReviewDto reqProductReviewDto) {
+
+
+
+
+
+        ProductReview productReview = productReviewRepository.save(ProductReviewConverter.toProductReview(reqProductReviewDto));
+
+        return ProductReviewConverter.toProductReviewDto(productReview);
     }
 }

@@ -1,13 +1,11 @@
 package com.bronze.boiler.domain.product.dto;
 
 
-import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.OptionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +14,6 @@ import javax.validation.constraints.NotNull;
  */
 @Builder
 @Getter
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductOptionDto {

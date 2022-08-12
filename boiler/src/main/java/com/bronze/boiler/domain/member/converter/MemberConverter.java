@@ -21,6 +21,7 @@ public class MemberConverter {
 
     public static ResMemberDto toMemberDto(Member member) {
         return ResMemberDto.builder()
+                .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
                 .role(member.getRole())

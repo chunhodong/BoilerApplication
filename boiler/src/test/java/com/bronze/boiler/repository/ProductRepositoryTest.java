@@ -7,7 +7,6 @@ import com.bronze.boiler.filter.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,7 +16,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 public class ProductRepositoryTest {
 
 
@@ -51,8 +49,6 @@ public class ProductRepositoryTest {
 
     }
 
-
-/*
 
     @Test
     void 상품모든필드수정() {
@@ -200,7 +196,7 @@ public class ProductRepositoryTest {
         assertThat(products.get(0).getStatus()).isEqualTo(ProductStatus.SELL);
         assertThat(products.get(1).getStatus()).isEqualTo(ProductStatus.SELL);
     }
-*/
+
 
 
 

@@ -7,10 +7,12 @@ import com.bronze.boiler.filter.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.IntStream;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -19,10 +21,46 @@ public class ProductRepositoryTest {
 
 
     @Autowired
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+
+    @Test
+    void 상품수정() {
+        Category category = categoryRepository.save(Category.builder().name("카테고리1").build());
+
+        Product product = productRepository.save(Product.builder()
+                .name("상품1")
+                .code("AEOAK001")
+                .category(category)
+                .description("상품설명")
+                .status(ProductStatus.NEW)
+                .originPrice(120000L)
+                .refundInfo("환불정보")
+                .sellerInfo("판매자정보")
+                .sizeInfo("사이즈정보")
+                .sellPrice(100000L)
+                .savePoint(1000L)
+                .sizeInfo("사이즈정보").build());
+
+        productRepository.save(Product.builder()
+                .id(product.getId())
+                .name("상품123")
+                .code("AEOAK001")
+                .description("상품설명")
+                .status(ProductStatus.NEW)
+                .originPrice(120000L)
+                .refundInfo("환불정보")
+                .sellerInfo("판매자정보")
+                .sizeInfo("사이즈정보")
+                .sellPrice(100000L)
+                .savePoint(1000L)
+                .sizeInfo("사이즈정보").build());
+
+    }
+
 
     @Test
     void 상품조회_상품정보확인(){

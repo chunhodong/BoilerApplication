@@ -53,9 +53,9 @@ public class ProductService {
     }
 
     /**
-     * 상품목록조회
-     * @param page 상품페이지
-     * @return 상품목록데이터
+     * 상품상세목록조회
+     * @param page 상품페이지데이터
+     * @return 상품상세목록데이터
      */
     public Response<ResProductDetailDto> getDetailProducts(Page page) {
 
@@ -72,6 +72,29 @@ public class ProductService {
                                         .stream()
                                         .filter(productImage -> productImage.getProduct().equals(product))
                                         .collect(Collectors.toList()),null))
+                        .collect(Collectors.toList())).build();
+
+    }
+
+    /**
+     * 상품목록조회
+     * @param page 상품페이징데이터
+     * @return 상품목록데이터
+     */
+    public Response<ResProductDto> getProducts(Page page) {
+        long count = productRepository.count();
+        List<Product> products = productRepository.findAllByPage(page);
+        List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
+
+        return Response.<ResProductDto>builder()
+                .total(count)
+                .currentPage(page.getPageNum())
+                .list(products
+                        .stream()
+                        .map(product -> ProductConverter.toProductDto(product, productImages
+                                .stream()
+                                .filter(productImage -> productImage.getProduct().equals(product))
+                                .collect(Collectors.toList())))
                         .collect(Collectors.toList())).build();
 
     }
@@ -114,25 +137,4 @@ public class ProductService {
 
     }
 
-    public Response<ResProductDto> getProducts(Page page) {
-        long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(page);
-        List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
-
-        return Response.<ResProductDto>builder()
-                .total(count)
-                .currentPage(page.getPageNum())
-                .list(products
-                        .stream()
-                        .map(product -> ProductConverter.toProductDto(product, productImages
-                                .stream()
-                                .filter(productImage -> productImage.getProduct().equals(product))
-                                .collect(Collectors.toList())))
-                        .collect(Collectors.toList())).build();
-
-    }
-
-    //상품목록조회필터적용
-    //상품수정
-    //상품단순조회(이미지,옵션X)
 }

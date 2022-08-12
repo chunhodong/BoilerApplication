@@ -17,6 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 public class ProductRepositoryTest {
 
 
@@ -27,8 +28,34 @@ public class ProductRepositoryTest {
     private CategoryRepository categoryRepository;
 
 
+
     @Test
-    void 상품수정() {
+    void 상품필드수정() {
+        Category category = categoryRepository.save(Category.builder().name("카테고리1").build());
+
+        Product product = productRepository.save(Product.builder()
+                .name("상품1")
+                .code("AEOAK001")
+                .category(category)
+                .description("상품설명")
+                .status(ProductStatus.NEW)
+                .originPrice(120000L)
+                .refundInfo("환불정보")
+                .sellerInfo("판매자정보")
+                .sizeInfo("사이즈정보")
+                .sellPrice(100000L)
+                .savePoint(1000L)
+                .sizeInfo("사이즈정보").build());
+        product.modifySellprice(100000L);
+
+
+    }
+
+
+/*
+
+    @Test
+    void 상품모든필드수정() {
         Category category = categoryRepository.save(Category.builder().name("카테고리1").build());
 
         Product product = productRepository.save(Product.builder()
@@ -173,6 +200,7 @@ public class ProductRepositoryTest {
         assertThat(products.get(0).getStatus()).isEqualTo(ProductStatus.SELL);
         assertThat(products.get(1).getStatus()).isEqualTo(ProductStatus.SELL);
     }
+*/
 
 
 

@@ -49,7 +49,6 @@ public class ProductServiceTest {
     @Mock
     private ProductOptionRepository productOptionRepository;
 
-    private final ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
 
 
     @Test
@@ -96,6 +95,8 @@ public class ProductServiceTest {
 
     @Test
     void 상품등록_DTO를엔티티로변환후_입력값확인() {
+        ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+
         Category category = Category.builder().id(15L).name("카테고리1").build();
         doReturn(Product.builder()
                 .id(1L)
@@ -304,6 +305,39 @@ public class ProductServiceTest {
         doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
         productService.modifyProductOriginprice(13L,7000L);
         assertThat(product.getOriginPrice()).isEqualTo(7000L);
+    }
+
+    @Test
+    void 상품수정_입력값확인(){
+
+        ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+
+        productService.modifyProduct(ReqProductDto
+                .builder()
+                        .id(1L)
+                        .name("상품1")
+                        .code("OEVMW11X")
+                        .description("상품설명")
+                        .category(CategoryDto.builder().id(1L).name("카테고리").build())
+                        .originPrice(13000L)
+                        .sellerInfo("판매자정보")
+                        .refundInfo("환불정보")
+                        .sellPrice(12000L)
+                        .savePoint(100L)
+                        .status(ProductStatus.SELL)
+                .build());
+
+        verify(productRepository).save(captor.capture());
+        assertThat(captor.getValue().getName()).isEqualTo("상품1");
+        assertThat(captor.getValue().getCode()).isEqualTo("OEVMW11X");
+        assertThat(captor.getValue().getDescription()).isEqualTo("상품설명");
+        assertThat(captor.getValue().getOriginPrice()).isEqualTo(13000L);
+        assertThat(captor.getValue().getSellPrice()).isEqualTo(12000L);
+
+
+
+
+
     }
 
 

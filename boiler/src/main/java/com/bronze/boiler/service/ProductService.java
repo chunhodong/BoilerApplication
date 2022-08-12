@@ -137,4 +137,12 @@ public class ProductService {
 
     }
 
+    /**
+     * 상품수정
+     * @param reqProductDto 상품DTO
+     */
+    public void modifyProduct(ReqProductDto reqProductDto) {
+
+        productRepository.save(ProductConverter.toProduct(reqProductDto));
+    }
 }

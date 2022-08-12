@@ -4,6 +4,8 @@ package com.bronze.boiler.domain.product.entity;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +20,7 @@ import java.util.Objects;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
 public class Product {
 
 
@@ -56,8 +59,8 @@ public class Product {
     private Category category;
 
 
+    @ColumnDefault("'NEW'")
     @Enumerated(EnumType.STRING)
-    @Column
     private ProductStatus status;
 
     @Column

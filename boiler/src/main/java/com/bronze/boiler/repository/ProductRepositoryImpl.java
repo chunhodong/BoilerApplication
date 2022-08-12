@@ -21,6 +21,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCst{
         if(page.getCategoryId() != null){
             builder.and(product.category.id.eq(page.getCategoryId()));
         }
+        if(page.getStatus() != null){
+            builder.and(product.status.eq(page.getStatus()));
+        }
+
         return queryFactory
                 .selectFrom(product)
                 .where(builder)

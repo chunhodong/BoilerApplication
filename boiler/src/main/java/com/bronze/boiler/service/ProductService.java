@@ -12,7 +12,7 @@ import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductReviewExceptionType;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
-import com.bronze.boiler.filter.Page;
+import com.bronze.boiler.filter.ProductPage;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -58,18 +58,18 @@ public class ProductService {
 
     /**
      * 상품상세목록조회
-     * @param page 상품페이지데이터
+     * @param productPage 상품페이지데이터
      * @return 상품상세목록데이터
      */
-    public Response<ResProductDetailDto> getDetailProducts(Page page) {
+    public Response<ResProductDetailDto> getDetailProducts(ProductPage productPage) {
 
         Long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(productPage);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDetailDto>builder()
                 .total(count)
-                .currentPage(page.getPageNum())
+                .currentPage(productPage.getPageNum())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages
@@ -82,17 +82,17 @@ public class ProductService {
 
     /**
      * 상품목록조회
-     * @param page 상품페이징데이터
+     * @param productPage 상품페이징데이터
      * @return 상품목록데이터
      */
-    public Response<ResProductDto> getProducts(Page page) {
+    public Response<ResProductDto> getProducts(ProductPage productPage) {
         long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(productPage);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDto>builder()
                 .total(count)
-                .currentPage(page.getPageNum())
+                .currentPage(productPage.getPageNum())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages

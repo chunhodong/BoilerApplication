@@ -3,7 +3,7 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import com.bronze.boiler.filter.Page;
+import com.bronze.boiler.filter.ProductPage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -128,8 +128,10 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        List<Product> products = productRepository.findAllByPage(Page.builder().pageNum(1L)
-                .pageSize(5L).build());
+        ProductPage page = new ProductPage();
+        page.setPageNum(1L);
+        page.setPageSize(5L);
+        List<Product> products = productRepository.findAllByPage(page);
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(4).getName()).isEqualTo("상품4");
         assertThat(products.get(0).getCategory().getId()).isEqualTo(category1.getId());
@@ -158,8 +160,12 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        List<Product> products = productRepository.findAllByPage(Page.builder().pageNum(1L)
-                .pageSize(5L).categoryId(1L).build());
+
+        ProductPage page = new ProductPage();
+        page.setPageNum(1L);
+        page.setPageSize(5L);
+        page.setCategoryId(1L);
+        List<Product> products = productRepository.findAllByPage(page);
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(4).getName()).isEqualTo("상품8");
         assertThat(products.get(0).getCategory().getId()).isEqualTo(1L);
@@ -188,8 +194,14 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        List<Product> products = productRepository.findAllByPage(Page.builder().pageNum(1L)
-                .pageSize(5L).categoryId(category2.getId()).status(ProductStatus.SELL).build());
+
+
+        ProductPage page = new ProductPage();
+        page.setPageNum(1L);
+        page.setPageSize(5L);
+        page.setCategoryId(category2.getId());
+        page.setStatus(ProductStatus.SELL);
+        List<Product> products = productRepository.findAllByPage(page);
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(0).getCategory().getId()).isEqualTo(category2.getId());
         assertThat(products.get(1).getCategory().getId()).isEqualTo(category2.getId());

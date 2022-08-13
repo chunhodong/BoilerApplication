@@ -9,10 +9,9 @@ import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.entity.ProductReview;
-import com.bronze.boiler.domain.product.enums.OptionType;
-import com.bronze.boiler.domain.product.enums.ProductExceptionType;
-import com.bronze.boiler.domain.product.enums.ProductStatus;
+import com.bronze.boiler.domain.product.enums.*;
 import com.bronze.boiler.exception.ProductException;
+import com.bronze.boiler.exception.ProductReviewException;
 import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
@@ -25,10 +24,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -53,7 +53,6 @@ public class ProductServiceTest {
 
     @Mock
     private ProductReviewRepository productReviewRepository;
-
 
 
     @Test
@@ -219,7 +218,6 @@ public class ProductServiceTest {
     }
 
 
-
     @Test
     void 상품상세목록조회_상품확인() {
         doReturn(10L).when(productRepository).count();
@@ -243,8 +241,8 @@ public class ProductServiceTest {
                 .when(productImageRepository).findAllByProductIn(any());
 
         Response<ResProductDetailDto> response = productService.getDetailProducts(Page.builder().pageNum(1L).build());
-        assertThat(response.getList()).extracting("name", "originPrice","imageUrls")
-                .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
+        assertThat(response.getList()).extracting("name", "originPrice", "imageUrls")
+                .contains(tuple("상품1", 1000L, List.of("domain1/path1")), tuple("상품2", 2000L, List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }
@@ -274,62 +272,62 @@ public class ProductServiceTest {
 
 
         Response<ResProductDto> response = productService.getProducts(Page.builder().pageNum(1L).build());
-        assertThat(response.getList()).extracting("name","originPrice","imageUrls")
-                .contains(tuple("상품1", 1000L,List.of("domain1/path1")),tuple("상품2",2000L,List.of("domain2/path2")));
+        assertThat(response.getList()).extracting("name", "originPrice", "imageUrls")
+                .contains(tuple("상품1", 1000L, List.of("domain1/path1")), tuple("상품2", 2000L, List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
         assertThat(response.getCurrentPage()).isEqualTo(1);
     }
 
 
     @Test
-    void 상품원가격수정_가격이음수면_예외발생(){
+    void 상품원가격수정_가격이음수면_예외발생() {
         doReturn(Optional.ofNullable(Product.builder().originPrice(10000L).sellPrice(9000L).build())).when(productRepository).findById(any());
-        ProductException productException =  assertThrows(ProductException.class,() -> productService.modifyProductOriginprice(1L,-1L));
+        ProductException productException = assertThrows(ProductException.class, () -> productService.modifyProductOriginprice(1L, -1L));
         assertThat(productException.getType()).isEqualTo(ProductExceptionType.ILLEGAL_NEGATIVE_PRICE);
     }
 
     @Test
-    void 상품원가격수정_상품가격확인(){
+    void 상품원가격수정_상품가격확인() {
         Product product = Product.builder().originPrice(10000L).sellPrice(9000L).build();
         doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
-        productService.modifyProductOriginprice(13L,4000L);
+        productService.modifyProductOriginprice(13L, 4000L);
         assertThat(product.getOriginPrice()).isEqualTo(4000L);
     }
 
     @Test
-    void 상품판매가격수정_가격이음수면_예외발생(){
+    void 상품판매가격수정_가격이음수면_예외발생() {
         doReturn(Optional.ofNullable(Product.builder().originPrice(10000L).sellPrice(9000L).build())).when(productRepository).findById(any());
-        ProductException productException =  assertThrows(ProductException.class,() -> productService.modifyProductSellprice(1L,-1L));
+        ProductException productException = assertThrows(ProductException.class, () -> productService.modifyProductSellprice(1L, -1L));
         assertThat(productException.getType()).isEqualTo(ProductExceptionType.ILLEGAL_NEGATIVE_PRICE);
 
     }
 
     @Test
-    void 상품판매가격수정_상품가격확인(){
+    void 상품판매가격수정_상품가격확인() {
         Product product = Product.builder().originPrice(10000L).sellPrice(9000L).build();
         doReturn(Optional.ofNullable(product)).when(productRepository).findById(any());
-        productService.modifyProductOriginprice(13L,7000L);
+        productService.modifyProductOriginprice(13L, 7000L);
         assertThat(product.getOriginPrice()).isEqualTo(7000L);
     }
 
     @Test
-    void 상품수정_입력값확인(){
+    void 상품수정_입력값확인() {
 
         ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
 
         productService.modifyProduct(ReqProductDto
                 .builder()
-                        .id(1L)
-                        .name("상품1")
-                        .code("OEVMW11X")
-                        .description("상품설명")
-                        .category(CategoryDto.builder().id(1L).name("카테고리").build())
-                        .originPrice(13000L)
-                        .sellerInfo("판매자정보")
-                        .refundInfo("환불정보")
-                        .sellPrice(12000L)
-                        .savePoint(100L)
-                        .status(ProductStatus.SELL)
+                .id(1L)
+                .name("상품1")
+                .code("OEVMW11X")
+                .description("상품설명")
+                .category(CategoryDto.builder().id(1L).name("카테고리").build())
+                .originPrice(13000L)
+                .sellerInfo("판매자정보")
+                .refundInfo("환불정보")
+                .sellPrice(12000L)
+                .savePoint(100L)
+                .status(ProductStatus.SELL)
                 .build());
 
         verify(productRepository).save(captor.capture());
@@ -343,7 +341,13 @@ public class ProductServiceTest {
 
 
     @Test
-    void 댓글추가_댓글조회(){
+    void 댓글추가_댓글확인() {
+        ArgumentCaptor<ProductReview> captor = ArgumentCaptor.forClass(ProductReview.class);
+
+        ReqProductReviewDto reqProductReviewDto = ReqProductReviewDto.builder()
+                .text("대댓글")
+                .member(ReqMemberDto.builder().id(13L).build())
+                .build();
 
         doReturn(ProductReview
                 .builder()
@@ -351,15 +355,66 @@ public class ProductServiceTest {
                 .text("리뷰댓글")
                 .member(Member.builder().id(13L).build())
                 .build()).when(productReviewRepository).save(any());
-
-        ReqProductReviewDto reqProductReviewDto = ReqProductReviewDto.builder()
-                .text("대댓글")
-                .member(ReqMemberDto.builder().id(13L).build())
-                .build();
-
         ResProductReviewDto resProductReviewDto = productService.createProductReview(reqProductReviewDto);
+        verify(productReviewRepository).save(captor.capture());
         assertThat(resProductReviewDto.getId()).isNotNull();
+        assertThat(captor.getValue().getText()).isNotNull();
 
+    }
+
+    @Test
+    void 댓글조회_댓글없으면_예외발생() {
+        ProductReviewException exception = assertThrows(ProductReviewException.class, () -> productService.getProductReview(1L));
+        assertThat(exception.getType()).isEqualTo(ProductReviewExceptionType.NONE_EXIST_REVIEW);
+    }
+
+    @Test
+    void 댓글조회_삭제된댓글_예외발생() {
+        doReturn(Optional.ofNullable(ProductReview.builder().status(ProductReviewStatus.REMOVED).build()))
+                .when(productReviewRepository).findById(any());
+
+        ProductReviewException exception = assertThrows(ProductReviewException.class, () -> productService.getProductReview(1L));
+        assertThat(exception.getType()).isEqualTo(ProductReviewExceptionType.REMOVED_REVIEW);
+    }
+
+
+    @Test
+    void 댓글조회_부모댓글미포함_댓글확인() {
+        doReturn(Optional.ofNullable(ProductReview.builder()
+                .text("댓글")
+                .member(Member.builder().id(13L).build())
+                .product(Product.builder().id(4L).build())
+                .build()))
+                .when(productReviewRepository)
+                .findById(any());
+        ResProductReviewDto productReviewDto = productService.getProductReview(1L);
+        assertThat(productReviewDto.getText()).isEqualTo("댓글");
+        assertThat(productReviewDto.getMember().getId()).isEqualTo(13L);
+        assertThat(productReviewDto.getParent()).isNull();
+    }
+    
+    @Test
+    void 댓글조회_부모댓글포함_댓글확인() {
+        doReturn(Optional.ofNullable(ProductReview.builder()
+                .text("댓글")
+                .member(Member.builder().id(13L).build())
+                .product(Product.builder().id(4L).build())
+                .parent(ProductReview.builder()
+                        .text("댓글")
+                        .member(Member.builder().id(13L).build())
+                        .product(Product.builder().id(4L).build())
+                        .build())
+                .build()))
+                .when(productReviewRepository)
+                .findById(any());
+        ResProductReviewDto productReviewDto = productService.getProductReview(1L);
+        assertThat(productReviewDto.getText()).isEqualTo("댓글");
+        assertThat(productReviewDto.getMember().getId()).isEqualTo(13L);
+        assertThat(productReviewDto.getParent()).isNotNull();
+    }
+
+    @Test
+    void 댓글목록조회_댓글목록확인() {
 
     }
 

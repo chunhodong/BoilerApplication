@@ -9,7 +9,9 @@ import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
+import com.bronze.boiler.domain.product.enums.ProductReviewExceptionType;
 import com.bronze.boiler.exception.ProductException;
+import com.bronze.boiler.exception.ProductReviewException;
 import com.bronze.boiler.filter.Page;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
@@ -150,12 +152,15 @@ public class ProductService {
 
     public ResProductReviewDto createProductReview(ReqProductReviewDto reqProductReviewDto) {
 
-
-
-
-
         ProductReview productReview = productReviewRepository.save(ProductReviewConverter.toProductReview(reqProductReviewDto));
 
+        return ProductReviewConverter.toProductReviewDto(productReview);
+    }
+
+    public ResProductReviewDto getProductReview(Long reviewId) {
+        ProductReview productReview = productReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ProductReviewException(ProductReviewExceptionType.NONE_EXIST_REVIEW));
+        if(productReview.isRemoved())throw new ProductReviewException(ProductReviewExceptionType.REMOVED_REVIEW);
         return ProductReviewConverter.toProductReviewDto(productReview);
     }
 }

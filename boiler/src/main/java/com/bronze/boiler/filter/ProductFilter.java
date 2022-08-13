@@ -8,8 +8,10 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class ProductPage extends BasePage{
+public class ProductFilter extends BasePage{
 
     private Long categoryId;
     private ProductStatus status;
+
+
 }

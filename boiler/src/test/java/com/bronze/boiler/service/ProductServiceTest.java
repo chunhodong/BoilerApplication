@@ -12,7 +12,7 @@ import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.*;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
-import com.bronze.boiler.filter.ProductPage;
+import com.bronze.boiler.filter.ProductFilter;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -23,6 +23,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -31,8 +33,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 //테스트실행 확장을 위해 추가하는 Annotation
 @ExtendWith(SpringExtension.class)
@@ -240,7 +241,7 @@ public class ProductServiceTest {
                 ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
                 .when(productImageRepository).findAllByProductIn(any());
 
-        ProductPage page = new ProductPage();
+        ProductFilter page = new ProductFilter();
         page.setPageNum(1L);
         Response<ResProductDetailDto> response = productService
                 .getDetailProducts(page);
@@ -274,7 +275,7 @@ public class ProductServiceTest {
                 .when(productImageRepository).findAllByProductIn(any());
 
 
-        ProductPage page = new ProductPage();
+        ProductFilter page = new ProductFilter();
         page.setPageNum(1L);
         Response<ResProductDto> response = productService.getProducts(page);
         assertThat(response.getList()).extracting("name", "originPrice", "imageUrls")
@@ -397,7 +398,7 @@ public class ProductServiceTest {
         assertThat(productReviewDto.getMember().getId()).isEqualTo(13L);
         assertThat(productReviewDto.getParent()).isNull();
     }
-    
+
     @Test
     void 댓글조회_부모댓글포함_댓글확인() {
         doReturn(Optional.ofNullable(ProductReview.builder()
@@ -421,6 +422,87 @@ public class ProductServiceTest {
     @Test
     void 댓글목록조회_댓글목록확인() {
 
+
+        doReturn(List.of(ProductReview.builder()
+                        .id(1L)
+                        .text("댓글1")
+                        .status(ProductReviewStatus.NEW)
+                        .product(Product.builder().id(3L).build())
+                        .member(Member.builder().id(1L).build())
+                        .build(),
+                ProductReview.builder()
+                        .id(2L)
+                        .text("댓글2")
+                        .status(ProductReviewStatus.NEW)
+                        .product(Product.builder().id(3L).build())
+                        .member(Member.builder().id(2L).build())
+                        .build(),
+                ProductReview.builder()
+                        .id(3L)
+                        .text("댓글3")
+                        .status(ProductReviewStatus.NEW)
+                        .product(Product.builder().id(3L).build())
+                        .member(Member.builder().id(3L).build())
+                        .build()))
+
+                .when(productReviewRepository).findAllByPage(any());
+        doReturn(3L).when(productReviewRepository).count();
+
+        Response<ResProductReviewDto> productReviewDtoResponse = productService.getProductReviews(getPage(1, 10, "id"));
+
+        assertThat(productReviewDtoResponse.getTotal()).isEqualTo(3L);
+        assertThat(productReviewDtoResponse.getList().get(0).getId()).isEqualTo(1L);
+
+    }
+
+    public Pageable getPage(int pageNumber, int pageSize, String sort) {
+        return new Pageable() {
+            @Override
+            public int getPageNumber() {
+                return pageNumber;
+            }
+
+            @Override
+            public int getPageSize() {
+                return pageSize;
+            }
+
+            @Override
+            public long getOffset() {
+                return (pageNumber - 1) * pageSize;
+            }
+
+            @Override
+            public Sort getSort() {
+                return Sort.by(sort).descending();
+
+            }
+
+            @Override
+            public Pageable next() {
+                return null;
+            }
+
+            @Override
+            public Pageable previousOrFirst() {
+                return null;
+            }
+
+            @Override
+            public Pageable first() {
+                return null;
+            }
+
+            @Override
+            public Pageable withPage(int pageNumber) {
+                return null;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return false;
+            }
+        };
     }
 
 

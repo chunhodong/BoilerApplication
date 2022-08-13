@@ -12,13 +12,15 @@ import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductReviewExceptionType;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
-import com.bronze.boiler.filter.ProductPage;
+import com.bronze.boiler.filter.ProductFilter;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
 import com.bronze.boiler.repository.ProductReviewRepository;
 import com.bronze.boiler.util.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,18 +60,18 @@ public class ProductService {
 
     /**
      * 상품상세목록조회
-     * @param productPage 상품페이지데이터
+     * @param productFilter 상품페이지데이터
      * @return 상품상세목록데이터
      */
-    public Response<ResProductDetailDto> getDetailProducts(ProductPage productPage) {
+    public Response<ResProductDetailDto> getDetailProducts(ProductFilter productFilter) {
 
         Long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(productPage);
+        List<Product> products = productRepository.findAllByPage(productFilter);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDetailDto>builder()
                 .total(count)
-                .currentPage(productPage.getPageNum())
+                .currentPage(productFilter.getPageNum())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages
@@ -82,17 +84,17 @@ public class ProductService {
 
     /**
      * 상품목록조회
-     * @param productPage 상품페이징데이터
+     * @param productFilter 상품페이징데이터
      * @return 상품목록데이터
      */
-    public Response<ResProductDto> getProducts(ProductPage productPage) {
+    public Response<ResProductDto> getProducts(ProductFilter productFilter) {
         long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(productPage);
+        List<Product> products = productRepository.findAllByPage(productFilter);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDto>builder()
                 .total(count)
-                .currentPage(productPage.getPageNum())
+                .currentPage(productFilter.getPageNum())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages
@@ -150,6 +152,11 @@ public class ProductService {
         productRepository.save(ProductConverter.toProduct(reqProductDto));
     }
 
+    /**
+     * 상품리뷰추가
+     * @param reqProductReviewDto 상품리뷰DTO
+     * @return 상품리뷰
+     */
     public ResProductReviewDto createProductReview(ReqProductReviewDto reqProductReviewDto) {
 
         ProductReview productReview = productReviewRepository.save(ProductReviewConverter.toProductReview(reqProductReviewDto));
@@ -157,10 +164,30 @@ public class ProductService {
         return ProductReviewConverter.toProductReviewDto(productReview);
     }
 
+    /**
+     * 상품리뷰조회
+     * @param reviewId
+     * @return
+     */
     public ResProductReviewDto getProductReview(Long reviewId) {
         ProductReview productReview = productReviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ProductReviewException(ProductReviewExceptionType.NONE_EXIST_REVIEW));
         if(productReview.isRemoved())throw new ProductReviewException(ProductReviewExceptionType.REMOVED_REVIEW);
         return ProductReviewConverter.toProductReviewDto(productReview);
+    }
+
+    public Response<ResProductReviewDto> getProductReviews(@PageableDefault() Pageable pageable) {
+
+        long count = productReviewRepository.count();
+
+        List<ProductReview> productReviews = productReviewRepository.findAllByPage(pageable);
+        return Response.<ResProductReviewDto>builder()
+                .total(count)
+                .currentPage((long) pageable.getPageNumber())
+                .list(productReviews
+                        .stream()
+                        .map(productReview -> ProductReviewConverter.toProductReviewDto(productReview))
+                        .collect(Collectors.toList())).build();
+
     }
 }

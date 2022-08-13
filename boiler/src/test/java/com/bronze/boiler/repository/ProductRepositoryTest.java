@@ -3,7 +3,7 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import com.bronze.boiler.filter.ProductPage;
+import com.bronze.boiler.filter.ProductFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -128,7 +128,7 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        ProductPage page = new ProductPage();
+        ProductFilter page = new ProductFilter();
         page.setPageNum(1L);
         page.setPageSize(5L);
         List<Product> products = productRepository.findAllByPage(page);
@@ -161,7 +161,7 @@ public class ProductRepositoryTest {
 
         });
 
-        ProductPage page = new ProductPage();
+        ProductFilter page = new ProductFilter();
         page.setPageNum(1L);
         page.setPageSize(5L);
         page.setCategoryId(1L);
@@ -196,10 +196,11 @@ public class ProductRepositoryTest {
         });
 
 
-        ProductPage page = new ProductPage();
+        ProductFilter page = new ProductFilter();
         page.setPageNum(1L);
         page.setPageSize(5L);
         page.setCategoryId(category2.getId());
+
         page.setStatus(ProductStatus.SELL);
         List<Product> products = productRepository.findAllByPage(page);
         assertThat(products.size()).isEqualTo(5L);
@@ -207,6 +208,38 @@ public class ProductRepositoryTest {
         assertThat(products.get(1).getCategory().getId()).isEqualTo(category2.getId());
         assertThat(products.get(0).getStatus()).isEqualTo(ProductStatus.SELL);
         assertThat(products.get(1).getStatus()).isEqualTo(ProductStatus.SELL);
+    }
+
+    @Test
+    void 상품목록조회_정렬기준추가_상품정보확인(){
+
+        Category category1 = categoryRepository.save(Category.builder().name("카테고리1").build());
+        Category category2 = categoryRepository.save(Category.builder().name("카테고리2").build());
+
+        IntStream.range(0,31).boxed().forEach(integer -> {
+            productRepository.save(Product.builder()
+                    .name("상품".concat(String.valueOf(integer)))
+                    .code("AEOAK001")
+                    .category(integer % 2 == 0 ? category1 : category2)
+                    .description("상품설명")
+                    .originPrice(120000L)
+                    .refundInfo("환불정보")
+                    .sellerInfo("판매자정보")
+                    .status(integer % 2 == 0 ? ProductStatus.NEW : ProductStatus.SELL)
+                    .sizeInfo("사이즈정보")
+                    .sellPrice(100000L)
+                    .savePoint(1000L)
+                    .sizeInfo("사이즈정보").build());
+
+        });
+
+
+        ProductFilter page = new ProductFilter();
+        page.setPageNum(1L);
+        page.setPageSize(5L);
+        List<Product> products = productRepository.findAllByPage(page);
+        assertThat(products.size()).isEqualTo(5L);
+        System.out.println("id : "+products.get(0).getId());
     }
 
 

@@ -10,9 +10,11 @@ import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductReviewExceptionType;
+import com.bronze.boiler.domain.product.enums.ProductReviewStatus;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
 import com.bronze.boiler.filter.ProductFilter;
+import com.bronze.boiler.filter.ProductReviewFilter;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -63,15 +65,15 @@ public class ProductService {
      * @param productFilter 상품페이지데이터
      * @return 상품상세목록데이터
      */
-    public Response<ResProductDetailDto> getDetailProducts(ProductFilter productFilter) {
+    public Response<ResProductDetailDto> getDetailProducts(ProductFilter productFilter,Pageable pageable) {
 
         Long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(productFilter);
+        List<Product> products = productRepository.findAllByPage(productFilter,pageable);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDetailDto>builder()
                 .total(count)
-                .currentPage(productFilter.getPageNum())
+                .currentPage((long) pageable.getPageNumber())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages
@@ -87,14 +89,14 @@ public class ProductService {
      * @param productFilter 상품페이징데이터
      * @return 상품목록데이터
      */
-    public Response<ResProductDto> getProducts(ProductFilter productFilter) {
+    public Response<ResProductDto> getProducts(ProductFilter productFilter,Pageable pageable) {
         long count = productRepository.count();
-        List<Product> products = productRepository.findAllByPage(productFilter);
+        List<Product> products = productRepository.findAllByPage(productFilter,pageable);
         List<ProductImage> productImages = productImageRepository.findAllByProductIn(products);
 
         return Response.<ResProductDto>builder()
                 .total(count)
-                .currentPage(productFilter.getPageNum())
+                .currentPage((long) pageable.getPageNumber())
                 .list(products
                         .stream()
                         .map(product -> ProductConverter.toProductDto(product, productImages
@@ -176,11 +178,11 @@ public class ProductService {
         return ProductReviewConverter.toProductReviewDto(productReview);
     }
 
-    public Response<ResProductReviewDto> getProductReviews(@PageableDefault() Pageable pageable) {
+    public Response<ResProductReviewDto> getProductReviews(ProductReviewFilter filter,Pageable pageable) {
 
         long count = productReviewRepository.count();
 
-        List<ProductReview> productReviews = productReviewRepository.findAllByPage(pageable);
+        List<ProductReview> productReviews = productReviewRepository.findAllByPage(filter,pageable);
         return Response.<ResProductReviewDto>builder()
                 .total(count)
                 .currentPage((long) pageable.getPageNumber())

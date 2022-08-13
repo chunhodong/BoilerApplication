@@ -31,6 +31,8 @@ public class ResProductReviewDto {
 
     private ResProductReviewDto parent;
 
+    private long childCount;
+
     private LocalDateTime created;
 
     private LocalDateTime modified;

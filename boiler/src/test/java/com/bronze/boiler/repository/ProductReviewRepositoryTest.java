@@ -5,6 +5,7 @@ import com.bronze.boiler.domain.member.enums.Role;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
+import com.bronze.boiler.filter.ProductReviewFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -132,27 +133,7 @@ public class ProductReviewRepositoryTest {
                 .savePoint(1000L)
                 .sizeInfo("사이즈정보").build());
 
-        ProductReview parentReview1 = productReviewRepository.save(ProductReview
-                .builder()
-                .text("댓글1")
-                .member(member1)
-                .product(product1)
-                .build());
 
-        ProductReview parentReview2 = productReviewRepository.save(ProductReview
-                .builder()
-                .text("댓글2")
-                .member(member2)
-                .product(product1)
-                .build());
-
-
-        ProductReview parentReview3 = productReviewRepository.save(ProductReview
-                .builder()
-                .text("댓글3")
-                .member(member2)
-                .product(product1)
-                .build());
         IntStream.range(0,10).forEach(value -> {
             productReviewRepository.save(ProductReview
                     .builder()
@@ -162,8 +143,8 @@ public class ProductReviewRepositoryTest {
                     .build());
         });
 
-        List<ProductReview> productReviewList = productReviewRepository.findAllByPage(getPage(1,10,"text"));
-        assertThat(productReviewList.get(0).getText()).isEqualTo("댓글9");
+        List<ProductReview> productReviewList = productReviewRepository.findAllByPage(ProductReviewFilter.builder().build(), getPage(1,10,"id"));
+        assertThat(productReviewList.get(0).getId()).isEqualTo(10L);
     }
 
 

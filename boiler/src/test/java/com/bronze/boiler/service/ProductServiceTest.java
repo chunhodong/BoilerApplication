@@ -13,6 +13,7 @@ import com.bronze.boiler.domain.product.enums.*;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
 import com.bronze.boiler.filter.ProductFilter;
+import com.bronze.boiler.filter.ProductReviewFilter;
 import com.bronze.boiler.repository.ProductImageRepository;
 import com.bronze.boiler.repository.ProductOptionRepository;
 import com.bronze.boiler.repository.ProductRepository;
@@ -235,16 +236,15 @@ public class ProductServiceTest {
                         .name("상품2")
                         .originPrice(2000L)
                         .build()))
-                .when(productRepository).findAllByPage(any());
+                .when(productRepository).findAllByPage(any(),any());
 
         doReturn(List.of(ProductImage.builder().domain("domain1").path("/path1").product(Product.builder().id(1L).build()).build(),
                 ProductImage.builder().domain("domain2").path("/path2").product(Product.builder().id(2L).build()).build()))
                 .when(productImageRepository).findAllByProductIn(any());
 
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
+
         Response<ResProductDetailDto> response = productService
-                .getDetailProducts(page);
+                .getDetailProducts(ProductFilter.builder().build(), getPage(1,10,"id"));
         assertThat(response.getList()).extracting("name", "originPrice", "imageUrls")
                 .contains(tuple("상품1", 1000L, List.of("domain1/path1")), tuple("상품2", 2000L, List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
@@ -267,7 +267,7 @@ public class ProductServiceTest {
                         .name("상품2")
                         .originPrice(2000L)
                         .build()))
-                .when(productRepository).findAllByPage(any());
+                .when(productRepository).findAllByPage(any(),any());
 
 
         doReturn(List.of(ProductImage.builder().domain("domain1").path("/path1").product(Product.builder().id(1L).build()).build(),
@@ -275,9 +275,7 @@ public class ProductServiceTest {
                 .when(productImageRepository).findAllByProductIn(any());
 
 
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
-        Response<ResProductDto> response = productService.getProducts(page);
+        Response<ResProductDto> response = productService.getProducts(ProductFilter.builder().build(), getPage(1,10,"id"));
         assertThat(response.getList()).extracting("name", "originPrice", "imageUrls")
                 .contains(tuple("상품1", 1000L, List.of("domain1/path1")), tuple("상품2", 2000L, List.of("domain2/path2")));
         assertThat(response.getTotal()).isEqualTo(10);
@@ -445,10 +443,10 @@ public class ProductServiceTest {
                         .member(Member.builder().id(3L).build())
                         .build()))
 
-                .when(productReviewRepository).findAllByPage(any());
+                .when(productReviewRepository).findAllByPage(ProductReviewFilter.builder().build(), any());
         doReturn(3L).when(productReviewRepository).count();
 
-        Response<ResProductReviewDto> productReviewDtoResponse = productService.getProductReviews(getPage(1, 10, "id"));
+        Response<ResProductReviewDto> productReviewDtoResponse = productService.getProductReviews(ProductReviewFilter.builder().build(), getPage(1, 10, "id"));
 
         assertThat(productReviewDtoResponse.getTotal()).isEqualTo(3L);
         assertThat(productReviewDtoResponse.getList().get(0).getId()).isEqualTo(1L);

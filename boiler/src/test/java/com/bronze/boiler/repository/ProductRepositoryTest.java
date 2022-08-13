@@ -7,6 +7,8 @@ import com.bronze.boiler.filter.ProductFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -128,10 +130,7 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
-        page.setPageSize(5L);
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().build(), getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(4).getName()).isEqualTo("상품4");
         assertThat(products.get(0).getCategory().getId()).isEqualTo(category1.getId());
@@ -160,12 +159,7 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
-        page.setPageSize(5L);
-        page.setCategoryId(1L);
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().categoryId(1l).build(),getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(4).getName()).isEqualTo("상품8");
         assertThat(products.get(0).getCategory().getId()).isEqualTo(1L);
@@ -196,13 +190,7 @@ public class ProductRepositoryTest {
         });
 
 
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
-        page.setPageSize(5L);
-        page.setCategoryId(category2.getId());
-
-        page.setStatus(ProductStatus.SELL);
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().categoryId(category2.getId()).status(ProductStatus.SELL).build(),getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
         assertThat(products.get(0).getCategory().getId()).isEqualTo(category2.getId());
         assertThat(products.get(1).getCategory().getId()).isEqualTo(category2.getId());
@@ -233,15 +221,61 @@ public class ProductRepositoryTest {
 
         });
 
-
-        ProductFilter page = new ProductFilter();
-        page.setPageNum(1L);
-        page.setPageSize(5L);
-        List<Product> products = productRepository.findAllByPage(page);
+        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().build(), getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
-        System.out.println("id : "+products.get(0).getId());
     }
 
+
+
+    public Pageable getPage(int pageNumber, int pageSize, String sort){
+        return new Pageable() {
+            @Override
+            public int getPageNumber() {
+                return pageNumber;
+            }
+
+            @Override
+            public int getPageSize() {
+                return pageSize;
+            }
+
+            @Override
+            public long getOffset() {
+                return (pageNumber - 1) * pageSize;
+            }
+
+            @Override
+            public Sort getSort() {
+                return Sort.by(sort).descending();
+
+            }
+
+            @Override
+            public Pageable next() {
+                return null;
+            }
+
+            @Override
+            public Pageable previousOrFirst() {
+                return null;
+            }
+
+            @Override
+            public Pageable first() {
+                return null;
+            }
+
+            @Override
+            public Pageable withPage(int pageNumber) {
+                return null;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return false;
+            }
+        };
+    }
 
 
 

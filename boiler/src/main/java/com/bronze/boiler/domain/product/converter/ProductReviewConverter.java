@@ -12,6 +12,7 @@ public class ProductReviewConverter {
     public static ProductReview toProductReview(ReqProductReviewDto productReviewDto) {
 
         return ProductReview.builder()
+                .text(productReviewDto.getText())
                 .member(Member.builder().id(productReviewDto.getMember().getId()).build())
                 .parent(productReviewDto.getParent() == null
                         ? null

@@ -2,6 +2,7 @@ package com.bronze.boiler.repository;
 
 import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.entity.QProductReview;
+import com.bronze.boiler.filter.ProductReviewFilter;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -22,9 +23,17 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ProductReview> findAllByPage(Pageable pageable) {
+    public List<ProductReview> findAllByPage(ProductReviewFilter filter,Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
 
+        if(filter.getParentId() == null){
+            builder.and(productReview.parent.isNull());
+        }
+        else builder.and(productReview.parent.id.eq(filter.getParentId()));
+
+        if(filter.getStatus() != null){
+            builder.and(productReview.status.eq(filter.getStatus()));
+        }
         return queryFactory
                 .selectFrom(productReview)
                 .where(builder)
@@ -39,7 +48,6 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
                 .map(order -> new OrderSpecifier(order.isAscending() ? Order.ASC : Order.DESC, new PathBuilder(productReview.getType(), productReview.getMetadata()).get(order.getProperty())))
                 .collect(Collectors.toList())
                 .toArray(OrderSpecifier[]::new);
-
     }
 
 }

@@ -10,6 +10,7 @@ import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
@@ -100,6 +101,7 @@ public class MemberService {
      * @return 정지처리된회원정보
      */
     public ResMemberDto blockMember(long memberId) {
+        ExceptionHandlerExceptionResolver ae;
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         member.block();
@@ -116,6 +118,18 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         member.renewLastLogin();
+        return MemberConverter.toMemberDto(member);
+
+    }
+
+    /**
+     * 회원조회
+     * @param memberId 회원아이디
+     * @return 회원데이터
+     */
+    public ResMemberDto getMember(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         return MemberConverter.toMemberDto(member);
 
     }

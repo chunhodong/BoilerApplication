@@ -24,7 +24,7 @@ public class ResMemberDto {
 
     private Role role;
 
-    private MemberStatus memberStatus;
+    private MemberStatus status;
 
     private LocalDate periodOfBlock;
 

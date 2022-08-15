@@ -34,7 +34,7 @@ public class QOrderProduct extends EntityPathBase<OrderProduct> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
-    public final QOrder order;
+    public final QOrders order;
 
     public final com.bronze.boiler.domain.product.entity.QProduct product;
 
@@ -60,7 +60,7 @@ public class QOrderProduct extends EntityPathBase<OrderProduct> {
 
     public QOrderProduct(Class<? extends OrderProduct> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.order = inits.isInitialized("order") ? new QOrder(forProperty("order"), inits.get("order")) : null;
+        this.order = inits.isInitialized("order") ? new QOrders(forProperty("order"), inits.get("order")) : null;
         this.product = inits.isInitialized("product") ? new com.bronze.boiler.domain.product.entity.QProduct(forProperty("product"), inits.get("product")) : null;
         this.productOption = inits.isInitialized("productOption") ? new com.bronze.boiler.domain.product.entity.QProductOption(forProperty("productOption"), inits.get("productOption")) : null;
     }

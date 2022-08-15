@@ -18,19 +18,22 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order extends BaseDate {
+public class Orders extends BaseDate {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "주문상태를 입력해야합니다")
     private OrderStatus status;
 
+    @NotNull(message = "총금액을 입력해야합니다")
     private Long totalPrice;
 
     private Long discountPrice;
 
+    @NotNull(message = "판매금액을 입력해야합니다")
     private Long paymentPrice;
 
 

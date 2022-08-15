@@ -1,5 +1,5 @@
 package com.bronze.boiler.domain.order.enums;
 
 public enum OrderStatus {
-    PAYMENT,DELIVERY,CANCEL
+    PAYMENT,DELIVERY,CANCEL,REFUND
 }

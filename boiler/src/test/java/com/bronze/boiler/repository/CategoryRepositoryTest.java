@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @Transactional
-public class CategoryTest {
+public class CategoryRepositoryTest {
 
 
 

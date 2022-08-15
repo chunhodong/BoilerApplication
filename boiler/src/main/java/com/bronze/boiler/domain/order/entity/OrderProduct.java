@@ -36,7 +36,7 @@ public class OrderProduct extends BaseDate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     @NotNull(message = "주문이 있어야합니다")
-    private Order order;
+    private Orders order;
     
     @NotNull(message = "주문수량이 있어야합니다")
     @Column
@@ -45,4 +45,9 @@ public class OrderProduct extends BaseDate {
     @NotNull(message = "주문가격이 있어야합니다")
     @Column
     private Long totalPrice;
+
+
+    public boolean isValidatePrice(){
+        return count * product.getSellPrice() == totalPrice;
+    }
 }

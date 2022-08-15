@@ -9,19 +9,27 @@ import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
-import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 
 
-@Validated
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    public ResMemberDto create2Member(Req2MemberDto reqMemberDto) throws NoSuchAlgorithmException {
+
+
+
+
+        memberRepository.findByName(reqMemberDto.getName())
+                .ifPresent(member -> {
+                    throw new MemberException(MemberExceptionType.DUPLICATE_NAME);
+                });
+        return null;
+    }
 
     /**
      *
@@ -29,7 +37,7 @@ public class MemberService {
      * @return 회원정보DTO
      * @throws NoSuchAlgorithmException 비밀번호암호화 알고리즘 검색실패
      */
-    public ResMemberDto createMember(@Valid ReqMemberDto reqMemberDto) throws NoSuchAlgorithmException {
+    public ResMemberDto createMember(ReqMemberDto reqMemberDto) throws NoSuchAlgorithmException {
 
 
 

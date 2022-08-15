@@ -35,7 +35,7 @@ public class MemberControllerTest {
 
 
     @Test
-    void 컨트롤러_회원조회_회원데이터확인() throws Exception {
+    void 회원조회_회원데이터확인() throws Exception {
 
         doReturn(ResMemberDto.builder()
                 .id(13l)
@@ -57,14 +57,11 @@ public class MemberControllerTest {
     }
 
     @Test
-    void 컨트롤러_회원조회_없는회원일때_예외발생() throws Exception {
+    void 회원조회_없는회원일때_예외발생() throws Exception {
 
         doThrow(new MemberException(MemberExceptionType.NONE_EXIST_MEMBER)).when(memberService).getMember(anyLong());
         mockMvc.perform(get("/members/13"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("회원1"))
-                .andExpect(jsonPath("$.email").value("test@test.com"))
-
+                .andExpect(status().isBadRequest())
                 .andDo(print());
 
 

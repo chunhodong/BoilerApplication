@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.product.enums;
+package com.bronze.boiler.domain.order.enums;
 
 import com.bronze.boiler.exception.ExceptionType;
 import org.springframework.http.HttpStatus;
@@ -6,16 +6,13 @@ import org.springframework.http.HttpStatus;
 /**
  * 회원예외타입상수
  */
-public enum ProductExceptionType implements ExceptionType {
-    NONE_EXIST_PRODUCT("존재하지않는 상품입니다",HttpStatus.BAD_REQUEST),
-    ILLEGAL_NEGATIVE_PRICE("가격은 0이상입니다",HttpStatus.BAD_REQUEST),
-    SOLDOUT_PRODUCT("품절상품입니다",HttpStatus.BAD_REQUEST);
-
+public enum OrderExceptionType implements ExceptionType {
+    NONE_EXIST_ORDER("존재하지않는 주문입니다",HttpStatus.BAD_REQUEST);
 
     private String message;
     private HttpStatus status;
 
-    ProductExceptionType(String message, HttpStatus status) {
+    OrderExceptionType(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
     }

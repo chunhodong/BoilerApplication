@@ -40,4 +40,16 @@ public class Orders extends BaseDate {
     @Embedded
     @NotNull
     private Address address;
+
+    public void cancel() {
+        this.status = OrderStatus.CANCEL;
+    }
+
+    public void refund() {
+        this.status = OrderStatus.REFUND;
+    }
+
+    public void modifyAddress(Address address) {
+        this.address = address;
+    }
 }

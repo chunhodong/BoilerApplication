@@ -155,6 +155,30 @@ public class OrderRepositoryTest {
                 .totalPrice(1000200L).build());
 
         assertThat(orderProduct.isValidatePrice()).isEqualTo(false);
+    }
+
+    @Test
+    void 주문수정_주소수정시_주문확인(){
+        Member member = memberRepository.save(Member.builder()
+                .name("김딴딴")
+                .email("test@test.com")
+                .password("1234")
+                .role(Role.USER).build());
+        Member savedMember = memberRepository.save(member);
+        Orders order = orderRepository.save(Orders
+                .builder()
+                .paymentPrice(13000l)
+                .address(Address.builder().titleAddress("명일로172").zipcode(50320L).build())
+                .totalPrice(13000l)
+                .status(OrderStatus.PAYMENT)
+                .member(savedMember)
+                .build());
+
+        assertThat(order.getAddress().getTitleAddress()).isEqualTo("명일로172");
+        order.modifyAddress(Address.builder().titleAddress("강동구1231").build());
+        assertThat(order.getAddress().getTitleAddress()).isEqualTo("강동구1231");
+
+
 
     }
 }

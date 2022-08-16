@@ -7,10 +7,16 @@ import com.bronze.boiler.domain.order.converter.OrderConverter;
 import com.bronze.boiler.domain.order.converter.OrderProductConverter;
 import com.bronze.boiler.domain.order.dto.ReqOrderDto;
 import com.bronze.boiler.domain.order.dto.ResOrderDto;
+import com.bronze.boiler.domain.order.entity.Address;
 import com.bronze.boiler.domain.order.entity.OrderProduct;
 import com.bronze.boiler.domain.order.entity.Orders;
+import com.bronze.boiler.domain.order.enums.OrderExceptionType;
 import com.bronze.boiler.domain.product.entity.Product;
+import com.bronze.boiler.domain.product.enums.ProductExceptionType;
+import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.exception.MemberException;
+import com.bronze.boiler.exception.OrderException;
+import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +32,11 @@ public class OrderService {
     private ProductRepository productRepository;
     private MemberRepository memberRepository;
 
+    /**
+     * 주문하기
+     * @param reqOrderDto 주문DTO
+     * @return 주문결과
+     */
     public ResOrderDto createOrder(ReqOrderDto reqOrderDto) {
 
 
@@ -35,6 +46,11 @@ public class OrderService {
         List<Product> products = productRepository
                 .findAllById(reqOrderDto.getProductMap().keySet())
                 .stream().collect(Collectors.toList());
+
+        long unSellProductCount = products.stream()
+                .filter(product -> product.getStatus() == ProductStatus.CLOSE || product.getStatus() == ProductStatus.SOLDOUT).count();
+
+        if(unSellProductCount > 0)throw new ProductException(ProductExceptionType.SOLDOUT_PRODUCT);
 
         Long totalPrice = products
                 .stream()
@@ -50,5 +66,27 @@ public class OrderService {
 
         orderProductRepository.saveAll(orderProducts);
         return OrderConverter.toOrderDto(order,orderProducts);
+    }
+
+    public void cancelOrder(Long orderId){
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderException(OrderExceptionType.NONE_EXIST_ORDER));
+        order.cancel();
+
+    }
+
+    public void refundOrder(Long orderId){
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderException(OrderExceptionType.NONE_EXIST_ORDER));
+        order.refund();
+
+    }
+
+
+    public void modifyAddress(Long orderId,Address address) {
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderException(OrderExceptionType.NONE_EXIST_ORDER));
+        order.modifyAddress(address);
+
     }
 }

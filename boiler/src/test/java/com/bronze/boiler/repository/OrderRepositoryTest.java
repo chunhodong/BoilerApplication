@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
@@ -35,6 +36,9 @@ public class OrderRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private EntityManager em;
+
     @Test
     void 주문추가_필드NULL이면_예외발생() {
         ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, () -> {
@@ -50,7 +54,6 @@ public class OrderRepositoryTest {
                 .email("test@test.com")
                 .password("1234")
                 .role(Role.USER).build());
-        Member savedMember = memberRepository.save(member);
 
         Orders order = orderRepository.save(Orders
                 .builder()
@@ -58,7 +61,7 @@ public class OrderRepositoryTest {
                 .totalPrice(13000l)
                 .address(Address.builder().titleAddress("명일로172").zipcode(50320L).build())
                 .status(OrderStatus.PAYMENT)
-                .member(savedMember)
+                .member(member)
                 .build());
         assertThat(order).isNotNull();
     }

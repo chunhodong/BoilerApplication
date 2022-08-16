@@ -3,10 +3,8 @@ package com.bronze.boiler.domain.order.entity;
 import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-
+@ToString
 public class Orders extends BaseDate {
 
     @Id

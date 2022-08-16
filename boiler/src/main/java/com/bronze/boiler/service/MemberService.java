@@ -19,17 +19,7 @@ import java.security.NoSuchAlgorithmException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    public ResMemberDto create2Member(Req2MemberDto reqMemberDto) throws NoSuchAlgorithmException {
 
-
-
-
-        memberRepository.findByName(reqMemberDto.getName())
-                .ifPresent(member -> {
-                    throw new MemberException(MemberExceptionType.DUPLICATE_NAME);
-                });
-        return null;
-    }
 
     /**
      *

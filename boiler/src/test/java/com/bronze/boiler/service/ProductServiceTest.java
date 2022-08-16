@@ -443,7 +443,7 @@ public class ProductServiceTest {
                         .member(Member.builder().id(3L).build())
                         .build()))
 
-                .when(productReviewRepository).findAllByPage(ProductReviewFilter.builder().build(), any());
+                .when(productReviewRepository).findAllByPage(any(), any());
         doReturn(3L).when(productReviewRepository).count();
 
         Response<ResProductReviewDto> productReviewDtoResponse = productService.getProductReviews(ProductReviewFilter.builder().build(), getPage(1, 10, "id"));

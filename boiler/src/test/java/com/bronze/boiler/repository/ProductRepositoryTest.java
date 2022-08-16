@@ -132,7 +132,7 @@ public class ProductRepositoryTest {
         });
         List<Product> products = productRepository.findAllByPage(ProductFilter.builder().build(), getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
-        assertThat(products.get(4).getName()).isEqualTo("상품4");
+        assertThat(products.get(4).getName()).isEqualTo("상품26");
         assertThat(products.get(0).getCategory().getId()).isEqualTo(category1.getId());
         assertThat(products.get(1).getCategory().getId()).isEqualTo(category2.getId());
     }
@@ -159,11 +159,11 @@ public class ProductRepositoryTest {
                     .sizeInfo("사이즈정보").build());
 
         });
-        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().categoryId(1l).build(),getPage(1,5,"id"));
+        List<Product> products = productRepository.findAllByPage(ProductFilter.builder().categoryId(category1.getId()).build(),getPage(1,5,"id"));
         assertThat(products.size()).isEqualTo(5L);
-        assertThat(products.get(4).getName()).isEqualTo("상품8");
-        assertThat(products.get(0).getCategory().getId()).isEqualTo(1L);
-        assertThat(products.get(1).getCategory().getId()).isEqualTo(1L);
+        assertThat(products.get(4).getName()).isEqualTo("상품22");
+        assertThat(products.get(0).getCategory().getId()).isEqualTo(category1.getId());
+        assertThat(products.get(1).getCategory().getId()).isEqualTo(category1.getId());
     }
 
     @Test

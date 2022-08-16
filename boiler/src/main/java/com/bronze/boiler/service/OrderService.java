@@ -25,17 +25,16 @@ public class OrderService {
     private OrderProductRepository orderProductRepository;
     private ProductRepository productRepository;
     private MemberRepository memberRepository;
+
     public ResOrderDto createOrder(ReqOrderDto reqOrderDto) {
 
 
         Member member = memberRepository.findById(reqOrderDto.getMemberId())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
 
-
         List<Product> products = productRepository
                 .findAllById(reqOrderDto.getProductMap().keySet())
                 .stream().collect(Collectors.toList());
-
 
         Long totalPrice = products
                 .stream()
@@ -43,7 +42,6 @@ public class OrderService {
                 .sum();
 
         Orders order = orderRepository.save(OrderConverter.toOrder(reqOrderDto,member,totalPrice));
-
 
         List<OrderProduct> orderProducts = products.stream()
                 .map(product -> OrderProductConverter

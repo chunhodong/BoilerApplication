@@ -36,7 +36,7 @@ public class MemberServiceTest {
 
     @InjectMocks
     private MemberService memberService;
-
+    //스프링컨테이너와 독립적으로 Mock객체를 생성
     @Mock
     private MemberRepository memberRepository;
 

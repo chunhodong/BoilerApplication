@@ -1,12 +1,16 @@
 package com.bronze.boiler.repository;
 
+import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.filter.ProductFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -16,7 +20,9 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
+@Import(TestConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 @Transactional
 public class ProductRepositoryTest {
 

@@ -1,6 +1,7 @@
 package com.bronze.boiler.repository;
 
 
+import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.Role;
 import com.bronze.boiler.domain.order.entity.Address;
@@ -11,7 +12,10 @@ import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -20,7 +24,9 @@ import javax.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@Import(TestConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 @Transactional
 public class OrderRepositoryTest {
 

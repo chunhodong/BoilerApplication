@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
  * 회원예외타입상수
  */
 public enum ProductStockExceptionType implements ExceptionType {
-    NEGATIVE_STOCK("입고량은 0보다 크거가 같아야합니다",HttpStatus.BAD_REQUEST),
     ILLEGAL_STOCK("입고량은 현재수량보다 크거나 같아야합니다",HttpStatus.BAD_REQUEST),
     NONE_EXIST_PRODUCT("존재하지않는 재고입니다",HttpStatus.BAD_REQUEST);
 

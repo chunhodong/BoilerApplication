@@ -46,4 +46,12 @@ public class ProductStock extends BaseDate {
             throw new ProductStockException(ProductStockExceptionType.ILLEGAL_STOCK);
         }
     }
+
+    public void plusCurrentStock() {
+        this.currentStock++;
+    }
+
+    public void minusCurrentStock() {
+        this.currentStock--;
+    }
 }

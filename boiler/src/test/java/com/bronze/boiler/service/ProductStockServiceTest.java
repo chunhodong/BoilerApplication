@@ -42,6 +42,7 @@ public class ProductStockServiceTest {
 
     @Test
     void 재고수량초기화_입고량이현재수량보다작으면_예외발생(){
+        doReturn(Optional.ofNullable(Product.builder().build())).when(productRepository).findById(anyLong());
 
         ProductStockException productStockException = assertThrows(ProductStockException.class,() -> productStockService.createProductStock(ProductStockDto.builder().productId(1l).currentStock(44l).totalStock(12l).build()));
         assertThat(productStockException.getType()).isEqualTo(ProductStockExceptionType.ILLEGAL_STOCK);
@@ -76,14 +77,48 @@ public class ProductStockServiceTest {
 
     @Test
     void 재고현재수량수정_현재수량이전체수량보다많으면_예외발생(){
-        doReturn(ProductStock.builder()
+        doReturn(Optional.empty()).when(productRepository).findById(anyLong());
+
+        doReturn(Optional.ofNullable(ProductStock.builder()
                 .totalStock(100l)
                 .currentStock(90l)
-                .build()).when(productStockRepository).findById(anyLong());
+                .build())).when(productStockRepository).findById(anyLong());
 
-        assertThrows(ProductStockException.class,() -> productStockService.modifyCurrentStock(1l,113l));
+        ProductStockException productStockException = assertThrows(ProductStockException.class,() -> productStockService.modifyCurrentStock(1l,113l));
+        assertThat(productStockException.getType()).isEqualTo(ProductStockExceptionType.ILLEGAL_STOCK);
+    }
+
+
+    @Test
+    void 재고현재수량1증가(){
+
+        ProductStock productStock = ProductStock.builder()
+                .totalStock(100l)
+                .currentStock(90l)
+                .build();
+        doReturn(Optional.ofNullable(productStock)).when(productStockRepository).findById(anyLong());
+        productStockService.plusCurrentStock(12l);
+        assertThat(productStock.getCurrentStock()).isEqualTo(91l);
 
     }
+
+    @Test
+    void 재고현재수량1감소(){
+
+        ProductStock productStock = ProductStock.builder()
+                .totalStock(100l)
+                .currentStock(90l)
+                .build();
+        doReturn(Optional.ofNullable(productStock)).when(productStockRepository).findById(anyLong());
+        productStockService.minusCurrentStock(12l);
+        assertThat(productStock.getCurrentStock()).isEqualTo(89l);
+
+    }
+
+
+
+
+
 
 
 

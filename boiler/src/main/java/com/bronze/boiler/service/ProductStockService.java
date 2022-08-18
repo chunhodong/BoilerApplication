@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductStockService {
+
     private final ProductStockRepository productStockRepository;
     private final ProductRepository productRepository;
     public void createProductStock(ProductStockDto stock) {
@@ -47,6 +48,19 @@ public class ProductStockService {
                 .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));
 
         productStock.modifyCurrentStock(currentStock);
+
+    }
+
+    public void plusCurrentStock(Long productStockId) {
+        ProductStock productStock = productStockRepository.findById(productStockId)
+                .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));
+        productStock.plusCurrentStock();
+    }
+
+    public void minusCurrentStock(Long productStockId) {
+        ProductStock productStock = productStockRepository.findById(productStockId)
+                .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));
+        productStock.minusCurrentStock();
 
     }
 }

@@ -34,15 +34,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class MemberControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
 
     @MockBean
-    MemberService memberService;
+    private MemberService memberService;
 
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 
     @Test

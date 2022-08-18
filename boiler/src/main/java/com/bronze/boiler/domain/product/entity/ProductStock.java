@@ -54,4 +54,8 @@ public class ProductStock extends BaseDate {
     public void minusCurrentStock() {
         this.currentStock--;
     }
+
+    public boolean isRemainCurrentStock(){
+        return this.currentStock > 0;
+    }
 }

@@ -44,10 +44,10 @@ public class ProductStockRepositoryTest {
         ProductStock productStock = productStockRepository.save(ProductStock.builder()
                 .product(product)
                 .currentStock(100l)
-                .inStock(100l)
+                .totalStock(100l)
                 .build());
 
-        assertThat(productStock.getInStock()).isEqualTo(100l);
+        assertThat(productStock.getTotalStock()).isEqualTo(100l);
 
     }
 

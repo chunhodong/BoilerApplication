@@ -31,14 +31,14 @@ public class QProductStock extends EntityPathBase<ProductStock> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> inStock = createNumber("inStock", Long.class);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
     public final QProduct product;
 
     public final QProductOption productOption;
+
+    public final NumberPath<Long> totalStock = createNumber("totalStock", Long.class);
 
     public QProductStock(String variable) {
         this(ProductStock.class, forVariable(variable), INITS);

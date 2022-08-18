@@ -1,6 +1,8 @@
 package com.bronze.boiler.domain.product.entity;
 
 import com.bronze.boiler.domain.base.BaseDate;
+import com.bronze.boiler.domain.product.enums.ProductStockExceptionType;
+import com.bronze.boiler.exception.ProductStockException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,8 +37,13 @@ public class ProductStock extends BaseDate {
     @Column(name = "current_stock")
     private Long currentStock;
 
-    @Column(name = "in_stock")
-    private Long inStock;
+    @Column(name = "total_stock")
+    private Long totalStock;
 
 
+    public void modifyCurrentStock(Long currentStock) {
+        if(this.totalStock < currentStock){
+            throw new ProductStockException(ProductStockExceptionType.ILLEGAL_STOCK);
+        }
+    }
 }

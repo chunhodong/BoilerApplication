@@ -18,18 +18,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProductOptionDto {
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    @NotNull(message = "옵션타입을 입력하세요")
-    @Enumerated(EnumType.STRING)
     private OptionType type;
 
-    @Column
-    @NotNull(message = "옵션값을 입력하세요")
     private String value;
 
 

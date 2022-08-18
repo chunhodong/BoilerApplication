@@ -75,6 +75,9 @@ public class Product {
     @NotBlank(message = "배송/교환/환불 정보를 입력해야합니다")
     private String refundInfo;
 
+    @Column(name = "has_option")
+    private boolean hasOption;
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,13 +1,8 @@
 package com.bronze.boiler.domain.category.dto;
 
-import com.bronze.boiler.domain.category.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 /**
  * 상품카테고리

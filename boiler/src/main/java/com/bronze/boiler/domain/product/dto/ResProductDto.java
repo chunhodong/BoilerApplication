@@ -1,8 +1,6 @@
 package com.bronze.boiler.domain.product.dto;
 
 
-import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.product.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

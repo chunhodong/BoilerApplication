@@ -1,10 +1,8 @@
 package com.bronze.boiler.domain.product.entity;
 
 import com.bronze.boiler.domain.base.BaseDate;
-import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.product.enums.ProductReviewStatus;
-import com.bronze.boiler.domain.product.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import javax.print.DocFlavor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter

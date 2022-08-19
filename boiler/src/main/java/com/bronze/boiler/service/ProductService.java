@@ -10,7 +10,6 @@ import com.bronze.boiler.domain.product.entity.ProductOption;
 import com.bronze.boiler.domain.product.entity.ProductReview;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductReviewExceptionType;
-import com.bronze.boiler.domain.product.enums.ProductReviewStatus;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductReviewException;
 import com.bronze.boiler.filter.ProductFilter;
@@ -22,7 +21,6 @@ import com.bronze.boiler.repository.ProductReviewRepository;
 import com.bronze.boiler.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

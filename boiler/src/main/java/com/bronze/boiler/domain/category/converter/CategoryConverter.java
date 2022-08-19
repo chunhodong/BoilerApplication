@@ -2,16 +2,6 @@ package com.bronze.boiler.domain.category.converter;
 
 import com.bronze.boiler.domain.category.dto.CategoryDto;
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.product.dto.ProductOptionDto;
-import com.bronze.boiler.domain.product.dto.ReqProductDto;
-import com.bronze.boiler.domain.product.entity.Product;
-import com.bronze.boiler.domain.product.entity.ProductImage;
-import com.bronze.boiler.domain.product.entity.ProductOption;
-import org.thymeleaf.util.StringUtils;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoryConverter {
 

@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * 상품옵션

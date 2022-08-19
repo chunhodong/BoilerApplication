@@ -1,13 +1,9 @@
 package com.bronze.boiler.controller;
 
 
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.enums.MemberExceptionType;
 import com.bronze.boiler.domain.product.dto.ProductStockDto;
 import com.bronze.boiler.domain.product.enums.ProductStockExceptionType;
-import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.exception.ProductStockException;
-import com.bronze.boiler.service.MemberService;
 import com.bronze.boiler.service.ProductStockService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,9 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,7 +89,58 @@ public class ProductStockControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void 재고현재수량1증가_재고엔티티없으면_예외발생() throws Exception {
 
+
+        doThrow(new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT))
+                .when(productStockService)
+                .plusCurrentStock(anyLong());
+
+        mockMvc.perform(put("/pstocks/11/plus-cstock"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("NONE_EXIST_PRODUCT"))
+                .andExpect(jsonPath("$.message").value("존재하지않는 재고입니다"))
+                .andDo(print());
+    }
+
+
+    @Test
+    void 재고현재수량1증가_응답확인() throws Exception {
+        doNothing().when(productStockService).plusCurrentStock(anyLong());
+
+        mockMvc.perform(put("/pstocks/11/plus-cstock")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+
+    @Test
+    void 재고현재수량1감소_재고엔티티없으면_예외발생() throws Exception {
+
+
+        doThrow(new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT))
+                .when(productStockService)
+                .minusCurrentStock(anyLong());
+
+        mockMvc.perform(put("/pstocks/11/minus-cstock"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("NONE_EXIST_PRODUCT"))
+                .andExpect(jsonPath("$.message").value("존재하지않는 재고입니다"))
+                .andDo(print());
+    }
+
+
+    @Test
+    void 재고현재수량1감소_응답확인() throws Exception {
+        doNothing().when(productStockService).minusCurrentStock(anyLong());
+
+        mockMvc.perform(put("/pstocks/11/minus-cstock")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
     private <T> String toJson(T data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);

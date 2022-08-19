@@ -1,6 +1,5 @@
 package com.bronze.boiler.service;
 
-import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.product.dto.ProductStockDto;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductStock;
@@ -8,7 +7,8 @@ import com.bronze.boiler.domain.product.enums.ProductExceptionType;
 import com.bronze.boiler.domain.product.enums.ProductStockExceptionType;
 import com.bronze.boiler.exception.ProductException;
 import com.bronze.boiler.exception.ProductStockException;
-import com.bronze.boiler.repository.*;
+import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.repository.ProductStockRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 //테스트실행 확장을 위해 추가하는 Annotation

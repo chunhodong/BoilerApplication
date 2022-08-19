@@ -23,9 +23,21 @@ public class ProductStockController {
     private final ProductStockService productStockService;
 
     @PostMapping
-    public ResponseEntity<ResMemberDto> createStocks(@RequestBody @Valid ProductStockDto stockDto)  {
+    public ResponseEntity createStocks(@RequestBody @Valid ProductStockDto stockDto)  {
         productStockService.createProductStock(stockDto);
         return new ResponseEntity(HttpStatus.OK);
 
+    }
+
+    @PutMapping("/{id}/plus-cstock")
+    public ResponseEntity plusCurrentStock(@PathVariable("id")Long pstockId)  {
+        productStockService.plusCurrentStock(pstockId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/minus-cstock")
+    public ResponseEntity minusCurrentStock(@PathVariable("id")Long pstockId)  {
+        productStockService.minusCurrentStock(pstockId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

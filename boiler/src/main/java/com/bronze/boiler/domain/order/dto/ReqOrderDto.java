@@ -1,6 +1,5 @@
 package com.bronze.boiler.domain.order.dto;
 
-import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.order.entity.Address;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 
 

@@ -2,12 +2,9 @@ package com.bronze.boiler.domain.product.dto;
 
 
 import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 /**
  * 상품

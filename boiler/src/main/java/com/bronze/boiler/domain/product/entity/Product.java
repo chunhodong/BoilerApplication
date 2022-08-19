@@ -3,7 +3,10 @@ package com.bronze.boiler.domain.product.entity;
 
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 

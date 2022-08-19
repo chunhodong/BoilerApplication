@@ -19,6 +19,11 @@ public class ProductStockService {
 
     private final ProductStockRepository productStockRepository;
     private final ProductRepository productRepository;
+
+    /**
+     * 재고추가
+     * @param stock 재고DTO
+     */
     public void createProductStock(ProductStockDto stock) {
 
 
@@ -43,6 +48,11 @@ public class ProductStockService {
 
     }
 
+    /**
+     * 재고수량변경
+     * @param productStockId 재고아이디
+     * @param currentStock 변경할현재수량
+     */
     public void modifyCurrentStock(Long productStockId, Long currentStock) {
         ProductStock productStock = productStockRepository.findById(productStockId)
                 .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));
@@ -51,12 +61,20 @@ public class ProductStockService {
 
     }
 
+    /**
+     * 현재재고1추가
+     * @param productStockId 재고아이디
+     */
     public void plusCurrentStock(Long productStockId) {
         ProductStock productStock = productStockRepository.findById(productStockId)
                 .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));
         productStock.plusCurrentStock();
     }
 
+    /**
+     * 현재재고1감소
+     * @param productStockId 재고아이디
+     */
     public void minusCurrentStock(Long productStockId) {
         ProductStock productStock = productStockRepository.findById(productStockId)
                 .orElseThrow(() -> new ProductStockException(ProductStockExceptionType.NONE_EXIST_PRODUCT));

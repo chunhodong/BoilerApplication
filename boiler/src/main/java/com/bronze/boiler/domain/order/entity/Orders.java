@@ -3,6 +3,7 @@ package com.bronze.boiler.domain.order.entity;
 import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
+import com.bronze.boiler.domain.payment.entity.Payment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,6 +41,9 @@ public class Orders extends BaseDate {
     @Embedded
     @NotNull
     private Address address;
+
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "order")
+    private Payment payment;
 
     public void cancel() {
         this.status = OrderStatus.CANCEL;

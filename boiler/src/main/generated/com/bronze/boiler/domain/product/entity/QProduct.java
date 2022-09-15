@@ -22,15 +22,23 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
+    public final com.bronze.boiler.domain.base.QBaseDate _super = new com.bronze.boiler.domain.base.QBaseDate(this);
+
     public final com.bronze.boiler.domain.category.entity.QCategory category;
 
     public final StringPath code = createString("code");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> created = _super.created;
 
     public final StringPath description = createString("description");
 
     public final BooleanPath hasOption = createBoolean("hasOption");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
     public final StringPath name = createString("name");
 

@@ -1,6 +1,7 @@
 package com.bronze.boiler.domain.product.entity;
 
 
+import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
-public class Product {
+public class Product extends BaseDate {
 
 
 

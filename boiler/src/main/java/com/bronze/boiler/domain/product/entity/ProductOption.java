@@ -1,11 +1,13 @@
 package com.bronze.boiler.domain.product.entity;
 
 
+import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.product.enums.OptionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +20,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductOption {
+@DynamicInsert
+public class ProductOption extends BaseDate {
 
     @Id
     @Column

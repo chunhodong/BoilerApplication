@@ -19,7 +19,15 @@ public class QProductQna extends EntityPathBase<ProductQna> {
 
     public static final QProductQna productQna = new QProductQna("productQna");
 
+    public final com.bronze.boiler.domain.base.QBaseDate _super = new com.bronze.boiler.domain.base.QBaseDate(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> created = _super.created;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
     public QProductQna(String variable) {
         super(ProductQna.class, forVariable(variable));

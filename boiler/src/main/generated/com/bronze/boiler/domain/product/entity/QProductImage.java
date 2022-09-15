@@ -22,9 +22,17 @@ public class QProductImage extends EntityPathBase<ProductImage> {
 
     public static final QProductImage productImage = new QProductImage("productImage");
 
+    public final com.bronze.boiler.domain.base.QBaseDate _super = new com.bronze.boiler.domain.base.QBaseDate(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> created = _super.created;
+
     public final StringPath domain = createString("domain");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
     public final StringPath name = createString("name");
 

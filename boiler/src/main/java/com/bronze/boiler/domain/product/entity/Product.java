@@ -83,6 +83,12 @@ public class Product extends BaseDate {
     private boolean hasOption;
 
 
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "product")
+    private ProductStock stock;
+
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

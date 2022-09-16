@@ -12,17 +12,15 @@ import com.bronze.boiler.domain.order.entity.OrderProduct;
 import com.bronze.boiler.domain.order.entity.Orders;
 import com.bronze.boiler.domain.order.enums.OrderExceptionType;
 import com.bronze.boiler.domain.product.entity.Product;
+import com.bronze.boiler.domain.product.entity.ProductStock;
 import com.bronze.boiler.domain.product.enums.ProductExceptionType;
-import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.exception.OrderException;
 import com.bronze.boiler.exception.ProductException;
-import com.bronze.boiler.repository.MemberRepository;
-import com.bronze.boiler.repository.OrderProductRepository;
-import com.bronze.boiler.repository.OrderRepository;
-import com.bronze.boiler.repository.ProductRepository;
+import com.bronze.boiler.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +32,7 @@ public class OrderService {
     private OrderProductRepository orderProductRepository;
     private ProductRepository productRepository;
     private MemberRepository memberRepository;
+    private ProductStockRepository productStockRepository;
 
     /**
      * 주문하기
@@ -43,23 +42,29 @@ public class OrderService {
     public ResOrderDto createOrder(ReqOrderDto reqOrderDto) {
 
 
-        Member member = memberRepository.findById(reqOrderDto.getMemberId())
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
 
         List<Product> products = productRepository
                 .findAllById(reqOrderDto.getProductMap().keySet())
                 .stream().collect(Collectors.toList());
 
-        long unSellProductCount = products.stream()
-                .filter(product -> product.getStatus() == ProductStatus.CLOSE || product.getStatus() == ProductStatus.SOLDOUT).count();
+        //재고확인
+        List<ProductStock> productStocks = productStockRepository.findAllByProductIn(products);
+        productStocks.forEach(productStock -> {
+            if(!productStock.isRemainCurrentStock())
+                throw new ProductException(ProductExceptionType.SOLDOUT_PRODUCT);
+        });
 
-        if(unSellProductCount > 0)throw new ProductException(ProductExceptionType.SOLDOUT_PRODUCT);
 
+
+
+        //주문서작성
         Long totalPrice = products
                 .stream()
                 .mapToLong(value -> value.getSellPrice() * reqOrderDto.getProductMap().get(value.getId()))
                 .sum();
 
+        Member member = memberRepository.findById(reqOrderDto.getMemberId())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
         Orders order = orderRepository.save(OrderConverter.toOrder(reqOrderDto,member,totalPrice));
 
         List<OrderProduct> orderProducts = products.stream()
@@ -68,6 +73,18 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         orderProductRepository.saveAll(orderProducts);
+
+        //재고차감
+        productStocks.forEach(productStock -> productStock.minusCurrentStock());
+
+
+        //결제&영수정
+
+
+
+
+
+
 
 
         return OrderConverter.toOrderDto(order,orderProducts);

@@ -25,14 +25,13 @@ public class ProductStock extends BaseDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id",nullable = false,unique = true)
     @NotNull(message = "상품을 입력해야합니다")
     private Product product;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_option")
-    private ProductOption productOption;
 
     @Column(name = "current_stock")
     private Long currentStock;

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: dev
 ---
 spring:
   config:
@@ -21,3 +21,18 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
       ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dev?serverTimezone=Asia/Seoul
+    username: root
+    password: 9502
+  jpa:
+    show-sql: true
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      ddl-auto: update

@@ -36,8 +36,6 @@ public class QProductStock extends EntityPathBase<ProductStock> {
 
     public final QProduct product;
 
-    public final QProductOption productOption;
-
     public final NumberPath<Long> totalStock = createNumber("totalStock", Long.class);
 
     public QProductStock(String variable) {
@@ -59,7 +57,6 @@ public class QProductStock extends EntityPathBase<ProductStock> {
     public QProductStock(Class<? extends ProductStock> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
-        this.productOption = inits.isInitialized("productOption") ? new QProductOption(forProperty("productOption"), inits.get("productOption")) : null;
     }
 
 }

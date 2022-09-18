@@ -56,6 +56,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final EnumPath<com.bronze.boiler.domain.product.enums.ProductStatus> status = createEnum("status", com.bronze.boiler.domain.product.enums.ProductStatus.class);
 
+    public final QProductStock stock;
+
     public QProduct(String variable) {
         this(Product.class, forVariable(variable), INITS);
     }
@@ -75,6 +77,7 @@ public class QProduct extends EntityPathBase<Product> {
     public QProduct(Class<? extends Product> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.category = inits.isInitialized("category") ? new com.bronze.boiler.domain.category.entity.QCategory(forProperty("category"), inits.get("category")) : null;
+        this.stock = inits.isInitialized("stock") ? new QProductStock(forProperty("stock"), inits.get("stock")) : null;
     }
 
 }

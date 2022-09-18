@@ -3,11 +3,13 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.utils.RandomGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -19,11 +21,22 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 @Transactional
+@Rollback(value = false)
 public class MemberRepositoryTest {
 
 
     @Autowired
     private MemberRepository memberRepository;
+
+
+    @Test
+    void 회원추가() {
+
+        int count = 2;
+        for(int i = 0; i < count; i++){
+            memberRepository.save(RandomGenerator.getMember());
+        }
+    }
 
     @Test
     void 회원조회_회원정보확인() {

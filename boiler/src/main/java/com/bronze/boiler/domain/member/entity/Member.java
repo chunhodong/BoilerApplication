@@ -38,7 +38,8 @@ public class Member {
     @Column
     @NotBlank(message = "패스워드를 입력해야합니다")
     private String password;
-    
+
+    @Enumerated(EnumType.STRING)
     @Column
     private Role role;
 

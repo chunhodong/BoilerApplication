@@ -38,6 +38,8 @@ public class QOrders extends EntityPathBase<Orders> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
+    public final com.bronze.boiler.domain.payment.entity.QPayment payment;
+
     public final NumberPath<Long> paymentPrice = createNumber("paymentPrice", Long.class);
 
     public final EnumPath<com.bronze.boiler.domain.order.enums.OrderStatus> status = createEnum("status", com.bronze.boiler.domain.order.enums.OrderStatus.class);
@@ -64,6 +66,7 @@ public class QOrders extends EntityPathBase<Orders> {
         super(type, metadata, inits);
         this.address = inits.isInitialized("address") ? new QAddress(forProperty("address")) : null;
         this.member = inits.isInitialized("member") ? new com.bronze.boiler.domain.member.entity.QMember(forProperty("member")) : null;
+        this.payment = inits.isInitialized("payment") ? new com.bronze.boiler.domain.payment.entity.QPayment(forProperty("payment"), inits.get("payment")) : null;
     }
 
 }

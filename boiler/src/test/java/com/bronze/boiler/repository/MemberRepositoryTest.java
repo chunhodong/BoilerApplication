@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +33,16 @@ public class MemberRepositoryTest {
     @Test
     void 회원추가() {
 
-        int count = 2;
+        List<Member> members = new ArrayList<>();
+        int count = 5000000;
         for(int i = 0; i < count; i++){
-            memberRepository.save(RandomGenerator.getMember());
+            members.add(RandomGenerator.getMember());
+
         }
+        System.out.println("s");
+        memberRepository.saveAll(members);
+
+        System.out.println("e");
     }
 
     @Test

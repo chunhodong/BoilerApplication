@@ -1,5 +1,6 @@
 package com.bronze.boiler.domain.member.entity;
 
+import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.member.enums.MemberStatus;
 import com.bronze.boiler.domain.member.enums.Role;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "test-sequence-generator")

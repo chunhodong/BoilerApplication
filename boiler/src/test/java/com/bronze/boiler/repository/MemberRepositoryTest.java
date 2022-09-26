@@ -39,10 +39,8 @@ public class MemberRepositoryTest {
             members.add(RandomGenerator.getMember());
 
         }
-        System.out.println("s");
         memberRepository.saveAll(members);
 
-        System.out.println("e");
     }
 
     @Test

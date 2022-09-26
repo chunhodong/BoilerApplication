@@ -28,7 +28,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dev?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/dev?serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
     username: root
     password: 9502
     hikari:
@@ -36,7 +36,7 @@ spring:
         rewriteBatchedStatements: true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

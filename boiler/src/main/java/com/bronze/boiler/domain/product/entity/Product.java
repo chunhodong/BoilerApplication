@@ -4,10 +4,7 @@ package com.bronze.boiler.domain.product.entity;
 import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -21,6 +18,7 @@ import java.util.Objects;
  */
 @Builder
 @Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,10 +26,9 @@ import java.util.Objects;
 public class Product extends BaseDate {
 
 
-
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
+    @SequenceGenerator(name = "seqGen", sequenceName = "products_id_seq", allocationSize = 1)
     private Long id;
 
 

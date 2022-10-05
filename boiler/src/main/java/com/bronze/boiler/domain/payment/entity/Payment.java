@@ -33,12 +33,12 @@ public class Payment extends BaseDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id",nullable = false,unique = true)
     private Orders order;
 
     @Column
-    private Long mid;
+    private String mid;
 
     @Column(name = "buyer_email")
     private String buyerEmail;
@@ -52,8 +52,11 @@ public class Payment extends BaseDate {
     @Column
     private String signature;
 
+    @Column
+    private String moid;
+
     @Column(name = "card_code")
-    private Long cardCode;
+    private String cardCode;
 
     @Column(name = "card_name")
     private String cardName;

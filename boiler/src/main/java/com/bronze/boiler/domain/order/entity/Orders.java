@@ -3,7 +3,6 @@ package com.bronze.boiler.domain.order.entity;
 import com.bronze.boiler.domain.base.BaseDate;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
-import com.bronze.boiler.domain.payment.entity.Payment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +22,8 @@ public class Orders extends BaseDate {
     private Long id;
 
     @NotNull(message = "주문상태를 입력해야합니다")
+    @Enumerated(EnumType.STRING)
+    @Column
     private OrderStatus status;
 
     @NotNull(message = "총금액을 입력해야합니다")
@@ -42,8 +43,6 @@ public class Orders extends BaseDate {
     @NotNull
     private Address address;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "order")
-    private Payment payment;
 
     public void cancel() {
         this.status = OrderStatus.CANCEL;

@@ -4,6 +4,10 @@ import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.MemberStatus;
 import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.domain.order.entity.Address;
+import com.bronze.boiler.domain.order.entity.Orders;
+import com.bronze.boiler.domain.order.enums.OrderStatus;
+import com.bronze.boiler.domain.payment.entity.Payment;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
@@ -15,6 +19,7 @@ import java.util.*;
 public class RandomGenerator {
     private static Random random = new Random();
 
+    private static Long[] prices = new Long[]{20000l,50000l,15000l,30000l,40000l,33000l};
     public static String getRandomStr(int size) {
         if(size > 0) {
             char[] tmp = new char[size];
@@ -39,9 +44,31 @@ public class RandomGenerator {
         return 성.get(0) + 이름.get(0) + 이름.get(1);
     }
 
+    public static Address getAddress() {
+        List< String > titles = Arrays.asList("서울시 강동구","서울시 강서구","경기도 성남시 상도동","경기도 안양시 범내천","경기도 광명시 수지동");
+        List<String> details = Arrays.asList("은마아파트 105동 602호","푸르지오 602동 107호","강동자이 102호 302호","강동현대아파트 1032동 203호","성내동 이코빌라 102호");
+        int zipCode = random.nextInt(100) + 10000;
+        Collections.shuffle(titles);
+        Collections.shuffle(details);
+        return Address.builder()
+                .titleAddress(titles.get(0))
+                .detailAddress(details.get(0))
+                .zipcode(Long.valueOf(zipCode))
+                .build();
+
+    }
+
+
 
     public static String getProductName() {
         return "상품".concat(UUID.randomUUID().toString());
+
+    }
+    public static String getTel(){
+
+        int x = random.nextInt(9000) + 1000; //마지막자리 4자리수 1000~9999
+
+        return "010-".concat(String.valueOf(x)).concat("-").concat(String.valueOf(x));
 
     }
 
@@ -56,6 +83,31 @@ public class RandomGenerator {
         return randomStr.concat(domains.get(0));
     }
 
+
+    static class CardSet{
+        String code;
+        String name;
+        public CardSet(String code,String name){
+            this.code = code;
+            this.name = name;
+        }
+    }
+
+
+    public static List<CardSet> cardSets = List.of(
+            new CardSet("07","신한"),
+            new CardSet("51","국민"),
+            new CardSet("42","우리"),
+            new CardSet("38","BC"),
+            new CardSet("05","현대"),
+            new CardSet("17","삼성"),
+            new CardSet("23","롯데"),
+            new CardSet("15","농협"));
+    public static CardSet getCardCode(){
+
+
+        return cardSets.get(random.nextInt(cardSets.size()));
+    }
     public static String getPassword(){
         return UUID.randomUUID().toString();
     }
@@ -73,6 +125,19 @@ public class RandomGenerator {
                 .role(Role.USER)
                 .status(MemberStatus.NORMAL)
                 .lastLogin(getLocalDateTime())
+                .build();
+    }
+
+    public static Orders getOrder(){
+
+        long price = prices[random.nextInt(prices.length)];
+        return Orders.builder()
+                .address(getAddress())
+                .totalPrice(price)
+                .paymentPrice(price)
+                .discountPrice(0l)
+                .status(OrderStatus.PAYMENT)
+                .member(Member.builder().id(Long.valueOf(random.nextInt(6000000) + 1)).build())
                 .build();
     }
 
@@ -110,4 +175,23 @@ public class RandomGenerator {
                 .build();
     }
 
+    public static Payment getPayment() {
+        CardSet cardSet = getCardCode();
+        String signature = UUID.randomUUID().toString().replace("-","");
+        String moid = UUID.randomUUID().toString().replace("-","");
+
+        return Payment.builder()
+                .buyerName(getKoreanFullName())
+                .buyerTel(getTel())
+                .buyerEmail(getEmail())
+                .cardCode(cardSet.code)
+                .cardName(cardSet.name)
+                .cardQuota(0l)
+                .moid(moid)
+                .mid("sugarmall")
+                .resultCode("3001")
+                .member(Member.builder().id(Long.valueOf(random.nextInt(5999999) + 1)).build())
+                .signature(signature)
+                .build();
+    }
 }

@@ -3,10 +3,10 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.category.entity.Category;
 import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.product.entity.Product;
-import com.bronze.boiler.domain.product.entity.ProductImage;
-import com.bronze.boiler.domain.product.entity.ProductReview;
-import com.bronze.boiler.domain.product.entity.ProductStock;
+import com.bronze.boiler.domain.order.entity.OrderProduct;
+import com.bronze.boiler.domain.order.entity.Orders;
+import com.bronze.boiler.domain.payment.entity.Payment;
+import com.bronze.boiler.domain.product.entity.*;
 import com.bronze.boiler.domain.product.enums.ProductReviewStatus;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
 import com.bronze.boiler.filter.ProductFilter;
@@ -24,6 +24,7 @@ import org.springframework.test.annotation.Rollback;
 import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,7 +52,262 @@ public class ProductRepositoryTest {
     private HikariDataSource hikariDataSource;
 
 
-    private int batchSize = 500000;
+    private int batchSize = 50000;
+
+
+    private Random random = new Random();
+
+
+    @Test
+    void 결제추가() {
+        List<Long> ids = selectCanel();
+        System.out.println("ids : "+ids.size());
+
+
+        List<Payment> payments = new ArrayList<>();
+        int count = ids.size();
+        for (long i = 0; i < count; i++) {
+
+
+
+            payments.add(RandomGenerator.getPayment());
+
+        }
+        saveAllJdbcBatchPayment(payments,ids);
+
+
+    }
+    public List<Long> selectOrders(){
+
+        return null;
+    }
+
+    public List<Long> selectCanel() {
+        List<Long> orderIds  = new ArrayList<>();
+
+        String sql =
+                "SELECT order_id FROM payment WHERE result_code=?";
+
+        try (Connection connection = hikariDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            statement.setString(1, "REFUND");
+
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                orderIds.add(resultSet.getLong(1));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            return orderIds;
+        }
+    }
+
+
+
+    public void saveAllJdbcBatchPayment(List<Payment> payments,List<Long> ids) {
+        String sql =
+                "INSERT INTO payment (id,created,modified,buyer_email,buyer_name,buyer_tel,card_code,card_name,card_quota,mid,moid,result_code,signature,member_id,order_id) " +
+                        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        try (Connection connection = hikariDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            int counter = 12000000;
+            int idx = 0;
+            for (Payment payment : payments) {
+                statement.clearParameters();
+                statement.setLong(1, counter + 1);
+                statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+
+                statement.setString(4,payment.getBuyerEmail());
+                statement.setString(5, payment.getBuyerName());
+                statement.setString(6, payment.getBuyerTel());
+
+                statement.setString(7, payment.getCardCode());
+                statement.setString(8, payment.getCardName());
+                statement.setLong(9, payment.getCardQuota());
+
+                statement.setString(10, payment.getMid());
+                statement.setString(11, payment.getMoid());
+
+                statement.setString(12, "2001");
+                statement.setString(13, payment.getSignature());
+                statement.setLong(14, payment.getMember().getId());
+                statement.setLong(15, ids.get(idx++));
+
+
+
+
+                statement.addBatch();
+
+
+
+                if ((counter + 1) % batchSize == 0 || (counter + 1) == payments.size()) {
+                    statement.executeBatch();
+                    statement.clearBatch();
+                }
+                counter++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void 주문상품추가() {
+
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        int count = 1;
+        for (long i = 0; i < count; i++) {
+
+
+
+            orderProducts.add(new OrderProduct());
+
+        }
+        saveAllJdbcBatchOrdersp(orderProducts);
+
+    }
+
+    public void saveAllJdbcBatchOrdersp(List<OrderProduct> orders) {
+        String sql =
+                "INSERT INTO order_product (id,created,modified,count,total_price,order_id,product_id,product_option_id) " +
+                        "VALUES (?,?,?,?,?,?,?,?)";
+
+        try (Connection connection = hikariDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            int counter = 11999999;
+            for (OrderProduct order : orders) {
+                int day = random.nextInt(500);
+                statement.clearParameters();
+                statement.setLong(1, counter + 1);
+                statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().minusDays(day)));
+                statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now().minusDays(day)));
+
+                statement.setLong(4,1);
+                statement.setLong(5, 0);
+                statement.setLong(6, counter + 1);
+
+                statement.setLong(7, 3000000);
+                statement.setLong(8, 6000000);
+
+
+                statement.addBatch();
+
+
+
+                if ((counter + 1) % batchSize == 0 || (counter + 1) == orders.size()) {
+                    statement.executeBatch();
+                    statement.clearBatch();
+                }
+                counter++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    void 상품옵션추가() {
+
+        List<Orders> orders = new ArrayList<>();
+        int count = 2000000;
+        for (long i = 0; i < count; i++) {
+
+
+
+            orders.add(RandomGenerator.getOrder());
+
+        }
+        saveAllJdbcBatchOrders(orders);
+
+    }
+
+    public void saveAllJdbcBatchOrders(List<Orders> orders) {
+        String sql =
+                "INSERT INTO orders (id,created,modified,detail_address,title_address,zipcode,discount_price,payment_price,status,total_price,member_id) " +
+                        "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
+        try (Connection connection = hikariDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            int counter = 10000000;
+            for (Orders order : orders) {
+                int day = random.nextInt(500);
+                statement.clearParameters();
+                statement.setLong(1, counter + 1);
+                statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().minusDays(day)));
+                statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now().minusDays(day)));
+
+                statement.setString(4, order.getAddress().getDetailAddress());
+                statement.setString(5, order.getAddress().getTitleAddress());
+                statement.setLong(6, order.getAddress().getZipcode());
+
+                statement.setLong(7, order.getDiscountPrice());
+                statement.setLong(8, order.getPaymentPrice());
+                statement.setString(9, order.getStatus().name());
+                statement.setLong(10, order.getTotalPrice());
+                statement.setLong(11, order.getMember().getId());
+
+
+
+                statement.addBatch();
+
+
+
+                if ((counter + 1) % batchSize == 0 || (counter + 1) == orders.size()) {
+                    statement.executeBatch();
+                    statement.clearBatch();
+                }
+                counter++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveAllJdbcBatchProductOption(List<ProductOption> productOptions) {
+        String sql =
+                "INSERT INTO product_option (id,created,modified,type,value,product_id) " +
+                        "VALUES (?,?,?,?,?,?)";
+
+        try (Connection connection = hikariDataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+            int counter = 3000000;
+            for (ProductOption option : productOptions) {
+                statement.clearParameters();
+                statement.setLong(1, counter + 1);
+                statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setString(4, option.getType().name());
+                statement.setString(5, option.getValue());
+                statement.setLong(6, option.getProduct().getId());
+
+                statement.addBatch();
+
+
+
+                if ((counter + 1) % batchSize == 0 || (counter + 1) == productOptions.size()) {
+                    statement.executeBatch();
+                    statement.clearBatch();
+                }
+                counter++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     void 상품리뷰추가() {
@@ -92,7 +348,7 @@ public class ProductRepositoryTest {
         try (Connection connection = hikariDataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            int counter = 12000000;
+            int counter = 27000000;
             for (ProductReview productStock : productReviews) {
                 statement.clearParameters();
                 statement.setLong(1, counter + 1);

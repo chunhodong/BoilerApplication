@@ -30,7 +30,7 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public final StringPath buyerTel = createString("buyerTel");
 
-    public final NumberPath<Long> cardCode = createNumber("cardCode", Long.class);
+    public final StringPath cardCode = createString("cardCode");
 
     public final StringPath cardName = createString("cardName");
 
@@ -43,10 +43,12 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public final com.bronze.boiler.domain.member.entity.QMember member;
 
-    public final NumberPath<Long> mid = createNumber("mid", Long.class);
+    public final StringPath mid = createString("mid");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
+
+    public final StringPath moid = createString("moid");
 
     public final com.bronze.boiler.domain.order.entity.QOrders order;
 

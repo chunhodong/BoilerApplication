@@ -3,8 +3,6 @@ package com.bronze.boiler.repository;
 import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.member.entity.Member;
 import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.utils.RandomGenerator;
-import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,11 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,62 +26,6 @@ public class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private HikariDataSource hikariDataSource;
-
-
-    private int batchSize = 50000;
-    @Test
-    void 회원추가() {
-
-        List<Member> members = new ArrayList<>();
-        int count = 1;
-        for(int i = 0; i < count; i++){
-            members.add(RandomGenerator.getMember());
-
-        }
-        saveAllJdbcBatch(members);
-
-    }
-
-
-    public void saveAllJdbcBatch(List<Member> members){
-        String sql =
-                "INSERT INTO member (id,email,last_login,name,password,period_of_block,role,status,created,modified) " +
-                        "VALUES (?,?,?,?,?,?,?,?,?,?)";
-
-        try (Connection connection = hikariDataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)
-        ){
-            int counter = 0;
-            for (Member member : members) {
-                statement.clearParameters();
-                statement.setLong(1,6000000);
-                statement.setString(2, member.getEmail());
-                statement.setTimestamp(3, Timestamp.valueOf(member.getLastLogin()));
-                statement.setString(4, member.getName());
-                statement.setString(5,member.getPassword());
-
-                statement.setDate(6, null);
-                statement.setString(7, member.getRole().name());
-                statement.setString(8, member.getStatus().name());
-                statement.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
-                statement.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
-                statement.addBatch();
-
-
-                if ((counter + 1) % batchSize == 0 || (counter + 1) == members.size()) {
-                    statement.executeBatch();
-                    statement.clearBatch();
-                }
-                counter++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @Test
     void 회원조회_회원정보확인() {

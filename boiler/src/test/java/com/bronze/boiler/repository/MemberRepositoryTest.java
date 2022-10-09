@@ -2,6 +2,7 @@ package com.bronze.boiler.repository;
 
 import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.domain.member.enums.MemberStatus;
 import com.bronze.boiler.domain.member.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +96,7 @@ public class MemberRepositoryTest {
     }
 
 
+    //---------------------------------------Member--------------------------------------------
     @Test
     void 전체회원수조회(){
         /**
@@ -105,6 +108,59 @@ public class MemberRepositoryTest {
         long memberCount = memberRepository.count();
         assertThat(memberCount).isEqualTo(6000000);
     }
+
+    @Test
+    void 상태별회원수조회(){
+        long memberCount = memberRepository.countByStatus(MemberStatus.SLEEP);
+        assertThat(memberCount).isEqualTo(1001l);
+    }
+
+
+    @Test
+    void 역할별회원수조회(){
+        long memberCount = memberRepository.countByRole(Role.USER);
+        assertThat(memberCount).isEqualTo(6000000l);
+    }
+
+    @Test
+    void 이메일중복여부조회(){
+        /**
+         spring-data-jpa
+
+         - countByEmail로 조회를 하면
+            select
+                count(member0_.id) as col_0_0_
+            from
+                member member0_
+            where
+                member0_.email=?
+
+         - existsByEmail로 조회를 하면
+            select
+                member0_.id as col_0_0_
+            from
+                member member0_
+            where
+                member0_.email=? limit ?
+
+         existsByEmail의 경우 email조건으로 테이블을 조회하다가 limit 조건을 충족시키면 추가검색을 안함
+         countByEmail의 경우 email조건으로 테이블을 조회
+         */
+        boolean memberCount = memberRepository.existsByEmail("bppfcmufsh@naver.com");
+        assertThat(memberCount).isEqualTo(true);
+    }
+
+
+    @Test
+    void 가입일자별회원정렬(){
+        LocalDateTime startDate = LocalDateTime.now().minusDays(100);
+        LocalDateTime endDate = LocalDateTime.now();
+        List<Member> members = memberRepository.findAllByLastLogin(startDate,endDate,20);
+        assertThat(members.size()).isEqualTo(20);
+    }
+
+
+
 
 
 

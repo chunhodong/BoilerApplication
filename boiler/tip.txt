@@ -66,6 +66,7 @@
   - mysql
     - mysql의 실행계획은 select_type,table,partitions,type,possible_keys,key,key_len,ref,rows,filtered,Extra 컬럼이 존재
     - 컬럼에 대한 설명은 https://nomadlee.com/mysql-explain-sql/, https://12bme.tistory.com/168
+    - 실행계획이 똑같더라도 결과도출속도는 다를 수 있음, 실행계획에서는 추정치를 반환하기도 하기떄문에 더 자세히 볼려면 explain analyze로 검색해야함
     - select_type : SELECT쿼리가 어떤 타입인지 나타내는 용도
       - SIMPLE : 단순 SELECT(Union이나 Sub Query가 없는 SELECT문)
 
@@ -88,6 +89,8 @@
     - extra : MySQL이 어떻게 쿼리를 풀었는지 부가 정보가 나옴
       - using where : where조건으로 데이터를 추출, 대부분 쿼리에서 표시됨, 만약 row칼럼에 데이터와 실제읽어온 데이터의 개수차이가 크다면
                       보완이 필요할 수 있음
+      - using filesort : 인덱스를 이용한 정렬을 할 수 없는경우 SortBuffer를 통해서 정렬, 드라이빙 테이블만 정렬할 경우 SortBuffer에서 해결 가능
+      - using temporary : 드라이빙테이블만이용해서 정렬을 할 수 없는 경우, 여러 테이블을 조인해서 전부 임시 테이블에 넣어서 정렬하는 방식
   - postgresql
 
 *. 분산트랜잭션

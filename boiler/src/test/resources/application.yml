@@ -22,6 +22,11 @@ spring:
       dialect: org.hibernate.dialect.MySQL8Dialect
       ddl-auto: create
 ---
+logging:
+  level:
+    org.hibernate.type: trace
+
+
 spring:
   config:
     activate:

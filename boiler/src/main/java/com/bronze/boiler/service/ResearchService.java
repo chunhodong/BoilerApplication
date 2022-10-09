@@ -20,9 +20,6 @@ public class ResearchService {
     //상태값조회
     //최대주문회원
 
-    public long getMemberCount(){
-        return memberRepository.count();
-    }
 
     //--------------------------상품조회------------------------
     //가장비싼상품

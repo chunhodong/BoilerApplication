@@ -63,6 +63,32 @@
   - @ControllerAdvice를 사용해서 특정 컨트롤러나 특정패키지만 예외처리를 해줄수있음, 없으면 글로벌하게 예외처리
 
 *. 통계데이터
+  - mysql
+    - mysql의 실행계획은 select_type,table,partitions,type,possible_keys,key,key_len,ref,rows,filtered,Extra 컬럼이 존재
+    - 컬럼에 대한 설명은 https://nomadlee.com/mysql-explain-sql/, https://12bme.tistory.com/168
+    - select_type : SELECT쿼리가 어떤 타입인지 나타내는 용도
+      - SIMPLE : 단순 SELECT(Union이나 Sub Query가 없는 SELECT문)
+
+    - table : 어떤 테이블에 대한 정보인지 나타냄
+
+    - partitions : 파티셔닝 테이블일때, 어떤 파티션을 읽었는지 알려줌
+
+    - type : 인덱스 참조에 대한 정보
+      - ALL : 테이블을 처음부터 끝까지 검색하는 경우, 일반적으로 테이블 풀스캔이라고함
+
+    - possible_keys : 옵티마이저가 쿼리를 처리하기 위해 여러 처리 방법을 고려하던 중에 사용된 후보 인덱스 목록
+
+    - key : possible_keys 컬럼에서 보여진 후보 인덱스 목록 중 실제 사용된 인덱스, 인덱스 사용 못했을 경우는 NULL로 표기된다
+
+    - rows : 옵티마이저가 비용산정을 위해 얼마나 많은 레코드를 읽고 비교해야하는지 예측해본 레코드수
+             스토리지 엔진별로 쿼리를 처리하기 위해 얼마나 많은 레코드를 디스크로부터 읽고 체크해야하는지를 의미
+
+    - filtered : 스토리지 엔진에서 읽어온 쿼리중에 mysql엔진이 필터링한 비율(통계치라 정확히지않음)
+
+    - extra : MySQL이 어떻게 쿼리를 풀었는지 부가 정보가 나옴
+      - using where : where조건으로 데이터를 추출, 대부분 쿼리에서 표시됨, 만약 row칼럼에 데이터와 실제읽어온 데이터의 개수차이가 크다면
+                      보완이 필요할 수 있음
+  - postgresql
 
 *. 분산트랜잭션
 

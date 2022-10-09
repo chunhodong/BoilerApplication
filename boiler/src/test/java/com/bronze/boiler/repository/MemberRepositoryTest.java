@@ -93,4 +93,19 @@ public class MemberRepositoryTest {
 
     }
 
+
+    @Test
+    void 전체회원수조회(){
+        /**
+         * -spring-data-jpa의 count는 select count(*) from table 방식
+         *  -count(*)는 내부적으로 값을 확인하지 않음
+         * -select count(id) from table 방식으로 쿼리한다면
+         *  -내부적으로 NULL값을 제외해야되기 떄문에 테이블값을 일일이 확인, 시간이 더 걸릴 수 있음
+        */
+        long memberCount = memberRepository.count();
+        assertThat(memberCount).isEqualTo(6000000);
+    }
+
+
+
 }

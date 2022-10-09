@@ -1,21 +1,28 @@
 package com.bronze.boiler.service;
 
+import com.bronze.boiler.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ResearchService {
-
+    private final MemberRepository memberRepository;
 
     //--------------------------회원조회-----------------------
+    //회원수조회
+    //년/월/일별 가입자수
+    //등급별 회원수
     //회원이름순정렬
     //아이디별정렬
     //가입날짜별(최신순/오래된순)정렬
-    //년/월/일별 가입자수
     //%이메일%조회
     //상태값조회
     //최대주문회원
+
+    public long getMemberCount(){
+        return memberRepository.count();
+    }
 
     //--------------------------상품조회------------------------
     //가장비싼상품

@@ -1,14 +1,13 @@
 package com.bronze.boiler.repository;
 
 import com.bronze.boiler.domain.product.entity.Product;
-
 import com.bronze.boiler.domain.product.entity.QProduct;
-import com.bronze.boiler.domain.product.entity.QProductReview;
 import com.bronze.boiler.filter.ProductFilter;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +42,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCst{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    @Override
+    public List<Product> findAllMaxPrice() {
+
+        return queryFactory
+                .selectFrom(product)
+                .where(product.sellPrice.eq(JPAExpressions.select(product.sellPrice.max()).from(product)))
+                .fetch();
+
     }
 
     public OrderSpecifier[] getOrderSpec(Sort sort, QProduct product) {

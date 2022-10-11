@@ -35,7 +35,6 @@ public class ProductReview extends BaseDate {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @NotNull(message = "상품을 입력해야합니다")
     private Product product;
 
 

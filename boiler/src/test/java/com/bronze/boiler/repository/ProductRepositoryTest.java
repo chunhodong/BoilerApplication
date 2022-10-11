@@ -283,4 +283,21 @@ public class ProductRepositoryTest {
     }
 
 
+    //---------------------------------------Product--------------------------------------
+
+    @Test
+    void 가장비싼상품목록조회_NplusOne문제발생(){
+
+        List<Product> products = productRepository.findAllMaxPrice();
+       //products.get(0).getCategory().getId();
+    }
+
+    @Test
+    void 가장저렴한상품조회(){
+
+
+    }
+
+
+
 }

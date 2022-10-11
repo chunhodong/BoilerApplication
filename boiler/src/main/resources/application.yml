@@ -19,7 +19,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
-      ddl-auto: create
+      ddl-auto: none
 ---
 logging:
   level:
@@ -39,7 +39,7 @@ spring:
     show-sql: true
     hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
-      ddl-auto: create
+      ddl-auto: none
 ---
 spring:
   config:

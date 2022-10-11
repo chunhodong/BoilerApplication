@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ProductRepositoryCst {
     List<Product> findAllByPage(ProductFilter productFilter, Pageable pageable);
+
+    List<Product> findAllMaxPrice();
 }

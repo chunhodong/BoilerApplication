@@ -298,4 +298,11 @@ public class ProductReviewRepositoryTest {
     }
 
 
+    //------------------------------------------ProductReview------------------------------------------
+    @Test
+    void 리뷰목록조회(){
+        List<ProductReview> reviews = productReviewRepository.findAllById(List.of(1l,2l));
+        System.out.println("review="+reviews);
+        reviews.forEach(productReview -> System.out.println(productReview.getProduct().getName()));
+    }
 }

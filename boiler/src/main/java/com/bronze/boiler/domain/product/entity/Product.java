@@ -25,12 +25,10 @@ import java.util.Objects;
 @DynamicInsert
 public class Product extends BaseDate {
 
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column
     @NotBlank(message = "이름을 입력해야합니다")
@@ -59,7 +57,6 @@ public class Product extends BaseDate {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
     @ColumnDefault("'NEW'")
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
@@ -79,12 +76,8 @@ public class Product extends BaseDate {
     @Column(name = "has_option")
     private boolean hasOption;
 
-
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "product")
-    private ProductStock stock;
-
-
-
+  /*  @OneToOne(fetch = FetchType.LAZY,mappedBy = "product",optional = false)
+    private ProductStock stock;*/
 
     @Override
     public boolean equals(Object o) {
@@ -98,8 +91,6 @@ public class Product extends BaseDate {
     public int hashCode() {
         return id.intValue();
     }
-
-
 
     public void close() {
         this.status = ProductStatus.CLOSE;

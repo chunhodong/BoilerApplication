@@ -20,13 +20,8 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
-      ddl-auto: create
+      ddl-auto: none
 ---
-logging:
-  level:
-    org.hibernate.type: trace
-
-
 spring:
   config:
     activate:
@@ -41,7 +36,7 @@ spring:
         rewriteBatchedStatements: true
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:

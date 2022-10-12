@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(TestConfig.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 @Transactional
 public class ProductReviewRepositoryTest {
@@ -301,6 +301,7 @@ public class ProductReviewRepositoryTest {
     //------------------------------------------ProductReview------------------------------------------
     @Test
     void 리뷰목록조회(){
+
         List<ProductReview> reviews = productReviewRepository.findAllById(List.of(1l,2l));
         System.out.println("review="+reviews);
         reviews.forEach(productReview -> System.out.println(productReview.getProduct().getName()));

@@ -1,6 +1,20 @@
 spring:
   profiles:
-    active: dev
+    active: mem
+---
+spring:
+  config:
+    activate:
+      on-profile: mem
+  h2:
+    console:
+      enabled: true
+      path: /h2-consol
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
 ---
 spring:
   config:

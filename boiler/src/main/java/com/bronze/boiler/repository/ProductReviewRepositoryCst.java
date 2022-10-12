@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProductReviewRepositoryCst {
     List<ProductReview> findAllByPage(ProductReviewFilter filter,Pageable pageable);
+    List<ProductReview> findAllWithFetchJoin();
 }

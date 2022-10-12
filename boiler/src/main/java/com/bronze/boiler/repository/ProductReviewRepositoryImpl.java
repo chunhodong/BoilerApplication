@@ -16,31 +16,41 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.bronze.boiler.domain.product.entity.QProductReview.productReview;
-
+import static com.bronze.boiler.domain.product.entity.QProduct.product;
 
 @RequiredArgsConstructor
 public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ProductReview> findAllByPage(ProductReviewFilter filter,Pageable pageable) {
+    public List<ProductReview> findAllByPage(ProductReviewFilter filter, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(filter.getParentId() == null){
+        if (filter.getParentId() == null) {
             builder.and(productReview.parent.isNull());
-        }
-        else builder.and(productReview.parent.id.eq(filter.getParentId()));
+        } else builder.and(productReview.parent.id.eq(filter.getParentId()));
 
-        if(filter.getStatus() != null){
+        if (filter.getStatus() != null) {
             builder.and(productReview.status.eq(filter.getStatus()));
         }
         return queryFactory
                 .selectFrom(productReview)
                 .where(builder)
-                .orderBy(getOrderSpec(pageable.getSort(),productReview))
+                .orderBy(getOrderSpec(pageable.getSort(), productReview))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    @Override
+    public List<ProductReview> findAllWithFetchJoin() {
+        return queryFactory
+                .selectFrom(productReview)
+                .leftJoin(productReview.product, product)
+                .fetchJoin()
+                .where(productReview.product.id.eq(1l))
+                .fetch();
+
     }
 
     public OrderSpecifier[] getOrderSpec(Sort sort, QProductReview productReview) {

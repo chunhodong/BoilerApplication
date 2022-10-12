@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -300,9 +301,59 @@ public class ProductReviewRepositoryTest {
 
     //------------------------------------------ProductReview------------------------------------------
     @Test
-    void 리뷰목록조회(){
-        List<ProductReview> reviews = productReviewRepository.findAllById(List.of(1l,2l));
-        System.out.println("review="+reviews);
-        reviews.forEach(productReview -> System.out.println(productReview.getProduct().getName()));
+    void 리뷰목록조회() {
+        //insertReview();
+        List<ProductReview> reviews = productReviewRepository.findAllWithFetchJoin();
+        System.out.println("review=" + reviews.size());
+        //reviews.forEach(productReview -> System.out.println(productReview.getProduct().getName()));
+    }
+
+     void insertReview() {
+
+        Member member1 = memberRepository.save(Member.builder()
+                .name("김딴딴")
+                .email("test@test.com")
+                .password("1234")
+                .role(Role.USER).build());
+
+        Product product1 = productRepository.save(Product.builder()
+                .name("상품1")
+                .code("AEOAK001")
+                .description("상품설명")
+                .originPrice(120000L)
+                .refundInfo("환불정보")
+                .sellerInfo("판매자정보")
+                .status(ProductStatus.NEW)
+                .sizeInfo("사이즈정보")
+                .sellPrice(100000L)
+                .savePoint(1000L)
+                .sizeInfo("사이즈정보").build());
+
+        Product product2 = productRepository.save(Product.builder()
+                .name("상품2")
+                .code("AEOAK001")
+                .description("상품설명")
+                .originPrice(120000L)
+                .refundInfo("환불정보")
+                .sellerInfo("판매자정보")
+                .status(ProductStatus.NEW)
+                .sizeInfo("사이즈정보")
+                .sellPrice(100000L)
+                .savePoint(1000L)
+                .sizeInfo("사이즈정보").build());
+
+
+        IntStream.range(0, 20).forEach(value -> {
+            productReviewRepository.save(ProductReview
+                    .builder()
+                    .id(Long.valueOf(value + 1))
+                    .text("댓글" + value)
+                    .member(member1)
+                    .status(value % 2 == 0 ? ProductReviewStatus.REMOVED : ProductReviewStatus.REMOVED)
+                    .product(value % 2 == 0 ? product1 : product2)
+                    .build());
+
+
+        });
     }
 }

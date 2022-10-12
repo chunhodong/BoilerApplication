@@ -4,6 +4,7 @@ import com.bronze.boiler.domain.base.BaseDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Entity
 @DynamicInsert
 @AllArgsConstructor
+@NoArgsConstructor
 public class Coupon extends BaseDate {
 
 
@@ -32,4 +34,8 @@ public class Coupon extends BaseDate {
 
     @Column
     private Long number;
+
+    public void changeName(String name){
+        this.name = name;
+    }
 }

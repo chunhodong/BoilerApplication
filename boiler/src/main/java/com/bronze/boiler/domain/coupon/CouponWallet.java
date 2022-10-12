@@ -3,6 +3,7 @@ package com.bronze.boiler.domain.coupon;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class CouponWallet {
 
 

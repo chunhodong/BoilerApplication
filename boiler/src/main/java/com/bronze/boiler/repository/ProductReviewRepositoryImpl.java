@@ -48,7 +48,7 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
                 .selectFrom(productReview)
                 .leftJoin(productReview.product, product)
                 .fetchJoin()
-                .where(productReview.product.id.eq(1l))
+                .where(product.id.eq(1l))
                 .fetch();
 
     }

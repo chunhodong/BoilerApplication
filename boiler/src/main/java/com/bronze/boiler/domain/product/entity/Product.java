@@ -76,9 +76,6 @@ public class Product extends BaseDate {
     @Column(name = "has_option")
     private boolean hasOption;
 
-  /*  @OneToOne(fetch = FetchType.LAZY,mappedBy = "product",optional = false)
-    private ProductStock stock;*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

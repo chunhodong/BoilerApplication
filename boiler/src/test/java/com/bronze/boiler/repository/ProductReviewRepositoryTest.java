@@ -301,6 +301,7 @@ public class ProductReviewRepositoryTest {
 
     //------------------------------------------ProductReview------------------------------------------
     @Test
+
     void 리뷰목록조회() {
         //insertReview();
         List<ProductReview> reviews = productReviewRepository.findAllWithFetchJoin();
@@ -308,7 +309,7 @@ public class ProductReviewRepositoryTest {
         //reviews.forEach(productReview -> System.out.println(productReview.getProduct().getName()));
     }
 
-     void insertReview() {
+    void insertReview() {
 
         Member member1 = memberRepository.save(Member.builder()
                 .name("김딴딴")

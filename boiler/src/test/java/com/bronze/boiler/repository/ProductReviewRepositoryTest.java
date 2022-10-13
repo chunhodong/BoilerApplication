@@ -301,7 +301,6 @@ public class ProductReviewRepositoryTest {
 
     //------------------------------------------ProductReview------------------------------------------
     @Test
-
     void 리뷰목록조회() {
         //insertReview();
         List<ProductReview> reviews = productReviewRepository.findAllWithFetchJoin();
@@ -357,4 +356,5 @@ public class ProductReviewRepositoryTest {
 
         });
     }
+
 }

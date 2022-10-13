@@ -31,6 +31,7 @@ public class MemberRepositoryTest {
 
     @Test
     void 회원조회_회원정보확인() {
+
         Member member = memberRepository.save(Member.builder()
                 .name("박지수")
                 .email("test@test.com")

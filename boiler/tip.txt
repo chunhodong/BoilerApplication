@@ -102,6 +102,10 @@
     - 조회한 데이터 개수만큼 연관관계에 있는 테이블을 조회하는 현상 쿼리를 한번 요청해도 N번만큼의 쿼리가 추가적으로 발생
     - JPQL이 기본적으로 연관관계에 있는 테이블은 조회하지 않기떄문(SELECT절에 포함 안시킴)
 
+  - CasCade
+
+  - MultibagException
+
   - OneToOne
     - OneToOne관계에서 외래키는 주테이블과 대상테이블 어느곳에서도 존재할 수 있음
 
@@ -117,7 +121,7 @@
         - 연관관계주인이 아닌 엔티티는 연관관계를 맺고있는 엔티티가 null인지여부를 테이블에서 확인할 수 없기때문에 LazyLoading전략이 무시되고한번에 모두 읽어옴
         - OneToMany관계에서는 기본으로 빈 List가 생성되기때문에 null값여부를 확인할 필요 없음
 
-   - FetchJoin과 일반Join
+   - fetchJoin과 일반Join
     - fetchJoin은 N + 1 문제를 해결하기 위해 연관관계에있는 테이블까지 한꺼번에 읽어오는 방법
       - querydsl에서 fetchJoin은 join방식을 규정하지 않음, left join,right join,inner join등 모든 join에서 fetchJoin사용가능
       - spring-data-jpa에서 @EntityGraph의 fetchJoin은 left outer join만 사용함
@@ -143,5 +147,17 @@
 
     - fetchJoin에서 where을썻을때 일관성이 보장된다는건 on에서쓴 조건결과와 where필터링 결과가 일치해야함, outer조인은 불가능
 
+    - fetchJoin은 on을 사용할 수 없기때문에 연관관계 주인이나 대상에 조건이 붙은 outerjoin은 구현할 수 없음(쿼리로 작성한것과 결과가 다름)
+      - 이를 해결하기 위해서는 fetchJoin이 아닌 일반join을 사용해야함, 일반join사용후 dto를 반환
+
     - 일관성이 깨지더라도, 2차캐시 없이 조회용으로만 쓰면 문제가 없음, 만약 jpa에서 2차캐시를 쓴다면 똑같은 팀을 조회해도
       먼저 조회한 쿼리에서 대상엔티티에 조건을 걸었다면 같은 엔티티조회라도 다른결과 발생
+
+---------------------------------------------------------------------------------------------------------------------
+
+6. Spring-data-jpa
+  - deleteAllById,deleteAllByIdInBatch
+  - deleteAllById는 아이디에 해당하는 엔티티들을 조회한후에 아이디 개수만큼 삭제쿼리를 전송
+  - deleteAllByIdInBatch는 엔티티 조회없이 하나의 쿼리로 삭제전송
+  - deleteAllById는 아이디에 대한 검증이 이뤄지기때문에 아이디에 해당하는 엔티티가 없으면 예외발생
+    deleteAllByIdInBatch는 아이디에 대한 검증없이 삭제 쿼리 전송, 아이디에 대한 엔티티가 없어도 예외발생안함

@@ -2,7 +2,7 @@ package com.bronze.boiler.repository;
 
 
 import com.bronze.boiler.config.TestConfig;
-import com.bronze.boiler.domain.coupon.Coupon;
+import com.bronze.boiler.domain.coupon.CouponWallet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,16 +18,16 @@ import java.util.List;
 @DataJpaTest
 @Transactional
 @Rollback(value = false)
-public class CouponRepositoryTest {
+public class CouponWalletRepositoryTest {
 
 
     @Autowired
-    private CouponRepository couponRepository;
+    private CouponWalletRepository couponWalletRepository;
 
 
     @Test
-    void 쿠폰조회(){
-        List<Coupon> coupons = couponRepository.findAllWithFetchJoin();
+    void 쿠폰지갑조회(){
+        List<CouponWallet> wallets = couponWalletRepository.findAll();
         System.out.println();
     }
 

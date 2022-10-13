@@ -20,7 +20,6 @@ public class CouponRepositoryImpl implements CouponRepositoryCst {
                 .selectFrom(coupon)
                 .leftJoin(coupon.wallet,couponWallet)
                 .fetchJoin()
-                .where(coupon.wallet.name.eq("쿠폰11"))
                 .fetch();
 
 

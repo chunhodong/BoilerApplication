@@ -29,11 +29,14 @@ public class CouponWalletRepositoryTest {
 
     @Test
     void 쿠폰지갑조회(){
-        List<CouponWallet> wallets = couponWalletRepository.findAll();
-        /*List<Coupon> set = wallets.get(0).getCoupons();
+        List<CouponWallet> wallets = couponWalletRepository.findAllWithFetchJoin();
+        wallets.stream().map(couponWallet -> couponWallet.getCoupons())
+                .flatMap(coupons -> coupons.stream())
+                .forEach(coupon -> System.out.println("number : "+coupon.getNumber()));
+        wallets.stream().map(couponWallet -> couponWallet.getStamps())
+                .flatMap(stamps -> stamps.stream())
+                .forEach(stamp -> System.out.println("stamp : "+stamp.getName()));
 
-        System.out.println();
-        */
     }
 
 }

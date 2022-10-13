@@ -31,10 +31,10 @@ public class CouponWallet {
     private Long level;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wallet")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
     private List<Coupon> coupons;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wallet")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
     private List<Stamp> stamps;
 
 

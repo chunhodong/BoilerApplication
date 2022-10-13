@@ -102,10 +102,15 @@
     - 조회한 데이터 개수만큼 연관관계에 있는 테이블을 조회하는 현상 쿼리를 한번 요청해도 N번만큼의 쿼리가 추가적으로 발생
     - JPQL이 기본적으로 연관관계에 있는 테이블은 조회하지 않기떄문(SELECT절에 포함 안시킴)
 
-  - CasCade
+  - cascade
 
-  - MultibagException
-
+  - MultipleBagFetchException
+    - 원인 : 2개 이상의 OneToMany관계에있는 List타입의 엔티티를 fetchJoin했을때 발생하는 예외
+            하이버네이트는 List타입의 OneToMany엔티티에 PersistentBag이라는 인스턴스를 할당에서 데이터를 추가
+    - 이유 : OneToMany관계가 있는 엔티티를 fetchJoin결과를 쿼리상에서 확인하면 One쪽테이블만 중복이 발생함
+            이때 2개 이상의 OneToMany관계를 포함한 엔티티를  fetchJoin해서 쿼리를 확인하면 Many쪽테이블의 row가 중복발생됨(Team,Member관계에서 Member에 중복이 발생)
+            이 중복된 데이터를 엔티티의 리스트가 매핑하지 못하기때문에 예외가 발생
+    - 해결 : OneToMany관계의 엔티티를 List가 아닌 Set으로처리하면됨,
   - OneToOne
     - OneToOne관계에서 외래키는 주테이블과 대상테이블 어느곳에서도 존재할 수 있음
 

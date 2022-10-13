@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CouponWalletRepository extends JpaRepository<CouponWallet,Long>,CouponWalletRepositoryCst {
+
+
+
 }

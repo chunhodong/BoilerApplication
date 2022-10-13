@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -32,11 +31,11 @@ public class CouponWallet {
     private Long level;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
-    private List<Coupon> coupons = new ArrayList<Coupon>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wallet")
+    private List<Coupon> coupons;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
-    private List<Stamp> stamps = new ArrayList<Stamp>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wallet")
+    private List<Stamp> stamps;
 
 
 }

@@ -8,4 +8,5 @@ public interface CouponRepositoryCst {
 
     List<Coupon> findAllWithFetchJoin();
 
+
 }

@@ -21,7 +21,5 @@ public class CouponRepositoryImpl implements CouponRepositoryCst {
                 .leftJoin(coupon.wallet,couponWallet)
                 .fetchJoin()
                 .fetch();
-
-
     }
 }

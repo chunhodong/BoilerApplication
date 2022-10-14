@@ -27,7 +27,10 @@ public class CouponRepositoryTest {
 
     @Test
     void 쿠폰조회(){
-        List<Coupon> coupons = couponRepository.findAllWithFetchJoin();
+        //List<Coupon> coupons = couponRepository.findAllWithFetchJoin();
+        boolean result = couponRepository.existsById(1l);
+
+
         System.out.println();
     }
 

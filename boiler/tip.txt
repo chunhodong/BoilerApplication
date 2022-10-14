@@ -94,15 +94,76 @@
                       보완이 필요할 수 있음
       - using filesort : 인덱스를 이용한 정렬을 할 수 없는경우 SortBuffer를 통해서 정렬, 드라이빙 테이블만 정렬할 경우 SortBuffer에서 해결 가능
       - using temporary : 드라이빙테이블만이용해서 정렬을 할 수 없는 경우, 여러 테이블을 조인해서 전부 임시 테이블에 넣어서 정렬하는 방식
-  - postgresql
 
+  - postgresql
+    - index scan은 인덱스를 탐색하는 방식
+    - Index only scan은 인덱스에 필요한 모든데이터가 존재하기 떄문에 따로 테이블에 접근할 필요없음 mysql에서 커버링인덱스
+
+  - postgresql vs mysql
+      - mysql은 group by에서 group by 칼럼을 기준으로 정렬된 결과를 응답, 내부적으로 정렬이 발생
+        정렬하지 않을려면 order by null 구문을 추가해야함
+
+  - postgresql,mysql
+      - count,exists
+        - exists는 exists내부에 결과가 존재할경우 바로 true를 리턴, count는 총 몇건인지 테이블 전부 조회 성능상 같은 결과를 반환할경우
+          exists가 성능상 우위
 ------------------------------------------------------------------------------------------
 5. JPA
   - N + 1
     - 조회한 데이터 개수만큼 연관관계에 있는 테이블을 조회하는 현상 쿼리를 한번 요청해도 N번만큼의 쿼리가 추가적으로 발생
     - JPQL이 기본적으로 연관관계에 있는 테이블은 조회하지 않기떄문(SELECT절에 포함 안시킴)
+    - default_batch_fetch_size,fetchJoin중 상황에 맞게 사용
+      - default_batch_fetch_size는 fetchJoin으로 인하여 발생하는 문제점은 없지만 사이즈를 수동으로 변경해줘야함
+      - fetchJoin는 한번의 쿼리로 연관된 엔티티를 모두 조회하지만, fetchJoin으로 구현할 수 없는 상황존재(on조건을 못씀)
 
-  - cascade
+  - default_batch_fetch_size
+    - 연관관계에있는 엔티티를 한꺼번에 읽어올 수 있는 개수를 지정
+    - N + 1상황에서 조회된 데이터 개수만큼 연관관계 테이블을 조회하는 쿼리를 전송하기때문에, default_batch_fetch_size를 사용
+
+  - fetchJoin과 일반Join
+    - fetchJoin은 N + 1 문제를 해결하기 위해 연관관계에있는 테이블까지 한꺼번에 읽어오는 방법
+      - querydsl에서 fetchJoin은 join방식을 규정하지 않음, left join,right join,inner join등 모든 join에서 fetchJoin사용가능
+      - spring-data-jpa에서 @EntityGraph의 fetchJoin은 left outer join만 사용함
+    - 일반Join은 join쿼리가 발생하지만 select절에서 연관관계테이블의 데이터는 읽어오지 않음, N + 1문제가 발생
+    - fetchJoin은 테이블의 모든 컬럼을 읽어오기때문에 상황에 따라 비효율적(안쓰는 컬럼이 응답시간에 영향을 줄 수 있음)
+    - dto를 읽어와야한다면 fetchJoin보다 일반join을쓴다음 원하는 칼럼만 반환하는 방식이 효율적
+
+    - fetchJoin에서 on을 사용할 수 없음, fetchJoin은 연관관계에 있는 엔티티가 전부 조회되는 걸 가정
+      - on을 사용하여 연관관계에 대상에 조건을 걸면, db상태와 객체의 일관성이 깨질 수 있음
+      - 일관성이 깨졋을때 문제는 객체의 상태를 저장한 다면 의도치 안게, db의 데이터가 삭제될 수 있음
+      - 이런 이유로 fetchJoin에서 별칭사용을 금지하는데, hibernate에서는 일관성을 꺠지않는 선에서 별칭사용을 허용
+
+    - fetchJoin에서 where은 사용할 수 있지만 상황에 따라 일관성이 깨질 가능성 존재
+      - outer join에서 where을 쓴다면 일관성을 보장할 수 없음
+        - 패치조인에서 outer join은 왼쪽에 테이블의 모든 row가 보여지는걸 가정함,이 상황에서 where조건을 거는 순간 필터링이 작용하기때문
+        - on에서 쓰는 조건과 where에서 쓰는 조건이 다르게 동작하기떄문
+        - fetchJoin은 on을 사용못하기때문에 outer join에서 의도와 다른 결과를 반환
+
+      - inner join에서 where을 쓰는건 연관관계에따라 일관성 보장 가능
+        - OneToMany에서 대상에 where조건을 쓸 때 연관관계에 있는 엔티티가 전부 조회안될 가능성 존재, 일관성이 깨짐
+                      주인에게 where조건은 상관없음 주인은 필터링이 되어도 연관관계에 있는 엔티티는 모두 조회되기때문
+        - ManyToOne에서는 대상이나 주인에게 where조건을 걸어도 상관없음 주인과 연관관계에 있는 엔티티는 모두 조회가능
+
+    - fetchJoin에서 where을썻을때 일관성이 보장된다는건 on에서쓴 조건결과와 where필터링 결과가 일치해야함, outer조인은 불가능
+
+    - fetchJoin은 on을 사용할 수 없기때문에 연관관계 주인이나 대상에 조건이 붙은 outerjoin은 구현할 수 없음(쿼리로 작성한것과 결과가 다름)
+      - 이를 해결하기 위해서는 fetchJoin이 아닌 일반join을 사용해야함, 일반join사용후 dto를 반환
+
+    - 일관성이 깨지더라도, 2차캐시 없이 조회용으로만 쓰면 문제가 없음, 만약 jpa에서 2차캐시를 쓴다면 똑같은 팀을 조회해도
+      먼저 조회한 쿼리에서 대상엔티티에 조건을 걸었다면 같은 엔티티조회라도 다른결과 발생
+
+    - 내부적으로 join하는 쿼리를 전송하기때문에 OneToMany관계의 엔티티를 엔티티목록을 조회한다면 중복이 발생할 수 있음
+
+    - fetchJoin에서 고려해야될점
+      - fetchJoin은 연관관계에 있는 엔티티가 모두 조회될거라는 가정을 하고 만들어짐
+      - 사용하는 필드 수가 많은지, 적을 수록 비효율적, 안쓰는 특정 필드가 읽어오는데 오래 걸릴 수 있음
+      - 일관성 문제, fetchJoin은 on절을 사용 못하기 때문에 쿼리상에서 outer조인,on으로 만들어지는 결과를 fetchJoin으로는 만들 수 없음
+        - 이를 모르고 where절을 쓰는 경우가 존재하나 on과 where는 완전 다른 경우
+        - 2차 캐시까지 쓴다면, 의도하는 조회결과가 안나올 수 있음
+        - innerJoin은 상관없음
+      - 연관관계종류, OneToMany의 경우 여러 2개이상의 OneToMany엔티티를 조회하는 경우 나타나는 MultiBagFetchException
+        그리고 One쪽 엔티티에 나타나는 데이터중복등을 생각해야함
+
 
   - MultipleBagFetchException
     - 원인 : 2개 이상의 OneToMany관계에있는 List타입의 엔티티를 fetchJoin했을때 발생하는 예외
@@ -111,6 +172,7 @@
             이때 2개 이상의 OneToMany관계를 포함한 엔티티를  fetchJoin해서 쿼리를 확인하면 Many쪽테이블의 row가 중복발생됨(Team,Member관계에서 Member에 중복이 발생)
             이 중복된 데이터를 엔티티의 리스트가 매핑하지 못하기때문에 예외가 발생
     - 해결 : OneToMany관계의 엔티티를 List가 아닌 Set으로처리하면됨,
+
   - OneToOne
     - OneToOne관계에서 외래키는 주테이블과 대상테이블 어느곳에서도 존재할 수 있음
 
@@ -126,43 +188,22 @@
         - 연관관계주인이 아닌 엔티티는 연관관계를 맺고있는 엔티티가 null인지여부를 테이블에서 확인할 수 없기때문에 LazyLoading전략이 무시되고한번에 모두 읽어옴
         - OneToMany관계에서는 기본으로 빈 List가 생성되기때문에 null값여부를 확인할 필요 없음
 
-   - fetchJoin과 일반Join
-    - fetchJoin은 N + 1 문제를 해결하기 위해 연관관계에있는 테이블까지 한꺼번에 읽어오는 방법
-      - querydsl에서 fetchJoin은 join방식을 규정하지 않음, left join,right join,inner join등 모든 join에서 fetchJoin사용가능
-      - spring-data-jpa에서 @EntityGraph의 fetchJoin은 left outer join만 사용함
-    - 일반Join은 join쿼리가 발생하지만 select절에서 연관관계테이블의 데이터는 읽어오지 않음, N + 1문제가 발생
-    - fetchJoin은 테이블의 모든 컬럼을 읽어오기때문에 상황에 따라 비효율적(안쓰는 컬럼이 응답시간에 영향을 줄 수 있음)
-    - dto를 읽어와야한다면 fetchJoin보다 일반join을쓴다음 원하는 칼럼만 반환하는 방식이 효율적
-
-    - fetchJoin에서 on을 사용할 수 없음, fetchJoin은 연관관계에 있는 엔티티가 전부 조회되는 걸 가정
-      - on을 사용하여 연관관계에 대상에 조건을 걸면, db상태와 객체의 일관성이 깨질 수 있음
-      - 일관성이 깨졋을때 문제는 객체의 상태를 저장한 다면 의도치 안게, db의 데이터가 삭제될 수 있음
-      - 이런 이유로 fetchJoin에서 별칭사용을 금지하는데, hibernate에서는 일관성을 꺠지않는 선에서 별칭사용을 허용
-
-    - fetchJoin에서 where은 사용할 수 있지만 상황에 따라 일관성이 깨질 가능성 존재
-      - left join에서 where을 쓴다면 일관성을 보장할 수 없음
-        - 패치조인에서 left join은 왼쪽에 테이블의 모든 row가 보여지는걸 가정함,이 상황에서 where조건을 거는 순간 필터링이 작용하기때문
-        - on에서 쓰는 조건과 where에서 쓰는 조건이 다르게 동작하기떄문
-        - fetchJoin은 on을 사용못하기때문에 left/right join에서 의도와 다른 결과를 반환
-
-      - inner join에서 where을 쓰는건 연관관계에따라 일관성 보장 가능
-        - OneToMany에서 대상에 where조건을 쓸 때 연관관계에 있는 엔티티가 전부 조회안될 가능성 존재, 일관성이 깨짐
-                      주인에게 where조건은 상관없음 주인은 필터링이 되어도 연관관계에 있는 엔티티는 모두 조회되기때문
-        - ManyToOne에서는 대상이나 주인에게 where조건을 걸어도 상관없음 주인과 연관관계에 있는 엔티티는 모두 조회가능
-
-    - fetchJoin에서 where을썻을때 일관성이 보장된다는건 on에서쓴 조건결과와 where필터링 결과가 일치해야함, outer조인은 불가능
-
-    - fetchJoin은 on을 사용할 수 없기때문에 연관관계 주인이나 대상에 조건이 붙은 outerjoin은 구현할 수 없음(쿼리로 작성한것과 결과가 다름)
-      - 이를 해결하기 위해서는 fetchJoin이 아닌 일반join을 사용해야함, 일반join사용후 dto를 반환
-
-    - 일관성이 깨지더라도, 2차캐시 없이 조회용으로만 쓰면 문제가 없음, 만약 jpa에서 2차캐시를 쓴다면 똑같은 팀을 조회해도
-      먼저 조회한 쿼리에서 대상엔티티에 조건을 걸었다면 같은 엔티티조회라도 다른결과 발생
-
+  - DirtyChecking
+    - 엔티티를 조회할때 조회시점에 스냅샷을 만들어둠
+    - 트랜잭션 끝나는시점에 원본엔티티와 스냅샷를 비교하는 작업이 DirtyChecking, DirtyChecking후에 달라진 부분이 있으면 UPDATE QUERY전송
+    - 이때 각 칼럼들을 비교하는데 만약 equals를 오버라이딩하지 않으면 같은 기본적으로 레퍼런스비교를 하기떄문에
+      같은 값이라도 신규객체를 생성하면 객체비교시 false가 발생, 이를 위해 equals를 구현해야할 수 도 있음
 ---------------------------------------------------------------------------------------------------------------------
 
 6. Spring-data-jpa
   - deleteAllById,deleteAllByIdInBatch
-  - deleteAllById는 아이디에 해당하는 엔티티들을 조회한후에 아이디 개수만큼 삭제쿼리를 전송
-  - deleteAllByIdInBatch는 엔티티 조회없이 하나의 쿼리로 삭제전송
-  - deleteAllById는 아이디에 대한 검증이 이뤄지기때문에 아이디에 해당하는 엔티티가 없으면 예외발생
-    deleteAllByIdInBatch는 아이디에 대한 검증없이 삭제 쿼리 전송, 아이디에 대한 엔티티가 없어도 예외발생안함
+    - deleteAllById는 아이디에 해당하는 엔티티들을 조회한후에 아이디 개수만큼 삭제쿼리를 전송
+    - deleteAllByIdInBatch는 엔티티 조회없이 하나의 쿼리로 삭제전송
+    - deleteAllById는 아이디에 대한 검증이 이뤄지기때문에 아이디에 해당하는 엔티티가 없으면 예외발생
+        deleteAllByIdInBatch는 아이디에 대한 검증없이 삭제 쿼리 전송, 아이디에 대한 엔티티가 없어도 예외발생안함
+
+  - existsById,exists
+    - existsById는 select count(*) from table where id=? 형식의 쿼리생성
+    - exists는 select * from table where id = ? 형식의 쿼리생성
+    - 효율화를 위해 native하게 exists쿼리를 생성하는방법이나 querydsl에서 limit구문을 사용할 수 있게 수정
+    - count가 들어가는 순간 조건해 해당하는 모든 row를 하나씩 카운팅

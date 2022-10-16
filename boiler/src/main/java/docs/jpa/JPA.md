@@ -1,0 +1,6 @@
+- N + 1
+    - 조회한 데이터 개수만큼 연관관계에 있는 테이블을 조회하는 현상 쿼리를 한번 요청해도 N번만큼의 쿼리가 추가적으로 발생
+    - JPQL이 기본적으로 연관관계에 있는 테이블은 조회하지 않기떄문(SELECT절에 포함 안시킴)
+    - default_batch_fetch_size,fetchJoin중 상황에 맞게 사용
+        - default_batch_fetch_size는 fetchJoin으로 인하여 발생하는 문제점은 없지만 사이즈를 수동으로 변경해줘야함
+        - fetchJoin는 한번의 쿼리로 연관된 엔티티를 모두 조회하지만, fetchJoin으로 구현할 수 없는 상황존재(on조건을 못씀)

@@ -8,4 +8,7 @@ public interface CouponWalletRepositoryCst {
 
     List<CouponWallet> findAllWithFetchJoin();
 
+    CouponWallet findOneWithFetchJoinAndWhere(Long walletId,Long couponId);
+    CouponWallet findOneWithFetchJoin(Long walletId);
+
 }

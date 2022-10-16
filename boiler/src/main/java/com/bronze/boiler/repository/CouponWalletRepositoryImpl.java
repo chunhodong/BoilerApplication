@@ -8,7 +8,6 @@ import java.util.List;
 
 import static com.bronze.boiler.domain.coupon.QCoupon.coupon;
 import static com.bronze.boiler.domain.coupon.QCouponWallet.couponWallet;
-import static com.bronze.boiler.domain.coupon.QStamp.stamp;
 
 @RequiredArgsConstructor
 public class CouponWalletRepositoryImpl implements CouponWalletRepositoryCst {
@@ -21,8 +20,26 @@ public class CouponWalletRepositoryImpl implements CouponWalletRepositoryCst {
                 .selectFrom(couponWallet)
                 .join(couponWallet.coupons, coupon)
                 .fetchJoin()
-                .join(couponWallet.stamps, stamp)
-                .fetchJoin()
                 .fetch();
+    }
+
+    @Override
+    public CouponWallet findOneWithFetchJoinAndWhere(Long walletId,Long couponId) {
+        return queryFactory
+                .selectFrom(couponWallet)
+                .join(couponWallet.coupons, coupon)
+                .fetchJoin()
+                .where(couponWallet.id.eq(walletId).and(coupon.id.eq(couponId)))
+                .fetchOne();
+    }
+
+    @Override
+    public CouponWallet findOneWithFetchJoin(Long walletId) {
+        return queryFactory
+                .selectFrom(couponWallet)
+                .join(couponWallet.coupons, coupon)
+                .fetchJoin()
+                .where(couponWallet.id.eq(walletId))
+                .fetchOne();
     }
 }

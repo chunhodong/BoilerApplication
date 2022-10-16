@@ -28,8 +28,6 @@ public class QCouponWallet extends EntityPathBase<CouponWallet> {
 
     public final StringPath name = createString("name");
 
-    public final ListPath<Stamp, QStamp> stamps = this.<Stamp, QStamp>createList("stamps", Stamp.class, QStamp.class, PathInits.DIRECT2);
-
     public QCouponWallet(String variable) {
         super(CouponWallet.class, forVariable(variable));
     }

@@ -35,3 +35,5 @@
     - outer join에서 where을 쓴다면 일관성을 보장할 수 없음
     - fetchJoin에서 outer join은 왼쪽에 테이블의 모든 row가 보여지는걸 가정하기 때문에 where조건을 거는 순간 필터링으로 작용
       - on에서 쓰는 조건과 where에서 쓰는 조건이 다르게 동작
+    - inner join에서 대상쪽에 where을 쓴다면 일관성을 보장할 수 없음
+    - 일관성이 깨진다면 기대했던 결과와 다르게 나올 수 있음

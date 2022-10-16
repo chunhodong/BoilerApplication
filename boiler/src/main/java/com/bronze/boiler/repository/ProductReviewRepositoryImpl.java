@@ -53,6 +53,27 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
 
     }
 
+    @Override
+    public List<ProductReview> findAllWithOffset(Long offset,Long limit) {
+
+        return queryFactory
+                .selectFrom(productReview)
+                .orderBy(productReview.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<ProductReview> findAllWithNoOffset(Long id, Long limit) {
+        return queryFactory
+                .selectFrom(productReview)
+                .orderBy(productReview.id.desc())
+                .where(productReview.id.loe(id))
+                .limit(limit)
+                .fetch();
+    }
+
     public OrderSpecifier[] getOrderSpec(Sort sort, QProductReview productReview) {
         return sort.stream()
                 .map(order -> new OrderSpecifier(order.isAscending() ? Order.ASC : Order.DESC, new PathBuilder(productReview.getType(), productReview.getMetadata()).get(order.getProperty())))

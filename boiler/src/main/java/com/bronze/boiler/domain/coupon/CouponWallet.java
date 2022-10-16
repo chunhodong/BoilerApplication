@@ -31,11 +31,13 @@ public class CouponWallet {
     private Long level;
 
 
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
     private List<Coupon> coupons;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
     private List<Stamp> stamps;
+
 
 
 }

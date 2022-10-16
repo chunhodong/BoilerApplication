@@ -9,4 +9,9 @@ import java.util.List;
 public interface ProductReviewRepositoryCst {
     List<ProductReview> findAllByPage(ProductReviewFilter filter,Pageable pageable);
     List<ProductReview> findAllWithFetchJoin();
+
+    List<ProductReview> findAllWithOffset(Long offset,Long limit);
+
+    List<ProductReview> findAllWithNoOffset(Long id,Long limit);
+
 }

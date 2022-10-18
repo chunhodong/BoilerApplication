@@ -26,6 +26,8 @@ public class QTag extends EntityPathBase<Tag> {
 
     public final QGiftBox box;
 
+    public final QGiftBoxWithSet boxSet;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created = _super.created;
 
@@ -55,6 +57,7 @@ public class QTag extends EntityPathBase<Tag> {
     public QTag(Class<? extends Tag> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.box = inits.isInitialized("box") ? new QGiftBox(forProperty("box")) : null;
+        this.boxSet = inits.isInitialized("boxSet") ? new QGiftBoxWithSet(forProperty("boxSet")) : null;
     }
 
 }

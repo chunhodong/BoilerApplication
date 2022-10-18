@@ -7,31 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Builder
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Gift extends BaseDate {
+public class GiftBoxWithSet extends BaseDate {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
 
-    private Long quantity;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boxSet")
+    private Set<Gift> gifts;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "box_id")
-    private GiftBox box;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "box_set_id")
-    private GiftBoxWithSet boxSet;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boxSet")
+    private Set<Tag> tags;
 
 }

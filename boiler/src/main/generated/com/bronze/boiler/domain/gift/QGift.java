@@ -26,6 +26,8 @@ public class QGift extends EntityPathBase<Gift> {
 
     public final QGiftBox box;
 
+    public final QGiftBoxWithSet boxSet;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created = _super.created;
 
@@ -57,6 +59,7 @@ public class QGift extends EntityPathBase<Gift> {
     public QGift(Class<? extends Gift> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.box = inits.isInitialized("box") ? new QGiftBox(forProperty("box")) : null;
+        this.boxSet = inits.isInitialized("boxSet") ? new QGiftBoxWithSet(forProperty("boxSet")) : null;
     }
 
 }

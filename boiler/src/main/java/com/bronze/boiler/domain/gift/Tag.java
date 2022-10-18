@@ -20,10 +20,13 @@ public class Tag extends BaseDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "box_id")
     private GiftBox box;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "box_set_id")
+    private GiftBoxWithSet boxSet;
 }

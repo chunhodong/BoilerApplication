@@ -29,7 +29,7 @@
 
   
 - fetchJoin에서 제한사항
-  - on을 사용할 수 없음, on을 사용하여 연관관계에 대상에 조건을 걸면 db상태와 객체의 일관성이 깨질 수 있음(https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/test/java/com/bronze/boiler/repository/CouponWalletRepositoryTest.java)
+  - on을 사용할 수 없음, on을 사용하여 연관관계에 대상에 조건을 걸면 db상태와 객체의 일관성이 깨질 수 있음
     - fetchJoin은 연관관계에 있는 엔티티가 모두 조회될걸 가정한다.
   - [fetchJoin에서 where은 사용할 수 있지만 상황에 따라 일관성이 깨질 가능성 존재한다.](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/test/java/com/bronze/boiler/repository/CouponWalletRepositoryTest.java)
     - outer join에서 where을 쓴다면 일관성을 보장할 수 없다.
@@ -41,8 +41,8 @@
 
 - MultipleBagFetchException
   - 2개 이상의 OneToMany관계에있는 List타입의 엔티티를 fetchJoin했을때 발생하는 예외
-  - 하이버네이트는 List타입의 OneToMany엔티티에 PersistentBag이라는 인스턴스를 할당에서 데이터를 추가
-  - OneToMany관계가 있는 엔티티를 fetchJoin결과를 쿼리상에서 확인하면 주인테이블만 중복이 발생함
-    이때 2개 이상의 OneToMany관계를 포함한 엔티티를  fetchJoin해서 쿼리를 확인하면 Many쪽테이블의 row가 중복발생됨(Team,Member관계에서 Member에 중복이 발생)
-    이 중복된 데이터를 PersistentBag이 매핑하지 못하기때문에 예외가 발생
-  - 해결 : OneToMany관계의 엔티티를 List가 아닌 Set으로처리하면됨,
+  - 하이버네이트는 List타입의 OneToMany엔티티에 PersistentBag이라는 인스턴스를 할당에서 데이터를 추가한다.
+  - OneToMany관계가 있는 엔티티를 fetchJoin결과를 쿼리상에서 확인하면 주인테이블만 중복이 발생한다.
+    이때 2개 이상의 List타입의 OneToMany엔티티를  fetchJoin해서 쿼리를 확인하면 Many쪽테이블의 row가 중복(Team,Member관계에서 Member에 중복이 발생)
+    이 중복된 데이터를 PersistentBag이 매핑하지 못하기때문에 예외가 발생한다.
+    - [OneToMany관계의 엔티티를 List가 아닌 Set으로처리하면된다.](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/test/java/com/bronze/boiler/repository/GiftBoxRepositoryTest.java)

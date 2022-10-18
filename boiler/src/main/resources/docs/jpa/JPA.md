@@ -31,7 +31,7 @@
 - fetchJoin에서 제한사항
   - on을 사용할 수 없음, on을 사용하여 연관관계에 대상에 조건을 걸면 db상태와 객체의 일관성이 깨질 수 있음
     - fetchJoin은 연관관계에 있는 엔티티가 모두 조회될걸 가정
-  - fetchJoin에서 where은 사용할 수 있지만 상황에 따라 일관성이 깨질 가능성 존재
+  - fetchJoin에서 where은 사용할 수 있지만 상황에 따라 일관성이 깨질 가능성 존재()
     - outer join에서 where을 쓴다면 일관성을 보장할 수 없음
     - fetchJoin에서 outer join은 왼쪽에 테이블의 모든 row가 보여지는걸 가정하기 때문에 where조건을 거는 순간 필터링으로 작용
       - on에서 쓰는 조건과 where에서 쓰는 조건이 다르게 동작

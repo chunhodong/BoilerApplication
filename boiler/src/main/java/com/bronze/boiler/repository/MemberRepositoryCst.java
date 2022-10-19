@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface MemberRepositoryCst {
     List<Member> findAllByLastLogin(LocalDateTime startDate, LocalDateTime endDate, long limit);
+    List<Member> findAllWithSubquery(Long productReviewId);
+
+    List<Member> findAllWithDoubleQuery(Long productReviewId);
 }

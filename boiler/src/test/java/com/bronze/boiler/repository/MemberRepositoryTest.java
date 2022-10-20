@@ -2,6 +2,7 @@ package com.bronze.boiler.repository;
 
 import com.bronze.boiler.config.TestConfig;
 import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.domain.member.enums.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,26 @@ public class MemberRepositoryTest {
             List<Member> reviews = memberRepository.findAllWithDoubleQuery(1000000l);
             assertThat(reviews.size()).isEqualTo(850566);
 
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("bulk update시")
+    class BulkUpdate{
+        @Test
+        @DisplayName("jpa를 사용하면 엔티티 수 만큼 update쿼리가 발생한다")
+        void 회원목록조회_서브쿼리사용(){
+
+            List<Member> members = memberRepository.findAllById(List.of(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l));
+            members.forEach(member -> member.changeToStep());
+        }
+
+        @Test
+        @DisplayName("querydsl로 사용하면 update쿼리가 한번만 발생한다")
+        void 회원목록조회_쿼리나눠서실행사용() {
+            memberRepository.updateMemberRoleInBatch(List.of(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l), Role.USER);
         }
 
     }

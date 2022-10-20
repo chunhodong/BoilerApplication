@@ -1,6 +1,7 @@
 package com.bronze.boiler.repository;
 
 import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.domain.member.enums.Role;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCst{
                 .fetch();
 
 
+    }
+
+    @Override
+    public long updateMemberRoleInBatch(List<Long> memberIds, Role role) {
+        return queryFactory
+                .update(member)
+                .set(member.role,role)
+                .where(member.id.in(memberIds))
+                .execute();
     }
 
 

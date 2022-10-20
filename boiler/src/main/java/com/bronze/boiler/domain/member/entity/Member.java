@@ -78,6 +78,10 @@ public class Member extends BaseDate {
 
     }
 
+    public void changeToStep(){
+        this.role = Role.STEP;
+    }
+
     public void sleep() {
         this.status = MemberStatus.SLEEP;
     }

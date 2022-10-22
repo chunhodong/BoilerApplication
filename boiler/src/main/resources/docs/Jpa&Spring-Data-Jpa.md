@@ -46,5 +46,3 @@
     이때 2개 이상의 List타입의 OneToMany엔티티를  fetchJoin해서 쿼리를 확인하면 Many쪽테이블의 row가 중복(Team,Member관계에서 Member에 중복이 발생)
     이 중복된 데이터를 PersistentBag이 매핑하지 못하기때문에 예외가 발생한다.
     - [OneToMany관계의 엔티티를 List가 아닌 Set으로처리하면된다.](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/test/java/com/bronze/boiler/repository/GiftBoxRepositoryTest.java)
-
-//

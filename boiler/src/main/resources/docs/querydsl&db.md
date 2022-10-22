@@ -22,7 +22,7 @@
 ------
 
 
-### Spring-Data-Jpa의 deleteAllById,deleteAllByIdInBatch
+### [Spring-Data-Jpa의 deleteAllById,deleteAllByIdInBatch](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/test/java/com/bronze/boiler/repository/CouponRepositoryTest.java)
 * deleteAllById는 아이디에 해당하는 엔티티들을 조회한후에 아이디 개수만큼 삭제쿼리를 전송
 * deleteAllByIdInBatch는 엔티티 조회없이 하나의 쿼리로 삭제전송
 * deleteAllById는 아이디에 대한 검증이 이뤄지기때문에 아이디에 해당하는 엔티티가 없으면 예외발생

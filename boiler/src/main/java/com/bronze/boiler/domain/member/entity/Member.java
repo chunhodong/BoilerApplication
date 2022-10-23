@@ -75,7 +75,6 @@ public class Member extends BaseDate {
     public void block() {
         this.status = MemberStatus.BLOCK;
         this.periodOfBlock = LocalDate.now().plusDays(7L);
-
     }
 
     public void changeToStep(){

@@ -31,7 +31,7 @@ public class CouponWallet {
     private Long level;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet",cascade = CascadeType.REMOVE)
     private List<Coupon> coupons;
 
 

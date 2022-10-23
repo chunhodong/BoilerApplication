@@ -26,24 +26,24 @@ public class CouponRepositoryTest {
     private CouponRepository couponRepository;
 
 
-
     @Nested
     @DisplayName("spring data jpa에서 delete메소드를 사용했을때")
-    class Delete{
+    class Delete {
         @Test
         @DisplayName("deleteAllById는 id에 해당하는 엔티티가 없으면 예외발생")
-        void deleteAllById는_id가없으면_예외발생(){
+        void deleteAllById는_id가없으면_예외발생() {
 
-            assertThatThrownBy(() -> couponRepository.deleteAllById(List.of(12314l,33329l)))
+            assertThatThrownBy(() -> couponRepository.deleteAllById(List.of(12314l, 33329l)))
                     .isInstanceOf(Exception.class);
         }
 
         @Test
         @DisplayName("deleteAllByIdInBatch는 id에 대한 검증없이 삭제")
-        void deleteAllByIdInBatch는_id검증없이_엔티티삭제(){
-            couponRepository.deleteAllByIdInBatch(List.of(12314l,33329l));
+        void deleteAllByIdInBatch는_id검증없이_엔티티삭제() {
+            couponRepository.deleteAllByIdInBatch(List.of(12314l, 33329l));
         }
     }
+
 
 
 

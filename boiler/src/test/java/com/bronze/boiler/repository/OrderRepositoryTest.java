@@ -10,6 +10,7 @@ import com.bronze.boiler.domain.order.entity.Orders;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.enums.ProductStatus;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -178,12 +179,31 @@ public class OrderRepositoryTest {
                 .status(OrderStatus.PAYMENT)
                 .member(savedMember)
                 .build());
-
         assertThat(order.getAddress().getTitleAddress()).isEqualTo("명일로172");
         order.modifyAddress(Address.builder().titleAddress("강동구1231").build());
         assertThat(order.getAddress().getTitleAddress()).isEqualTo("강동구1231");
+    }
+
+    @Test
+    @DisplayName("부모객체를 영속화할 때 자식객체도 같이 영속화한다.")
+    void 주문추가할때_자식객체도같이_영속화(){
 
 
+
+        Orders order = orderRepository.save(Orders
+                .builder()
+                .paymentPrice(13000l)
+                .address(Address.builder().titleAddress("명일로172").zipcode(50320L).build())
+                .totalPrice(13000l)
+                .status(OrderStatus.PAYMENT)
+                .member(Member.builder()
+                        .name("김딴딴")
+                        .email("test@test.com")
+                        .password("1234")
+                        .role(Role.USER).build())
+                .build());
+        assertThat(order).isNotNull();
 
     }
+
 }

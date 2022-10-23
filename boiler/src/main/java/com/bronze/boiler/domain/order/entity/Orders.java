@@ -34,7 +34,7 @@ public class Orders extends BaseDate {
     @NotNull(message = "판매금액을 입력해야합니다")
     private Long paymentPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "member_id")
     @NotNull(message = "회원이 있어야합니다")
     private Member member;

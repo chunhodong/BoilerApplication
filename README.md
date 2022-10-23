@@ -1,15 +1,10 @@
-# 스프링부트-JPA 프로젝트
-<br>
-스프링부트와 JPA,Spring Data Jpa,QueryDsl을 사용 및 활용을 위한 예제 프로젝트입니다 <br>
-<br> 
-관련개념이나 주의사항들을 아래링크에 정리했습니다.
+#### 프로젝트 소개 및 목적
+- 스프링부트와 JPA,Spring Data Jpa,QueryDsl 연습을 위한 예제 프로젝트입니다.
+- 사용하면서 발생한 이슈나 개념들을 문서로 정리해두었습니다.
 
-------
+#### 사용기술
+- SpringBoot,Spring Data Jpa,QueryDsl,Jpa
 
-#### [JPA](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/main/resources/docs/jpa/JPA.md)
-
-#### Spring Data Jpa
-
-#### QueryDsl
-
-#### DB
+#### 문서링크
+- [Jpa&Spring-Data-Jpa](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/main/resources/docs/Jpa&Spring-Data-Jpa.md)
+- [QueryDsl](https://github.com/chunhodong/boilerApplication/blob/master/boiler/src/main/resources/docs/querydsl&db.md)

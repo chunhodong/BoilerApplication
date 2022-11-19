@@ -25,20 +25,14 @@ public class ProductStockService {
      * @param stock 재고DTO
      */
     public void createProductStock(ProductStockDto stock) {
-
-
         Long productId = stock.getProductId();
         Long totalStock = stock.getTotalStock();
         Long currentStock = stock.getCurrentStock();
-
-
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException(ProductExceptionType.NONE_EXIST_PRODUCT));
-
         if(totalStock < currentStock){
             throw new ProductStockException(ProductStockExceptionType.ILLEGAL_STOCK);
         }
-
         productStockRepository.save(
                 ProductStock.builder()
                         .product(product)

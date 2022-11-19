@@ -8,7 +8,6 @@ public class ProductStockException extends RuntimeException implements BaseExcep
         this.type = type;
     }
 
-
     @Override
     public ExceptionType getType() {
         return this.type;

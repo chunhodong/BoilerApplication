@@ -20,7 +20,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-
     /**
      *
      * @param reqMemberDto 회원정보DtO
@@ -28,10 +27,6 @@ public class MemberService {
      * @throws NoSuchAlgorithmException 비밀번호암호화 알고리즘 검색실패
      */
     public ResMemberDto createMember(ReqMemberDto reqMemberDto) throws NoSuchAlgorithmException {
-
-
-
-
         memberRepository.findByName(reqMemberDto.getName())
                 .ifPresent(member -> {
                     throw new MemberException(MemberExceptionType.DUPLICATE_NAME);
@@ -40,10 +35,7 @@ public class MemberService {
                 .ifPresent(member -> {
                     throw new MemberException(MemberExceptionType.DUPLICATE_EMAIL);
                 });
-
-
         Member member = memberRepository.save(MemberConverter.toMemberEntity(reqMemberDto));
-
         return MemberConverter.toMemberDto(member);
     }
 
@@ -53,12 +45,9 @@ public class MemberService {
      * @return 삭제처리된회원정보
      */
     public ResMemberDto removeMember(long memberId) {
-
         Member member = memberRepository.findById(memberId)
                         .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
-
         member.remove();
-
         return MemberConverter.toMemberDto(member);
     }
 
@@ -70,9 +59,7 @@ public class MemberService {
     public ResMemberDto unregisterMember(long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
-
         member.unregister();
-
         return MemberConverter.toMemberDto(member);
 
     }
@@ -85,13 +72,10 @@ public class MemberService {
     public ResMemberDto sleepMember(long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NONE_EXIST_MEMBER));
-
         member.sleep();
-
         return MemberConverter.toMemberDto(member);
 
     }
-
 
     /**
      * 회원정지처리
@@ -132,3 +116,4 @@ public class MemberService {
 
     }
 }
+

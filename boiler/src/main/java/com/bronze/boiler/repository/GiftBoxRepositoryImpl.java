@@ -10,8 +10,8 @@ import static com.bronze.boiler.domain.gift.QGift.gift;
 import static com.bronze.boiler.domain.gift.QTag.tag;
 @RequiredArgsConstructor
 public class GiftBoxRepositoryImpl implements GiftBoxRepositoryCst {
-    private final JPAQueryFactory queryFactory;
 
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<GiftBox> findAllWithFetchJoin() {

@@ -15,7 +15,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Coupon extends BaseDate {
 
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)

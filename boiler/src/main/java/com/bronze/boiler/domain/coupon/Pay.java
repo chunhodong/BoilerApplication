@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pay {
+
     private String code;
     private Long amount;
     private List<PayDetail> details = new ArrayList<>();

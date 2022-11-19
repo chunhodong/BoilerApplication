@@ -14,8 +14,8 @@ import static com.bronze.boiler.domain.product.entity.QProductReview.productRevi
 
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepositoryCst{
-    private final JPAQueryFactory queryFactory;
 
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Member> findAllByLastLogin(LocalDateTime startDate,LocalDateTime endDate,long limit) {
@@ -47,8 +47,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCst{
                 .selectFrom(member)
                 .where(member.id.in(memberIds))
                 .fetch();
-
-
     }
 
     @Override

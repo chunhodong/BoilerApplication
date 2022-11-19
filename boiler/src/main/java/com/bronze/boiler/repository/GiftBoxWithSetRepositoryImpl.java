@@ -12,8 +12,8 @@ import static com.bronze.boiler.domain.gift.QTag.tag;
 
 @RequiredArgsConstructor
 public class GiftBoxWithSetRepositoryImpl implements GiftBoxWithSetRepositoryCst {
-    private final JPAQueryFactory queryFactory;
 
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<GiftBoxWithSet> findAllWithFetchJoin() {
@@ -24,6 +24,5 @@ public class GiftBoxWithSetRepositoryImpl implements GiftBoxWithSetRepositoryCst
                 .join(giftBoxWithSet.tags, tag)
                 .fetchJoin()
                 .fetch();
-
     }
 }

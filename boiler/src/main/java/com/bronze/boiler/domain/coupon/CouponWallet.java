@@ -16,12 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 public class CouponWallet {
 
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column
     @NotBlank(message = "이름을 입력해야합니다")
@@ -29,7 +27,6 @@ public class CouponWallet {
 
     @Column
     private Long level;
-
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wallet",cascade = CascadeType.REMOVE)
     private List<Coupon> coupons;

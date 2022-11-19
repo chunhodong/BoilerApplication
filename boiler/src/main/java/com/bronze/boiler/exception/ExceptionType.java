@@ -10,6 +10,4 @@ public interface ExceptionType {
 
     String getMessage();
     HttpStatus getStatus();
-
-
 }

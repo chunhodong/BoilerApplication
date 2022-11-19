@@ -9,7 +9,6 @@ public class PasswordEncoder {
     public static String encrypt(String text) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes());
-
         return bytesToHex(md.digest());
     }
 

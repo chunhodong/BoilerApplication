@@ -25,8 +25,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCst{
 
     @Override
     public List<Product> findAllByPage(ProductFilter productFilter, Pageable pageable) {
-
-
         BooleanBuilder builder = new BooleanBuilder();
         if(productFilter.getCategoryId() != null){
             builder.and(product.category.id.eq(productFilter.getCategoryId()));
@@ -34,7 +32,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCst{
         if(productFilter.getStatus() != null){
             builder.and(product.status.eq(productFilter.getStatus()));
         }
-
         return queryFactory
                 .selectFrom(product)
                 .where(builder)
@@ -46,7 +43,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCst{
 
     @Override
     public List<Product> findAllMaxPrice() {
-
         return queryFactory
                 .selectFrom(product)
                 .where(product.sellPrice.eq(JPAExpressions.select(product.sellPrice.max()).from(product)))

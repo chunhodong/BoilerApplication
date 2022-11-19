@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PayConverter implements AttributeConverter<List<Pay>, String> {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

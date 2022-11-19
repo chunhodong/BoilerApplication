@@ -8,7 +8,6 @@ public class ProductReviewException extends RuntimeException implements BaseExce
         this.type = type;
     }
 
-
     @Override
     public ExceptionType getType() {
         return this.type;

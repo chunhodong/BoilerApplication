@@ -23,11 +23,9 @@ public class Stamp extends BaseDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id")
     private CouponWallet wallet;
-
 
     @Column
     private String name;

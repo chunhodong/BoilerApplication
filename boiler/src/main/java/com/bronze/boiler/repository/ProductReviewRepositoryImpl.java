@@ -25,11 +25,9 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
     @Override
     public List<ProductReview> findAllByPage(ProductReviewFilter filter, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
-
         if (filter.getParentId() == null) {
             builder.and(productReview.parent.isNull());
         } else builder.and(productReview.parent.id.eq(filter.getParentId()));
-
         if (filter.getStatus() != null) {
             builder.and(productReview.status.eq(filter.getStatus()));
         }
@@ -50,12 +48,10 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
                 .fetchJoin()
                 .where(product.id.eq(1l))
                 .fetch();
-
     }
 
     @Override
     public List<ProductReview> findAllWithOffset(Long offset,Long limit) {
-
         return queryFactory
                 .selectFrom(productReview)
                 .orderBy(productReview.id.desc())
@@ -80,5 +76,4 @@ public class ProductReviewRepositoryImpl implements ProductReviewRepositoryCst {
                 .collect(Collectors.toList())
                 .toArray(OrderSpecifier[]::new);
     }
-
 }

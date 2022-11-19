@@ -11,8 +11,8 @@ import static com.bronze.boiler.domain.coupon.QCouponWallet.couponWallet;
 
 @RequiredArgsConstructor
 public class CouponWalletRepositoryImpl implements CouponWalletRepositoryCst {
-    private final JPAQueryFactory queryFactory;
 
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<CouponWallet> findAllWithFetchJoin() {

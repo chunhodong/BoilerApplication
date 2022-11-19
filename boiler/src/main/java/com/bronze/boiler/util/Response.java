@@ -13,9 +13,6 @@ public class Response<T> {
 
     private Long total;
     private Long currentPage;
-
     private List<T> list;
-
-
-
 }
+

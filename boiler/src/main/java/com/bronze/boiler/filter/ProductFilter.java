@@ -12,6 +12,4 @@ public class ProductFilter{
 
     private Long categoryId;
     private ProductStatus status;
-
-
 }

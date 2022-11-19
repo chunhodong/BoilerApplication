@@ -14,9 +14,6 @@ import javax.validation.Valid;
 @RequestMapping("/pstocks")
 public class ProductStockController {
 
-
-
-
     private final ProductStockService productStockService;
 
     @PostMapping

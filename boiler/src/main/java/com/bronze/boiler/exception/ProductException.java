@@ -8,7 +8,6 @@ public class ProductException extends RuntimeException implements BaseException 
         this.type = type;
     }
 
-
     @Override
     public ExceptionType getType() {
         return this.type;

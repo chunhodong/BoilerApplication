@@ -1,7 +1,7 @@
 package com.bronze.boiler.repository;
 
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.domain.Role;
 
 import java.time.LocalDateTime;
 import java.util.List;

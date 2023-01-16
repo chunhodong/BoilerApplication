@@ -1,7 +1,7 @@
 package com.bronze.boiler.domain.product.entity;
 
 import com.bronze.boiler.domain.base.BaseDate;
-import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.member.domain.Member;
 import com.bronze.boiler.domain.product.enums.ProductReviewStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

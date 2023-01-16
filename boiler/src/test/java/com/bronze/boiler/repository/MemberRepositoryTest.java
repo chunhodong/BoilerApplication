@@ -1,8 +1,8 @@
 package com.bronze.boiler.repository;
 
 import com.bronze.boiler.config.TestConfig;
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.domain.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

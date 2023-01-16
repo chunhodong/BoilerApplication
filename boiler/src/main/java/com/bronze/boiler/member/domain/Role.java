@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.member.enums;
+package com.bronze.boiler.member.domain;
 
 /**
  * 회원역할

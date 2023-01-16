@@ -1,8 +1,6 @@
-package com.bronze.boiler.domain.member.converter;
+package com.bronze.boiler.member.dto;
 
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
-import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.member.domain.Member;
 import com.bronze.boiler.util.PasswordEncoder;
 
 import java.security.NoSuchAlgorithmException;

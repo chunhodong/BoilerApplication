@@ -1,7 +1,7 @@
 package com.bronze.boiler.controller;
 
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
+import com.bronze.boiler.member.dto.ReqMemberDto;
+import com.bronze.boiler.member.dto.ResMemberDto;
 import com.bronze.boiler.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

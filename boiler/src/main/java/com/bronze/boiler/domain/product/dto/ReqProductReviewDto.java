@@ -1,7 +1,7 @@
 package com.bronze.boiler.domain.product.dto;
 
 
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
+import com.bronze.boiler.member.dto.ReqMemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

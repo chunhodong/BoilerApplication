@@ -1,4 +1,4 @@
-package com.bronze.boiler.domain.member.enums;
+package com.bronze.boiler.member.exception;
 
 import com.bronze.boiler.exception.ExceptionType;
 import org.springframework.http.HttpStatus;

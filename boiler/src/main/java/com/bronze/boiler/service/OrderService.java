@@ -1,8 +1,8 @@
 package com.bronze.boiler.service;
 
 
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.MemberExceptionType;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.exception.MemberExceptionType;
 import com.bronze.boiler.domain.order.converter.OrderConverter;
 import com.bronze.boiler.domain.order.converter.OrderProductConverter;
 import com.bronze.boiler.domain.order.dto.ReqOrderDto;

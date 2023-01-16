@@ -1,8 +1,6 @@
-package com.bronze.boiler.domain.member.entity;
+package com.bronze.boiler.member.domain;
 
 import com.bronze.boiler.domain.base.BaseDate;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,10 +1,10 @@
 package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.exception.MemberExceptionType;
+import com.bronze.boiler.member.domain.MemberStatus;
+import com.bronze.boiler.member.domain.Role;
 import com.bronze.boiler.domain.order.dto.ReqOrderDto;
 import com.bronze.boiler.domain.order.dto.ResOrderDto;
 import com.bronze.boiler.domain.order.entity.Address;

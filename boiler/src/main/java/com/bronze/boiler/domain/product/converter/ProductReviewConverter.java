@@ -1,7 +1,7 @@
 package com.bronze.boiler.domain.product.converter;
 
-import com.bronze.boiler.domain.member.converter.MemberConverter;
-import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.member.dto.MemberConverter;
+import com.bronze.boiler.member.domain.Member;
 import com.bronze.boiler.domain.product.dto.*;
 import com.bronze.boiler.domain.product.entity.ProductReview;
 

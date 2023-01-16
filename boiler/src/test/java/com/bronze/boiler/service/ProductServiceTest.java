@@ -2,8 +2,8 @@ package com.bronze.boiler.service;
 
 import com.bronze.boiler.domain.category.dto.CategoryDto;
 import com.bronze.boiler.domain.category.entity.Category;
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.entity.Member;
+import com.bronze.boiler.member.dto.ReqMemberDto;
+import com.bronze.boiler.member.domain.Member;
 import com.bronze.boiler.domain.product.dto.*;
 import com.bronze.boiler.domain.product.entity.Product;
 import com.bronze.boiler.domain.product.entity.ProductImage;

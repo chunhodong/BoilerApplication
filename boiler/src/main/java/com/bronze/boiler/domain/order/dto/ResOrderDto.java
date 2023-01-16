@@ -1,6 +1,6 @@
 package com.bronze.boiler.domain.order.dto;
 
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
+import com.bronze.boiler.member.dto.ResMemberDto;
 import com.bronze.boiler.domain.order.entity.Address;
 import com.bronze.boiler.domain.order.enums.OrderStatus;
 import lombok.AllArgsConstructor;

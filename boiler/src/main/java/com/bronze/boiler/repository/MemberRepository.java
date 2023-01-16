@@ -1,8 +1,8 @@
 package com.bronze.boiler.repository;
 
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.domain.MemberStatus;
+import com.bronze.boiler.member.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

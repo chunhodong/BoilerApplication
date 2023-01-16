@@ -2,6 +2,9 @@ package com.bronze.boiler.domain.member.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.domain.MemberStatus;
+import com.bronze.boiler.member.domain.Role;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -39,9 +42,9 @@ public class QMember extends EntityPathBase<Member> {
 
     public final DatePath<java.time.LocalDate> periodOfBlock = createDate("periodOfBlock", java.time.LocalDate.class);
 
-    public final EnumPath<com.bronze.boiler.domain.member.enums.Role> role = createEnum("role", com.bronze.boiler.domain.member.enums.Role.class);
+    public final EnumPath<Role> role = createEnum("role", Role.class);
 
-    public final EnumPath<com.bronze.boiler.domain.member.enums.MemberStatus> status = createEnum("status", com.bronze.boiler.domain.member.enums.MemberStatus.class);
+    public final EnumPath<MemberStatus> status = createEnum("status", MemberStatus.class);
 
     public QMember(String variable) {
         super(Member.class, forVariable(variable));

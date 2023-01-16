@@ -1,7 +1,7 @@
-package com.bronze.boiler.domain.member.dto;
+package com.bronze.boiler.member.dto;
 
-import com.bronze.boiler.domain.member.enums.Role;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
+import com.bronze.boiler.member.domain.Role;
+import com.bronze.boiler.member.domain.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

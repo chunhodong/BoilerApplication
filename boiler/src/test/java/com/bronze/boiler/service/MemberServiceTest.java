@@ -1,11 +1,11 @@
 package com.bronze.boiler.service;
 
-import com.bronze.boiler.domain.member.dto.ReqMemberDto;
-import com.bronze.boiler.domain.member.dto.ResMemberDto;
-import com.bronze.boiler.domain.member.entity.Member;
-import com.bronze.boiler.domain.member.enums.MemberExceptionType;
-import com.bronze.boiler.domain.member.enums.MemberStatus;
-import com.bronze.boiler.domain.member.enums.Role;
+import com.bronze.boiler.member.dto.ReqMemberDto;
+import com.bronze.boiler.member.dto.ResMemberDto;
+import com.bronze.boiler.member.domain.Member;
+import com.bronze.boiler.member.exception.MemberExceptionType;
+import com.bronze.boiler.member.domain.MemberStatus;
+import com.bronze.boiler.member.domain.Role;
 import com.bronze.boiler.exception.MemberException;
 import com.bronze.boiler.repository.MemberRepository;
 import org.junit.jupiter.api.Test;

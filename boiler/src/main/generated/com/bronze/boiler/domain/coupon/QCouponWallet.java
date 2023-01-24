@@ -2,6 +2,7 @@ package com.bronze.boiler.domain.coupon;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.coupon.domain.Coupon;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;

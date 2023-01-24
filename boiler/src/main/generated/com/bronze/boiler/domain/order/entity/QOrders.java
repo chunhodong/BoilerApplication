@@ -2,6 +2,8 @@ package com.bronze.boiler.domain.order.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.order.domain.OrderStatus;
+import com.bronze.boiler.order.domain.Orders;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -33,14 +35,14 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.bronze.boiler.domain.member.entity.QMember member;
+    public final com.bronze.boiler.member.domain.QMember member;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
 
     public final NumberPath<Long> paymentPrice = createNumber("paymentPrice", Long.class);
 
-    public final EnumPath<com.bronze.boiler.domain.order.enums.OrderStatus> status = createEnum("status", com.bronze.boiler.domain.order.enums.OrderStatus.class);
+    public final EnumPath<OrderStatus> status = createEnum("status", OrderStatus.class);
 
     public final NumberPath<Long> totalPrice = createNumber("totalPrice", Long.class);
 
@@ -63,7 +65,7 @@ public class QOrders extends EntityPathBase<Orders> {
     public QOrders(Class<? extends Orders> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.address = inits.isInitialized("address") ? new QAddress(forProperty("address")) : null;
-        this.member = inits.isInitialized("member") ? new com.bronze.boiler.domain.member.entity.QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.bronze.boiler.member.domain.QMember(forProperty("member")) : null;
     }
 
 }

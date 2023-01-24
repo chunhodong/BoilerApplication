@@ -1,7 +1,7 @@
 package com.bronze.boiler.member.dto;
 
 import com.bronze.boiler.member.domain.Member;
-import com.bronze.boiler.util.PasswordEncoder;
+import com.bronze.boiler.common.PasswordEncoder;
 
 import java.security.NoSuchAlgorithmException;
 

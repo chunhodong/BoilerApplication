@@ -2,6 +2,8 @@ package com.bronze.boiler.domain.product.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.product.domain.Product;
+import com.bronze.boiler.product.domain.ProductStatus;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -54,7 +56,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath sizeInfo = createString("sizeInfo");
 
-    public final EnumPath<com.bronze.boiler.domain.product.enums.ProductStatus> status = createEnum("status", com.bronze.boiler.domain.product.enums.ProductStatus.class);
+    public final EnumPath<ProductStatus> status = createEnum("status", ProductStatus.class);
 
     public QProduct(String variable) {
         this(Product.class, forVariable(variable), INITS);

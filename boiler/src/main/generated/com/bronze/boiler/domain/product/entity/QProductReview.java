@@ -2,6 +2,8 @@ package com.bronze.boiler.domain.product.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.review.domain.Review;
+import com.bronze.boiler.review.domain.ReviewStatus;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -11,10 +13,10 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QProductReview is a Querydsl query type for ProductReview
+ * QProductReview is a Querydsl query type for Review
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QProductReview extends EntityPathBase<ProductReview> {
+public class QProductReview extends EntityPathBase<Review> {
 
     private static final long serialVersionUID = 785015259L;
 
@@ -29,7 +31,7 @@ public class QProductReview extends EntityPathBase<ProductReview> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.bronze.boiler.domain.member.entity.QMember member;
+    public final com.bronze.boiler.member.domain.QMember member;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modified = _super.modified;
@@ -38,15 +40,15 @@ public class QProductReview extends EntityPathBase<ProductReview> {
 
     public final QProduct product;
 
-    public final EnumPath<com.bronze.boiler.domain.product.enums.ProductReviewStatus> status = createEnum("status", com.bronze.boiler.domain.product.enums.ProductReviewStatus.class);
+    public final EnumPath<ReviewStatus> status = createEnum("status", ReviewStatus.class);
 
     public final StringPath text = createString("text");
 
     public QProductReview(String variable) {
-        this(ProductReview.class, forVariable(variable), INITS);
+        this(Review.class, forVariable(variable), INITS);
     }
 
-    public QProductReview(Path<? extends ProductReview> path) {
+    public QProductReview(Path<? extends Review> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
@@ -55,12 +57,12 @@ public class QProductReview extends EntityPathBase<ProductReview> {
     }
 
     public QProductReview(PathMetadata metadata, PathInits inits) {
-        this(ProductReview.class, metadata, inits);
+        this(Review.class, metadata, inits);
     }
 
-    public QProductReview(Class<? extends ProductReview> type, PathMetadata metadata, PathInits inits) {
+    public QProductReview(Class<? extends Review> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new com.bronze.boiler.domain.member.entity.QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.bronze.boiler.member.domain.QMember(forProperty("member")) : null;
         this.parent = inits.isInitialized("parent") ? new QProductReview(forProperty("parent"), inits.get("parent")) : null;
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
     }

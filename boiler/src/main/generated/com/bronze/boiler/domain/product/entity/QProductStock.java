@@ -2,6 +2,7 @@ package com.bronze.boiler.domain.product.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.product.domain.ProductStock;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;

@@ -2,6 +2,7 @@ package com.bronze.boiler.domain.payment.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.bronze.boiler.payment.domain.Payment;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -41,7 +42,7 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.bronze.boiler.domain.member.entity.QMember member;
+    public final com.bronze.boiler.member.domain.QMember member;
 
     public final StringPath mid = createString("mid");
 
@@ -76,7 +77,7 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public QPayment(Class<? extends Payment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new com.bronze.boiler.domain.member.entity.QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.bronze.boiler.member.domain.QMember(forProperty("member")) : null;
         this.order = inits.isInitialized("order") ? new com.bronze.boiler.domain.order.entity.QOrders(forProperty("order"), inits.get("order")) : null;
     }
 

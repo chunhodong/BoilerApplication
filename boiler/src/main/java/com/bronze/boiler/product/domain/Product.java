@@ -41,7 +41,6 @@ public class Product extends BaseDate {
     @Column
     @NotBlank(message = "상품설명을 입력해야합니다")
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
     @ColumnDefault("'NEW'")
     @Enumerated(EnumType.STRING)
     private ProductStatus status;

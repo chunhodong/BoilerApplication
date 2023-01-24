@@ -1,4 +1,4 @@
-package com.bronze.boiler.common;
+package com.bronze.boiler.member.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

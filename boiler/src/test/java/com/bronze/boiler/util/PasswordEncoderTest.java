@@ -1,6 +1,6 @@
 package com.bronze.boiler.util;
 
-import com.bronze.boiler.common.PasswordEncoder;
+import com.bronze.boiler.member.utils.PasswordEncoder;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;

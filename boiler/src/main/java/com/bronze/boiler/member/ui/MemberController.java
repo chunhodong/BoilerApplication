@@ -6,7 +6,10 @@ import com.bronze.boiler.member.dto.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -19,14 +22,6 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<MemberResponse> createMember(@RequestBody MemberRequest memberRequest) throws NoSuchAlgorithmException {
-        MemberResponse member = memberService.createMember(memberRequest);
-        return new ResponseEntity(member,HttpStatus.OK);
+        return new ResponseEntity(memberService.createMember(memberRequest), HttpStatus.OK);
     }
-
-    @GetMapping("/{memberId}")
-    public ResponseEntity<MemberResponse> getMembers(@PathVariable("memberId") Long memberId) {
-        MemberResponse member = memberService.getMember(memberId);
-        return new ResponseEntity(member,HttpStatus.OK);
-    }
-
 }

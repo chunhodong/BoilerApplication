@@ -21,33 +21,23 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @DynamicInsert
 public class Review extends BaseDate {
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @NotNull(message = "작성자를 입력해야합니다")
     private Member member;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @NotNull(message = "상품을 입력해야합니다")
     private Product product;
-
-
     @NotBlank(message = "내용을 입력해야합니다")
     private String text;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Review parent;
-
-
-
     @ColumnDefault("'NEW'")
     @Enumerated(EnumType.STRING)
     private ReviewStatus status;

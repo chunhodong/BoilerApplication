@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ProductReviewRepositoryCst {
     List<Review> findAllByPage(ReviewFilter filter, Pageable pageable);
+
     List<Review> findAllWithFetchJoin();
 
     List<Review> findAllWithOffset(Long offset, Long limit);
 
     List<Review> findAllWithNoOffset(Long id, Long limit);
-
 }

@@ -9,7 +9,6 @@ import lombok.ToString;
 @Builder
 @Getter
 public class ReviewFilter {
-
     private Long parentId;
     private ReviewStatus status;
 }

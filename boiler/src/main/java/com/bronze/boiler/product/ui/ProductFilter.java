@@ -9,7 +9,6 @@ import lombok.ToString;
 @Builder
 @Getter
 public class ProductFilter{
-
     private Long categoryId;
     private ProductStatus status;
 }

@@ -20,22 +20,16 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @DynamicInsert
 public class ProductImage extends BaseDate {
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     @Column
     private String path;
-
     @Column
     private String name;
-
     @Column
     private String domain;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @NotNull(message = "상품을 추가해야합니다")

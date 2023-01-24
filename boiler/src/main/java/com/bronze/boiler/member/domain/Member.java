@@ -20,43 +20,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member extends BaseDate {
-
-
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    
     @Column
     @NotBlank(message = "이름을 입력해야합니다")
     private String name;
-
     @Column
     @NotBlank(message = "이메일을 입력해야합니다")
     private String email;
-
     @Column
     @NotBlank(message = "패스워드를 입력해야합니다")
     private String password;
-
     @Enumerated(EnumType.STRING)
     @Column
     private Role role;
-
     @Enumerated(EnumType.STRING)
     @Column
     private MemberStatus status;
-
-
     @Column(name = "period_of_block")
     private LocalDate periodOfBlock;
-
-
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
-
 
     public void modifyEmail(String email){
         this.email = email;

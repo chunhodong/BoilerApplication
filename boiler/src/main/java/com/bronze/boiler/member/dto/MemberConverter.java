@@ -7,18 +7,18 @@ import java.security.NoSuchAlgorithmException;
 
 public class MemberConverter {
 
-    public static Member toMemberEntity(ReqMemberDto reqMemberDto) throws NoSuchAlgorithmException {
+    public static Member toMemberEntity(MemberRequest memberRequest) throws NoSuchAlgorithmException {
         return Member.builder()
-                .name(reqMemberDto.getName())
-                .email(reqMemberDto.getEmail())
-                .password(PasswordEncoder.encrypt(reqMemberDto.getPassword()))
-                .role(reqMemberDto.getRole())
+                .name(memberRequest.getName())
+                .email(memberRequest.getEmail())
+                .password(PasswordEncoder.encrypt(memberRequest.getPassword()))
+                .role(memberRequest.getRole())
                 .build();
 
     }
 
-    public static ResMemberDto toMemberDto(Member member) {
-        return ResMemberDto.builder()
+    public static MemberResponse toMemberDto(Member member) {
+        return MemberResponse.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())

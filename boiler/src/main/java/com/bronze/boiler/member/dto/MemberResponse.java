@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-public class ResMemberDto {
+public class MemberResponse {
 
     private Long id;
 

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Getter
 @NoArgsConstructor
-public class ReqMemberDto {
+public class MemberRequest {
 
     private Long id;
 

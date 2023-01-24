@@ -1,4 +1,4 @@
-package com.bronze.boiler.repository;
+package com.bronze.boiler.member.repository;
 
 import com.bronze.boiler.member.domain.Member;
 import com.bronze.boiler.member.domain.Role;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.bronze.boiler.domain.member.entity.QMember.member;
+import static com.bronze.boiler.member.domain.QMember.member;
 import static com.bronze.boiler.domain.product.entity.QProductReview.productReview;
 
 @RequiredArgsConstructor
@@ -37,7 +37,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCst{
 
     @Override
     public List<Member> findAllWithDoubleQuery(Long productReviewId) {
-
         List<Long> memberIds =  queryFactory
                 .select(productReview.member.id).distinct()
                 .from(productReview)
@@ -57,6 +56,5 @@ public class MemberRepositoryImpl implements MemberRepositoryCst{
                 .where(member.id.in(memberIds))
                 .execute();
     }
-
-
 }
+
